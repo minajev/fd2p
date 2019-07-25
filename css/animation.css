@@ -1,0 +1,767 @@
+@media only screen and (max-width: 800px) {
+    #showcase .box-animation-5, .box-animation-6, .box-animation-7, .box-animation-8, .box-animation-9, .box-animation-10, .box-animation-11, .box-animation-12{
+        display: none;
+    }
+    .column-middle{
+      width: 280px;
+      height: 190px;
+    }
+    .container60{
+      width: 90%;
+    }
+    .form-popup {
+      top: 110px;
+      right: 20px;
+    }
+    #aboutUs .column-main{
+        display: none;
+    }
+}
+
+@keyframes fadeInOut{
+  0%{
+    opacity: 0;
+  }
+
+  3%{
+    opacity: 0.5;
+  }
+
+  6%{
+    opacity: 0;
+  }
+}
+
+@keyframes fadeInOut-text{
+  0%{
+    opacity: 0;
+  }
+
+  10%{
+    opacity: 0.5;
+  }
+
+  20%{
+    opacity: 0;
+  }
+}
+
+.box-animation-1 div:nth-child(1){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 33s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-1 div:nth-child(2){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 12s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-1 div:nth-child(3){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 50s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-1 div:nth-child(4){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 34s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-1 div:nth-child(5){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 19s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-1 div:nth-child(6){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 60s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-1 div:nth-child(7){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 5s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-1 div:nth-child(8){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 73s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-1 div:nth-child(9){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 26s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-1 div:nth-child(10){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 6s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-1 div:nth-child(11){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 56s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-1 div:nth-child(12){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 72s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-1 div:nth-child(13){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 53s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-1 div:nth-child(14){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 13s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-1 div:nth-child(15){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 38s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-1 div:nth-child(16){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 25s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-1 div:nth-child(17){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 47s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-1 div:nth-child(18){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 20s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-1 div:nth-child(19){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 71s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-1 div:nth-child(20){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 46s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-2 div:nth-child(1){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 51s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-2 div:nth-child(2){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 18s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-2 div:nth-child(3){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 59s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-2 div:nth-child(4){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 77s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-2 div:nth-child(5){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 37s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-2 div:nth-child(6){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 32s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-2 div:nth-child(7){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 11s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-2 div:nth-child(8){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 52s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-2 div:nth-child(9){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 80s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-2 div:nth-child(10){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 57s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-2 div:nth-child(11){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 78s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-2 div:nth-child(12){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 14s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-2 div:nth-child(13){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 82s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-2 div:nth-child(14){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 30s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-2 div:nth-child(15){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 76s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-2 div:nth-child(16){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 17s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-2 div:nth-child(17){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 58s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-2 div:nth-child(18){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 55s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-2 div:nth-child(19){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 36s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-2 div:nth-child(20){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 81s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-2 div:nth-child(21){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 10s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-3 div:nth-child(1){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 62s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-3 div:nth-child(2){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 43s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-3 div:nth-child(3){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 70s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-3 div:nth-child(4){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 7s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-3 div:nth-child(5){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 65s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-3 div:nth-child(6){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 21s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-3 div:nth-child(7){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 68s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-3 div:nth-child(8){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 49s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-3 div:nth-child(9){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 4s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-3 div:nth-child(10){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 42s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-3 div:nth-child(11){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 63s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-3 div:nth-child(12){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 27s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-3 div:nth-child(13){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 24s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-3 div:nth-child(14){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 69s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-3 div:nth-child(15){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 66s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-3 div:nth-child(16){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 45s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-3 div:nth-child(17){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 1s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-3 div:nth-child(18){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 41s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-3 div:nth-child(19){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 61s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-3 div:nth-child(20){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 67s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-3 div:nth-child(21){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 48s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-4 div:nth-child(1){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 54s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-4 div:nth-child(2){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 74s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-4 div:nth-child(3){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 79s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-4 div:nth-child(4){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 35s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-4 div:nth-child(5){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 15s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-4 div:nth-child(6){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 2s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-4 div:nth-child(7){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 28s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-4 div:nth-child(8){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 64s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-4 div:nth-child(9){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 40s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-4 div:nth-child(10){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 44s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-4 div:nth-child(11){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 31s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-4 div:nth-child(12){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 16s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-4 div:nth-child(13){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 29s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-4 div:nth-child(14){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 75s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-4 div:nth-child(15){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 9s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-4 div:nth-child(16){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 23s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-4 div:nth-child(17){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 39s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-4 div:nth-child(18){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 8s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-4 div:nth-child(19){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 22s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-4 div:nth-child(20){
+  opacity: 0;
+  animation-name: fadeInOut;
+  animation-delay: 3s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-6 div{
+  opacity: 0;
+  animation-name: fadeInOut-text;
+  animation-delay: 1s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-12 div{
+  opacity: 0;
+  animation-name: fadeInOut-text;
+  animation-delay: 11s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-9 div{
+  opacity: 0;
+  animation-name: fadeInOut-text;
+  animation-delay: 21s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-7 div{
+  opacity: 0;
+  animation-name: fadeInOut-text;
+  animation-delay: 31s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-10 div{
+  opacity: 0;
+  animation-name: fadeInOut-text;
+  animation-delay: 41s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-8 div{
+  opacity: 0;
+  animation-name: fadeInOut-text;
+  animation-delay: 51s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-5 div{
+  opacity: 0;
+  animation-name: fadeInOut-text;
+  animation-delay: 61s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
+
+.box-animation-11 div{
+  opacity: 0;
+  animation-name: fadeInOut-text;
+  animation-delay: 71s;
+  animation-duration: 82s;
+  animation-iteration-count: infinite;
+}
