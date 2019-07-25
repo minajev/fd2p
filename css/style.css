@@ -1,0 +1,319 @@
+html{
+  overflow-y: scroll;
+}
+
+body{
+  font: 15px/1.5 Arial, Helvetica,sans-serif;
+  padding: 0;
+  margin: 0;
+  background-image: url(https://fd2p.com/img/paper.png);
+}
+
+/* Email form */
+
+/* Button used to open the contact form - fixed at the bottom of the page */
+.open-button {
+  margin-bottom: 15px;
+  float: right;
+  color: #f2f2f2;
+  border: none;
+  cursor: pointer;
+  background-color: Transparent;
+  background-repeat:no-repeat;
+  overflow: hidden;
+  outline:none;
+  font: 15px/1.5 Arial, Helvetica,sans-serif;
+}
+
+/* The popup form - hidden by default */
+.form-popup {
+  position: absolute;
+  top: 80px;
+  right: 120px;
+  display: none;
+  opacity: 0.97;
+  width: 320px;
+  height: 240px;
+  z-index: 2;
+}
+
+/* Add styles to the form container */
+.form-container{
+  padding: 10px;
+  border: 1px solid #21252b;
+  background-color: #fff;
+}
+
+/* Full-width input fields */
+.form-container input[type=email], .form-container input[type=name], .form-container input[type=organization]{
+  width: 280px;
+  padding: 10px;
+  border: none;
+  -webkit-box-shadow: 0 0 0px 1000px #f2f2f2 inset;
+}
+
+.box{
+  width: 100%;
+  margin: 5px 0px 5px 0px;
+  border: none;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=email]:focus, .form-container input[type=name]:focus, .form-container input[type=organization]:focus{
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit button */
+.btn{
+  background-color: #d00e0e;
+  color: #f2f2f2;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  opacity: 0.8;
+}
+
+/* Add some hover effects to buttons */
+.btn:hover{
+  color: #f2f2f2;
+  opacity: 1;
+}
+
+/* Add some hover effects to buttons */
+.open-button:hover{
+  color: #d00e0e;
+  opacity: 1;
+}
+
+/* Global */
+.container-absolute{
+  position: absolute;
+  width: 100%;
+  margin: auto;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.container60{
+  width: 60%;
+  margin: 0px auto 0 auto;
+  overflow: hidden;
+}
+
+.container100{
+  width: 100%;
+  margin: auto;
+  overflow: hidden;
+}
+
+.column-main{
+  width: 15%;
+  max-width: 250px;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.row-main{
+    display: flex;
+    flex-direction: row;
+}
+
+.row{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.column-middle{
+  width: 300px;
+  height: 200px;
+}
+
+.column-side{
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1
+}
+
+.column-long{
+  display: flex;
+  flex-direction: column;
+  height: 40px;
+  flex-basis: 100%;
+  flex: 1
+}
+
+.column-text{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 140px;
+  flex-basis: 100%;
+  flex: 1
+}
+
+.column-notext{
+  width: 300px;
+  height: 140px;
+}
+
+/* Header */
+
+#header{
+  background: #21252b;
+  color: #f2f2f2;
+  min-height: 50px;
+  white-space: nowrap;
+}
+
+#header ul{
+  padding: 0px;
+}
+
+#header li{
+  float: left;
+  display: inline;
+  padding: 0 100px 0 0;
+}
+
+/* Showcase */
+
+#showcase .column-middle img{
+  width: 100%;
+}
+
+#showcase .box-animation-1{
+  display: grid;
+  grid-template-columns: repeat(10, auto);
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-items: center;
+  color: #21252b;
+  font: 12px/1.5 Arial, Helvetica,sans-serif;
+}
+
+#showcase .box-animation-2{
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-items: center;
+  color: #21252b;
+  font: 12px/1.5 Arial, Helvetica,sans-serif;
+}
+
+#showcase .box-animation-3{
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-items: center;
+  color: #21252b;
+  font: 12px/1.5 Arial, Helvetica,sans-serif;
+}
+
+#showcase .box-animation-4{
+  display: grid;
+  grid-template-columns: repeat(10, auto);
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-items: center;
+  color: #21252b;
+  font: 12px/1.5 Arial, Helvetica,sans-serif;
+}
+
+#showcase .box-animation-5{
+  color: #21252b;
+  font: 15px/1.2 Arial, Helvetica,sans-serif;
+  font-style: italic;
+  padding: 10px;
+}
+
+#showcase .box-animation-6{
+  color: #21252b;
+  font: 15px/1.2 Arial, Helvetica,sans-serif;
+  font-style: italic;
+  padding: 10px;
+}
+
+#showcase .box-animation-7{
+  color: #21252b;
+  font: 15px/1.2 Arial, Helvetica,sans-serif;
+  font-style: italic;
+  padding: 10px;
+}
+
+#showcase .box-animation-8{
+  color: #21252b;
+  font: 15px/1.2 Arial, Helvetica,sans-serif;
+  font-style: italic;
+  padding: 10px;
+}
+
+#showcase .box-animation-9{
+  color: #21252b;
+  font: 15px/1.2 Arial, Helvetica,sans-serif;
+  font-style: italic;
+  padding: 10px;
+}
+
+#showcase .box-animation-10{
+  color: #21252b;
+  font: 15px/1.2 Arial, Helvetica,sans-serif;
+  font-style: italic;
+  padding: 10px;
+}
+
+#showcase .box-animation-11{
+  color: #21252b;
+  font: 15px/1.2 Arial, Helvetica,sans-serif;
+  font-style: italic;
+  padding: 10px;
+}
+
+#showcase .box-animation-12{
+  color: #21252b;
+  font: 15px/1.2 Arial, Helvetica,sans-serif;
+  font-style: italic;
+  padding: 10px;
+}
+
+/* Services */
+
+#aboutUs{
+    padding-bottom: 50px;
+}
+
+/* Footer */
+
+#footer{
+  background: #21252b;
+  color: #f2f2f2;
+  min-height: 50px;
+  height: auto;
+}
+
+#footer ul{
+  padding: 0;
+}
+
+#footer li.a{
+  float: left;
+}
+
+#footer li.b{
+  float: right;
+  display: inline;
+  margin-bottom: 15px;
+}
