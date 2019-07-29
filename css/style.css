@@ -33,7 +33,7 @@ body{
   display: none;
   opacity: 0.97;
   width: 320px;
-  height: 240px;
+  height: 440px;
   z-index: 2;
 }
 
@@ -46,9 +46,21 @@ body{
 
 /* Full-width input fields */
 .form-container input[type=email], .form-container input[type=name], .form-container input[type=organization]{
-  width: 280px;
+  width: 276px;
   padding: 10px;
-  border: none;
+  border: 1px solid #ddd;
+  font: 12px/1 Arial, Helvetica,sans-serif;
+  -webkit-box-shadow: 0 0 0px 1000px #f2f2f2 inset;
+}
+
+.form-container textarea[type=message]{
+  min-height: 70px;
+  max-height: 300px;
+  max-width: 276px;
+  min-width: 276px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  font: 12px/1 Arial, Helvetica,sans-serif;
   -webkit-box-shadow: 0 0 0px 1000px #f2f2f2 inset;
 }
 
@@ -59,7 +71,7 @@ body{
 }
 
 /* When the inputs get focus, do something */
-.form-container input[type=email]:focus, .form-container input[type=name]:focus, .form-container input[type=organization]:focus{
+.form-container input[type=email]:focus, .form-container input[type=name]:focus, .form-container input[type=organization]:focus, .form-container input[type=message]:focus{
   background-color: #ddd;
   outline: none;
 }
@@ -69,10 +81,9 @@ body{
   background-color: #d00e0e;
   color: #f2f2f2;
   padding: 10px;
-  border: none;
+  border: 1px solid #ddd;
   cursor: pointer;
   width: 100%;
-  margin-top: 5px;
   margin-bottom: 5px;
   opacity: 0.8;
 }
@@ -105,7 +116,7 @@ body{
 }
 
 .container100{
-  width: 98%;
+  width: 100%;
   margin: auto;
   overflow: hidden;
 }
