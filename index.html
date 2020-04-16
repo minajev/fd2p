@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en" dir="ltr">
 
   <head>
@@ -151,7 +151,7 @@ function Form() {
       <div class="container100">
         <div class='row'>
           <div class='column-long'>
-            <div class="box-animation-1">
+          <!--  <div class="box-animation-1">
               <div>e</div>
               <div>n</div>
               <div>pe</div>
@@ -172,12 +172,12 @@ function Form() {
               <div>A</div>
               <div>F</div>
               <div>r</div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class='row'>
           <div class='column-side'>
-            <div class="box-animation-2">
+          <!--  <div class="box-animation-2">
               <div>c</div>
               <div>Yo</div>
               <div>o</div>
@@ -199,13 +199,13 @@ function Form() {
               <div>v</div>
               <div>A</div>
               <div>a</div>
-            </div>
+            </div> -->
           </div>
           <div class='column-middle'>
             <img src="./img/logo5.png">
           </div>
-          <div class='column-side'>
-            <div class="box-animation-3">
+            <div class='column-side'>
+          <!--  <div class="box-animation-3">
               <div>w</div>
               <div>th</div>
               <div>k</div>
@@ -227,12 +227,12 @@ function Form() {
               <div>o</div>
               <div>L</div>
               <div>e</div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class='row'>
           <div class='column-long'>
-            <div class="box-animation-4">
+          <!--  <div class="box-animation-4">
               <div>le</div>
               <div>P.</div>
               <div>R</div>
@@ -253,7 +253,7 @@ function Form() {
               <div>R</div>
               <div>e</div>
               <div>o</div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -262,10 +262,12 @@ function Form() {
 <!--About us-->
     <section id="aboutUs">
 <div class="row-main">
-  <div class="column-main">
-                <img src="./img/left.png" height=800px align=right>
+<!--  <div class="column-main">
+                <img src="./img/left.png" height=800px align=right> -->
   </div>
       <div class="container60">
+        <hr>
+        <br>
         <center><b>ENGINEERING COMPANY</b></center>
         <br>
       &nbsp; &nbsp; Being experienced and talented team <b>From Draft <font color="#d00e0e">2</font> Project</b>
@@ -277,7 +279,10 @@ function Form() {
         <p>&nbsp; &nbsp; We provide mechanical and structural solutions for various facilities around the globe.
           Our sphere of competence is marine, subsea, civil and industrial engineering; which requires steel, aluminum and polymer structures design and analyzis.</p>
         <p>&nbsp; &nbsp; With respect to our confidential policy, we do not place information about completed projects on our webpage. If you are interested in specifics, please contact us.</p>
-        <center><h4>OUR SERVICES</h4></center>
+        <br>
+        <hr>
+        <br>
+        <center><b>OUR SERVICES</b></center>
         <h4>Design Development</h4>
           <p>&nbsp; &nbsp; We offer flexible approach to design that would reflect
             your needs. Project design can be completed in accordance with
@@ -302,12 +307,68 @@ function Form() {
           <li>Quotations service</li>
           <li>Fabrication supervising</li>
         </ul>
+            <br>
+          <hr>
       </div>
-      <div class="column-main">
+    <!--  <div class="column-main">
             <img src="./img/right.png" height=800px align=left>
+      </div> -->
       </div>
-      </div>
+
+  <!--Carousel-->
+  <div class="slideshow-container">
+  <div class="mySlides fade">
+    <img src="./img/Main Assembly1.png" style="width:100%;">
+  </div>
+
+  <div class="mySlides fade">
+    <img src="./img/Main Assembly2.png" style="width:100%;">
+  </div>
+
+  <div class="mySlides fade">
+    <img src="./img/Main Assembly3.png" style="width:100%;">
+  </div>
+  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+  <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+  </div>
     </section>
+
+<!--  <div style="text-align:center">
+    <span class="dot" onclick="currentSlide(1)"></span>
+    <span class="dot" onclick="currentSlide(2)"></span>
+    <span class="dot" onclick="currentSlide(3)"></span>
+  </div>
+-->
+
+  <script>
+  var slideIndex = 1;
+  showSlides(slideIndex);
+
+  function plusSlides(n) {
+    showSlides(slideIndex += n);
+  }
+
+  function currentSlide(n) {
+    showSlides(slideIndex = n);
+  }
+
+  function showSlides(n) {
+    var i;
+    var slides = document.getElementsByClassName("mySlides");
+    var dots = document.getElementsByClassName("dot");
+    if (n > slides.length) {slideIndex = 1}
+    if (n < 1) {slideIndex = slides.length}
+    for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+    }
+    for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex-1].style.display = "block";
+    dots[slideIndex-1].className += " active";
+  }
+  </script>
 
   <!--Footer-->
     <section id="footer">
