@@ -8,7 +8,6 @@ body{
   margin: 0;
   /*background-image: url(https://fd2p.com/img/paper.png); */
   background-color:white;
-  text-align: justify;
 }
 
 /* Email form */
@@ -30,6 +29,7 @@ body{
 /* The popup form - hidden by default */
 .form-popup {
   position: absolute;
+  text-align: center;
   top: 80px;
   right: 120px;
   display: none;
@@ -308,6 +308,7 @@ body{
 
 #aboutUs{
     padding-bottom: 10px;
+    text-align: justify;
 }
 
 /* Footer */
