@@ -345,3 +345,9 @@ body{
   border: 1px solid #21252b;
   background-color: #fff;
 }
+
+@media only screen and (max-width: 500px) {
+  .card{
+    height: 300px;
+  }
+}
