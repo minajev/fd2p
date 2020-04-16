@@ -8,6 +8,8 @@ body{
   margin: 0;
   /*background-image: url(https://fd2p.com/img/paper.png); */
   background-color:white;
+  text-align: justify;
+  text-justify: inter-word;
 
 }
 
