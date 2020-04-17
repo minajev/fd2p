@@ -11,12 +11,16 @@
     }
     .form-popup {
       top: 110px;
-      right: 20px;
+      left: 50%;
+      margin-left:-160px;
+    }
+    .card{
+      height: 300px;
     }
     #aboutUs .column-main{
         display: none;
     }
-}
+  }
 
 @keyframes fadeInOut{
   0%{

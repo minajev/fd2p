@@ -28,12 +28,11 @@ body{
 
 /* The popup form - hidden by default */
 .form-popup {
-  position: absolute;
+  position:absolute;
   text-align: center;
   top: 80px;
   right: 120px;
   display: none;
-  opacity: 0.97;
   width: 320px;
   height: 440px;
   z-index: 2;
@@ -344,10 +343,4 @@ body{
   margin: 0 auto;
   border: 1px solid #21252b;
   background-color: #fff;
-}
-
-@media only screen and (max-width: 500px) {
-  .card{
-    height: 300px;
-  }
 }
