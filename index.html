@@ -50,14 +50,14 @@
   <script> var submitted = false;</script>
 
   <script> $('#myForm').on('submit', function(e){
+
+    	var container = $("#myForm");
+
     $('#myForm h4').text("Your submission has been processed. Thank you!");
-        function hide(){
-          document.getElementById("myForm").style.display = "none";
-        }
         function fade(){
-        $('#myForm').fadeTo(2000,0);
+		      container.fadeOut();
+          $('#gform').trigger("reset");
         }
-        setTimeout(hide, 3000);
         setTimeout(fade, 1000);
         });
 </script>
@@ -72,17 +72,31 @@
 
 <script>
 function Form() {
-    if (document.getElementById("myForm").style.opacity == "0.97") {
-      document.getElementById("myForm").style.display = "none";
-      document.getElementById("myForm").style.opacity = "0";
+    	var container = $("#myForm");
+    if (document.getElementById("myForm").style.display == "block") {
+		container.fadeOut();
     }
     else {
-      document.getElementById("myForm").style.display = "block";
-      document.getElementById("myForm").style.opacity = "0.97";
+		container.fadeIn();
+      document.getElementById("myForm").style.opacity = "0.5";
       $('#myForm h4').text("Document will be sent to your email");
-      $('#gform').trigger("reset");
     }
 }
+</script>
+
+<script>
+
+$(document).mouseup(function(e) {
+
+	var container = $("#myForm");
+
+	if (!container.is(e.target) && container.has(e.target).length === 0){
+
+		container.fadeOut();
+
+	}
+});
+
 </script>
 
 <!--Header-->
