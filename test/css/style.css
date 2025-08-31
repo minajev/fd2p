@@ -651,3 +651,9 @@ html, body{ overflow-x: clip; }
     display: none !important;
   }
 }
+@media (pointer: coarse){
+  /* Parallax off on touch devices */
+  .slide .bg{
+    transform: none !important;
+  }
+}
