@@ -225,6 +225,9 @@ function rebuildHeaderGeometry(){
     track.appendChild(firstClone);
   }
   const slides     = Array.from(track.querySelectorAll('.slide'));
+  if (PARALLAX_DISABLED){
+  slides.forEach(s => s.querySelector('.bg')?.style.setProperty('--p','0px'));
+}
   const FIRST_REAL = 1;
   const LAST_REAL  = slides.length - 2;
   let idx = FIRST_REAL;
@@ -458,7 +461,7 @@ slider.addEventListener('lostpointercapture', onGlobalPointerEnd);
   const PAR_MAX = 200;
   const PAR_SPEED = 0.2;
   let parBase = 0;
-  const PARALLAX_DISABLED = window.matchMedia('(pointer: coarse)').matches;
+const PARALLAX_DISABLED = window.matchMedia('(pointer: coarse), (hover: none)').matches;
 
   function initParallaxBase(){
     if (PARALLAX_DISABLED) return;
