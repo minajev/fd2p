@@ -215,7 +215,8 @@ function rebuildHeaderGeometry(){
 
   const autoplayMs   = parseInt(slider.dataset.autoplay || '5000', 10);
   const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-
+// Disable parallax on touch/mobile
+const PARALLAX_DISABLED = window.matchMedia('(pointer: coarse), (hover: none)').matches;
   // Build infinite loop via clones
   const originals  = Array.from(track.querySelectorAll('.slide'));
   const firstClone = originals[0]?.cloneNode(true);
@@ -461,7 +462,6 @@ slider.addEventListener('lostpointercapture', onGlobalPointerEnd);
   const PAR_MAX = 200;
   const PAR_SPEED = 0.2;
   let parBase = 0;
-const PARALLAX_DISABLED = window.matchMedia('(pointer: coarse), (hover: none)').matches;
 
   function initParallaxBase(){
     if (PARALLAX_DISABLED) return;
@@ -751,7 +751,5 @@ window.addEventListener('orientationchange', () => {
 if (!PARALLAX_DISABLED){
   window.addEventListener('scroll', applyParallax, { passive:true });
 }
-  window.addEventListener('resize', () => { initParallaxBase(); applyParallax(); }, { passive:true });
-})();
-
 document.body.classList.add('js-ready');
+})();
