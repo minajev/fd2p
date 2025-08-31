@@ -458,12 +458,15 @@ slider.addEventListener('lostpointercapture', onGlobalPointerEnd);
   const PAR_MAX = 200;
   const PAR_SPEED = 0.2;
   let parBase = 0;
+  const PARALLAX_DISABLED = window.matchMedia('(pointer: coarse)').matches;
 
   function initParallaxBase(){
+    if (PARALLAX_DISABLED) return;
     const r = slider.getBoundingClientRect();
     parBase = (window.innerHeight / 2 - r.top) * PAR_SPEED;
   }
   function applyParallax(){
+    if (PARALLAX_DISABLED) return;
     const r = slider.getBoundingClientRect();
     if (r.bottom <= 0 || r.top >= window.innerHeight) return;
     const raw = (window.innerHeight / 2 - r.top) * PAR_SPEED;
@@ -742,7 +745,9 @@ window.addEventListener('orientationchange', () => {
   // Parallax init + listeners
   initParallaxBase();
   applyParallax();
+if (!PARALLAX_DISABLED){
   window.addEventListener('scroll', applyParallax, { passive:true });
+}
   window.addEventListener('resize', () => { initParallaxBase(); applyParallax(); }, { passive:true });
 })();
 
