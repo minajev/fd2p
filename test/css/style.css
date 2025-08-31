@@ -646,14 +646,17 @@ html, body{ overflow-x: clip; }
     opacity: 0;
     pointer-events: none;
   }
-  /* prepaint
+  /* prepaint: hide arrows before JS runs to prevent flash */
   body:not(.js-ready) .slider .arrow{
     display: none !important;
   }
 }
-@media (pointer: coarse){
-  /* Parallax off on touch devices */
+
+/* Parallax OFF on touch/mobile: stop using the --p offset entirely */
+@media (pointer: coarse), (hover: none){
   .slide .bg{
-    transform: none !important;
+    /* our parallax uses background-position via --p; force it to center */
+    background-position: 50% 50% !important;
+    --p: 0px !important;
   }
 }
