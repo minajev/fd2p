@@ -84,6 +84,34 @@
   const isCollapsed = () => body.classList.contains('is-collapsed');
   const cssNum = (el, name) => parseFloat(getComputedStyle(el).getPropertyValue(name)) || 0;
 
+// ========= Responsive backgrounds (AVIF 2560/1920/1280/768) =========
+const IMG_PATH = 'assets/';
+const SIZES = [2560, 1920, 1280, 768]; // descending order is fine too
+
+function pickSize(){
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const need = Math.round(window.innerWidth * dpr);
+  // choose the smallest size that is >= need, else the largest available
+  for (let i = 0; i < SIZES.length; i++){
+    if (SIZES[i] >= need) return SIZES[i];
+  }
+  return SIZES[0]; // 2560 fallback
+}
+
+function setResponsiveBackgrounds(){
+  const size = pickSize();
+  document.querySelectorAll('.slide .bg').forEach(bg => {
+    const base = bg.dataset.img;
+    if (!base) return;
+    const url = `${IMG_PATH}${base}-${size}.avif`;
+    // only update if changed, to avoid flicker
+    const curr = bg.style.backgroundImage || '';
+    if (!curr.includes(url)){
+      bg.style.backgroundImage = `url("${url}")`;
+    }
+  });
+}
+
   /* --------- Unified header geometry (panel clip + progress paths) --------- */
 function rebuildHeaderGeometry(){
   if (!geoSvg || !panelPath || !progressR || !progressL || !dockPanel) return;
@@ -226,6 +254,8 @@ const PARALLAX_DISABLED = window.matchMedia('(pointer: coarse), (hover: none)').
     track.appendChild(firstClone);
   }
   const slides     = Array.from(track.querySelectorAll('.slide'));
+setResponsiveBackgrounds();
+
   if (PARALLAX_DISABLED){
   slides.forEach(s => s.querySelector('.bg')?.style.setProperty('--p','0px'));
 }
@@ -730,6 +760,7 @@ resizeTimer = setTimeout(() => {
       applyParallax();
 FrameSizer.resize();
 scheduleUpdateArrows();
+setResponsiveBackgrounds();
       resizeRaf = null;
     });
   }, { passive:true });
