@@ -660,3 +660,15 @@ html, body{ overflow-x: clip; }
     --p: 0px !important;
   }
 }
+
+/* Touch devices only: show a bit more of the sides on slides */
+@media (pointer: coarse), (hover: none){
+  /* Make the slider box slightly wider by aspect, so less horizontal crop */
+  .slider{
+    aspect-ratio: 205 / 100; /* ~2.05:1 vs desktop ~1.913 → more left/right visible */
+    max-height: 96svh;       /* optional safety; prevents overshooting the viewport */
+  }
+
+  /* On touch we don't need overscan (we want max visible width) */
+  :root{ --overscan: 0%; }
+}
