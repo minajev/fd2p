@@ -665,10 +665,10 @@ html, body{ overflow-x: clip; }
 @media (pointer: coarse), (hover: none){
   .slider{
     /* half of viewport height; provide a basic vh fallback, then stable svh */
-    height: 50vh;
-    height: 50svh;          /* iOS/Android: не прыгает от адресной строки */
+    height: 80vh;
+    height: 80svh;          /* iOS/Android: не прыгает от адресной строки */
     aspect-ratio: auto;     /* отключаем прежнюю фиксацию аспекта на мобиле */
-    max-height: 50svh;      /* страховка, чтобы не вылезти за экран */
+    max-height: 80svh;      /* страховка, чтобы не вылезти за экран */
   }
 
   /* внутренности растягиваем на всю высоту бокса */
@@ -723,3 +723,4 @@ html, body{ overflow-x: clip; }
     height: 100%;
   }
 }
+
