@@ -6,8 +6,6 @@
   const root = document.documentElement;
   const body = document.body;
 
-const IS_MOBILE = window.matchMedia('(pointer: coarse), (hover: none)').matches;
-
   // Core hero/slider
   const slider = document.querySelector('.slider');
   const hero   = document.querySelector('.hero');
@@ -204,6 +202,7 @@ function rebuildHeaderGeometry(){
   // Time-based center-out animation (both halves in lockstep)
   let progRAF = 0, progStart = 0, progDur = 5000;
   function startProgress(ms){
+      geoSvg?.classList.add('is-paused');
     if (!progressR || !progressL) return;
     progDur = Math.max(300, Number(ms) || 5000);
     cancelAnimationFrame(progRAF);
@@ -221,6 +220,7 @@ function rebuildHeaderGeometry(){
     progRAF = requestAnimationFrame(tick);
   }
   function stopProgress(){
+      geoSvg?.classList.add('is-paused');
     cancelAnimationFrame(progRAF);
     progRAF = 0;
     if (progressR && progressL) {
@@ -357,10 +357,6 @@ dragCooldownUntil = performance.now() + (dragType === 'mouse' ? 60 : 100);
     pendingDir = 0;
     requestSlide(dir, false); // manual → no red line
   }
-// Mobile policy: after any manual step, keep autoplay/progress running at the very top
-if (IS_MOBILE && atTop() && !isResizing && (pendingDir === 0 || pendingDir == null)) {
-  play(); // will start both autoplay + red progress line
-}
 }
 
 function requestSlide(delta, withProgress = false){
