@@ -682,26 +682,32 @@ html, body{ overflow-x: clip; }
   :root{ --overscan: 0%; }
 }
 
-/* Touch devices only: make slider 2× shorter → more left/right visible */
+/* Fix big gap under the slider on touch devices */
 @media (pointer: coarse), (hover: none){
-  .slider{
-    /* half of viewport height; provide a basic vh fallback, then stable svh */
-    height: 40vh;
-    height: 40svh;          /* iOS/Android: не прыгает от адресной строки */
-    aspect-ratio: auto;     /* отключаем прежнюю фиксацию аспекта на мобиле */
-    max-height: 40svh;      /* страховка, чтобы не вылезти за экран */
+  /* 1) Kill the legacy aspect-ratio spacer that adds extra height */
+  .slider::before{
+    content: none !important;
+    display: none !important;
   }
 
-  /* внутренности растягиваем на всю высоту бокса */
-  .slider .slides,
-  .slider .slide,
-  .slider .bg{
-    height: 100%;
+  /* 2) Don't reserve the header's dock tail on mobile */
+  :root{
+    --dock-h: 0px;
   }
 
-  /* хотим максимум видимой ширины — уберём overscan, если он был */
-  :root{ --overscan: 0%; }
+  /* 3) Make sure the hero doesn't enforce extra height/spacing */
+  .hero{
+    height: auto !important;
+    min-height: 0 !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+    overflow: visible !important;
+  }
 
+  /* (optional safety) If any top margin on the first section after hero — remove it */
+  .hero + section{
+    margin-top: 0 !important;
+  }
 }
 
 
