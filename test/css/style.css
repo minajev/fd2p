@@ -662,7 +662,7 @@ html, body{ overflow-x: clip; }
 }
 
 /* Touch devices only: make slider 2× shorter → more left/right visible */
-@media (pointer: coarse), (hover: none) and (orientation: portrait){
+@media (pointer: coarse), (hover: none){
   .slider{
     /* half of viewport height; provide a basic vh fallback, then stable svh */
     height: 50vh;
@@ -710,12 +710,16 @@ html, body{ overflow-x: clip; }
   }
 }
 
-/* Landscape on touch devices: make the slider full height */
+/* Touch landscape: force full-height slider (override the 50svh rule) */
 @media (pointer: coarse) and (orientation: landscape){
   .slider{
-    height: 120vh;
-    height: 120svh;  /* стабильная единица на iOS/Android */
-    aspect-ratio: auto; /* переопределим, если где-то задан aspect-ratio */
+    /* fallbacks: old → stable → dynamic; last wins if supported */
+    height: 120vh !important;
+    height: 120svh !important;
+    height: 120dvh !important;
+
+    max-height: none !important;
+    aspect-ratio: auto !important; /* ignore any earlier aspect locks */
   }
   .slider .slides,
   .slider .slide,
@@ -735,4 +739,5 @@ html, body{ overflow-x: clip; }
   opacity: 1;
   transition: opacity .12s linear; /* quick fade for nicer feel */
 }
+
 
