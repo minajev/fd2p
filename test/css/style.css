@@ -680,6 +680,27 @@ html, body{ overflow-x: clip; }
 
   /* хотим максимум видимой ширины — уберём overscan, если он был */
   :root{ --overscan: 0%; }
+}
+
+/* Touch devices only: make slider 2× shorter → more left/right visible */
+@media (pointer: coarse), (hover: none){
+  .slider{
+    /* half of viewport height; provide a basic vh fallback, then stable svh */
+    height: 40vh;
+    height: 40svh;          /* iOS/Android: не прыгает от адресной строки */
+    aspect-ratio: auto;     /* отключаем прежнюю фиксацию аспекта на мобиле */
+    max-height: 40svh;      /* страховка, чтобы не вылезти за экран */
+  }
+
+  /* внутренности растягиваем на всю высоту бокса */
+  .slider .slides,
+  .slider .slide,
+  .slider .bg{
+    height: 100%;
+  }
+
+  /* хотим максимум видимой ширины — уберём overscan, если он был */
+  :root{ --overscan: 0%; }
 
 }
 
