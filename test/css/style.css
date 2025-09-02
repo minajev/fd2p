@@ -724,4 +724,15 @@ html, body{ overflow-x: clip; }
   }
 }
 
+/* Hide red progress line when paused (prevents end-cap dots on mobile) */
+.header-geo.is-paused #progress-left,
+.header-geo.is-paused #progress-right{
+  opacity: 0;
+}
+
+.header-geo #progress-left,
+.header-geo #progress-right{
+  opacity: 1;
+  transition: opacity .12s linear; /* quick fade for nicer feel */
+}
 
