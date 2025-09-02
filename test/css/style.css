@@ -662,13 +662,13 @@ html, body{ overflow-x: clip; }
 }
 
 /* Touch devices only: make slider 2× shorter → more left/right visible */
-@media (pointer: coarse), (hover: none){
+@media (pointer: coarse), (hover: none) and (orientation: portrait){
   .slider{
     /* half of viewport height; provide a basic vh fallback, then stable svh */
-    height: 80vh;
-    height: 80svh;          /* iOS/Android: не прыгает от адресной строки */
+    height: 50vh;
+    height: 50svh;          /* iOS/Android: не прыгает от адресной строки */
     aspect-ratio: auto;     /* отключаем прежнюю фиксацию аспекта на мобиле */
-    max-height: 80svh;      /* страховка, чтобы не вылезти за экран */
+    max-height: 50svh;      /* страховка, чтобы не вылезти за экран */
   }
 
   /* внутренности растягиваем на всю высоту бокса */
@@ -713,8 +713,8 @@ html, body{ overflow-x: clip; }
 /* Landscape on touch devices: make the slider full height */
 @media (pointer: coarse) and (orientation: landscape){
   .slider{
-    height: 100vh;
-    height: 100svh;  /* стабильная единица на iOS/Android */
+    height: 120vh;
+    height: 120svh;  /* стабильная единица на iOS/Android */
     aspect-ratio: auto; /* переопределим, если где-то задан aspect-ratio */
   }
   .slider .slides,
@@ -723,4 +723,5 @@ html, body{ overflow-x: clip; }
     height: 100%;
   }
 }
+
 
