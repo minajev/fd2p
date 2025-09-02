@@ -6,6 +6,8 @@
   const root = document.documentElement;
   const body = document.body;
 
+const IS_MOBILE = window.matchMedia('(pointer: coarse), (hover: none)').matches;
+
   // Core hero/slider
   const slider = document.querySelector('.slider');
   const hero   = document.querySelector('.hero');
@@ -345,6 +347,7 @@ function onSlideDone(){
   else if (idx === 0)            { idx = LAST_REAL;  setTrackPosition(true); }
 
 isSliding = false;
+
 // short cooldown so next drag can start almost immediately
 dragCooldownUntil = performance.now() + (dragType === 'mouse' ? 60 : 100);
 
@@ -354,6 +357,10 @@ dragCooldownUntil = performance.now() + (dragType === 'mouse' ? 60 : 100);
     pendingDir = 0;
     requestSlide(dir, false); // manual → no red line
   }
+// Mobile policy: after any manual step, keep autoplay/progress running at the very top
+if (IS_MOBILE && atTop() && !isResizing && (pendingDir === 0 || pendingDir == null)) {
+  play(); // will start both autoplay + red progress line
+}
 }
 
 function requestSlide(delta, withProgress = false){
