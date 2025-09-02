@@ -714,9 +714,9 @@ html, body{ overflow-x: clip; }
 @media (pointer: coarse) and (orientation: landscape){
   .slider{
     /* fallbacks: old → stable → dynamic; last wins if supported */
-    height: 120vh !important;
-    height: 120svh !important;
-    height: 120dvh !important;
+    height: 110vh !important;
+    height: 110svh !important;
+    height: 110dvh !important;
 
     max-height: none !important;
     aspect-ratio: auto !important; /* ignore any earlier aspect locks */
@@ -739,6 +739,7 @@ html, body{ overflow-x: clip; }
   opacity: 1;
   transition: opacity .12s linear; /* quick fade for nicer feel */
 }
+
 
 
 
