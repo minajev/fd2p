@@ -661,15 +661,32 @@ html, body{ overflow-x: clip; }
   }
 }
 
-/* Touch devices only: show a bit more of the sides on slides */
+/* Touch devices only: make slider 2× shorter → more left/right visible */
 @media (pointer: coarse), (hover: none){
-  /* Make the slider box slightly wider by aspect, so less horizontal crop */
   .slider{
-    aspect-ratio: 205 / 50; /* ~2.05:1 vs desktop ~1.913 → more left/right visible */
-    max-height: 96svh;       /* optional safety; prevents overshooting the viewport */
+    /* half of viewport height; provide a basic vh fallback, then stable svh */
+    height: 50vh;
+    height: 50svh;          /* iOS/Android: не прыгает от адресной строки */
+    aspect-ratio: auto;     /* отключаем прежнюю фиксацию аспекта на мобиле */
+    max-height: 96svh;      /* страховка, чтобы не вылезти за экран */
   }
 
-  /* On touch we don't need overscan (we want max visible width) */
+  /* внутренности растягиваем на всю высоту бокса */
+  .slider .slides,
+  .slider .slide,
+  .slider .bg{
+    height: 100%;
+  }
+
+  /* хотим максимум видимой ширины — уберём overscan, если он был */
   :root{ --overscan: 0%; }
+
+  /* параллакс на мобиле остаётся выключенным и центрированным */
+  .slide .bg{
+    background-position: 50% 50% !important;
+    /* background-size: cover; — оставляем как было */
+    --p: 0px !important;
+  }
 }
+
 
