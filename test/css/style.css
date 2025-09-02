@@ -710,7 +710,16 @@ html, body{ overflow-x: clip; }
   }
 }
 
-
-
-
-
+/* Landscape on touch devices: make the slider full height */
+@media (pointer: coarse) and (orientation: landscape){
+  .slider{
+    height: 100vh;
+    height: 100svh;  /* стабильная единица на iOS/Android */
+    aspect-ratio: auto; /* переопределим, если где-то задан aspect-ratio */
+  }
+  .slider .slides,
+  .slider .slide,
+  .slider .bg{
+    height: 100%;
+  }
+}
