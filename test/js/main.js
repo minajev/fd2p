@@ -285,7 +285,6 @@ setTimeout(() => { play(); }, 250);
   const FIRST_REAL = 1;
   const LAST_REAL  = slides.length - 2;
   let idx = FIRST_REAL;
-  warmSlideBgAt(idx + 1);
   let timer = null;
   let isHovering = false;
   let isResizing = false;
