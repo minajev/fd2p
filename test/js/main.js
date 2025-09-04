@@ -113,6 +113,22 @@ function setResponsiveBackgrounds(){
     }
   });
 }
+// --- Preload helper for the next slide's background ---
+function bgUrlFor(base){
+  const size = pickSize();
+  return `${IMG_PATH}${base}-${size}.avif`;
+}
+
+function warmSlideBgAt(index){
+  const s = slides?.[realIndex(index)];
+  const base = s?.querySelector('.bg')?.dataset?.img;
+  if (!base) return;
+  const url = bgUrlFor(base);
+  const img = new Image();
+  img.decoding = 'async';
+  img.src = url; // browser will cache it
+}
+  
 
   /* --------- Unified header geometry (panel clip + progress paths) --------- */
 function rebuildHeaderGeometry(){
@@ -262,6 +278,9 @@ const PARALLAX_DISABLED = window.matchMedia('(pointer: coarse), (hover: none)').
 setResponsiveBackgrounds();
   // Defer first autoplay a bit so the first background can decode
 setTimeout(() => { play(); }, 250);
+  // Warm the next slide so the first transition is smooth
+warmSlideBgAt((typeof idx !== 'undefined' ? idx : FIRST_REAL) + 1);
+
 
 
   if (PARALLAX_DISABLED){
@@ -328,6 +347,8 @@ let dragCooldownUntil = 0; // timestamp (ms); ignore pointerdown if now < this
     if (bg) bg.style.setProperty('--p', '0px');
 FrameSizer.resize();
 scheduleUpdateArrows();
+    warmSlideBgAt(targetIdx + 1);  // preload the upcoming slide background
+
   }
 
 function goTo(i, withProgress = true) {
