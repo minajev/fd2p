@@ -740,6 +740,12 @@ html, body{ overflow-x: clip; }
   transition: opacity .12s linear; /* quick fade for nicer feel */
 }
 
+/* Help GPU warm up slide backgrounds */
+.slide .bg{
+  will-change: background-position, transform;
+  contain: paint; /* не раздуваем область перерисовки */
+}
+
 
 
 
