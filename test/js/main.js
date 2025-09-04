@@ -294,8 +294,8 @@ const PARALLAX_DISABLED = window.matchMedia('(pointer: coarse), (hover: none)').
   }
 const slides = Array.from(track.querySelectorAll('.slide'));
 
-// 1) фиксируем стартовый размер картинок на период первого шага
-LOCKED_BG_SIZE = IS_MOBILE ? 768 : pickSize();
+// 1) фиксируем стартовый size, чтобы прелоад и реальные фоны совпали
+LOCKED_BG_SIZE = pickSize();
 
 // 2) выставляем фоны с этим size
 setResponsiveBackgrounds(LOCKED_BG_SIZE);
