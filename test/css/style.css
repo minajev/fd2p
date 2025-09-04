@@ -720,7 +720,6 @@ html, body{ overflow-x: clip; }
 
     max-height: none !important;
     aspect-ratio: auto !important; /* ignore any earlier aspect locks */
-     touch-action: pan-y;
   }
   .slider .slides,
   .slider .slide,
@@ -746,11 +745,6 @@ html, body{ overflow-x: clip; }
   will-change: background-position, transform;
   contain: paint; /* не раздуваем область перерисовки */
 }
-
-
-
-
-
 
 
 
