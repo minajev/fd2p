@@ -24,6 +24,8 @@
   const ocClose   = document.querySelector('.offcanvas-close');
   const ocNav     = document.querySelector('.offcanvas-nav');
 
+  const IS_MOBILE = window.matchMedia('(pointer: coarse), (hover: none)').matches;
+
   // Early exit for pages without hero/slider
   if (!slider || !hero || !dockPanel) {
     // Still wire up menu if present
@@ -342,22 +344,28 @@ function goTo(i, withProgress = true) {
 function onSlideDone(){
   if (slideGuard) { clearTimeout(slideGuard); slideGuard = 0; }
 
-  // If we landed on a clone, snap to the real slide without animation
+  // Snap from clones to real slides if needed
   if (idx === slides.length - 1) { idx = FIRST_REAL; setTrackPosition(true); }
   else if (idx === 0)            { idx = LAST_REAL;  setTrackPosition(true); }
 
-isSliding = false;
-
-// short cooldown so next drag can start almost immediately
-dragCooldownUntil = performance.now() + (dragType === 'mouse' ? 60 : 100);
+  isSliding = false;
+  // short cooldown so next drag can start almost immediately
+  dragCooldownUntil = performance.now() + (dragType === 'mouse' ? 60 : 100);
 
   // If user spam-clicked during the transition, run the last queued direction
   if (pendingDir){
     const dir = Math.sign(pendingDir);
     pendingDir = 0;
-    requestSlide(dir, false); // manual → no red line
+    requestSlide(dir, false);     // manual → no progress right now
+    return;                       // дождёмся завершения очередного шага
+  }
+
+  // MOBILE POLICY: keep autoplay+progress running when page is at the very top
+  if (IS_MOBILE && atTop() && !isResizing){
+    play();                       // запустит автоплей и красную линию
   }
 }
+
 
 function requestSlide(delta, withProgress = false){
   if (isSliding){
