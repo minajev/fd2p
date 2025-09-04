@@ -202,7 +202,7 @@ function rebuildHeaderGeometry(){
   // Time-based center-out animation (both halves in lockstep)
   let progRAF = 0, progStart = 0, progDur = 5000;
   function startProgress(ms){
-      geoSvg?.classList.add('is-paused');
+  geoSvg?.classList.remove('is-paused');
     if (!progressR || !progressL) return;
     progDur = Math.max(300, Number(ms) || 5000);
     cancelAnimationFrame(progRAF);
@@ -220,7 +220,7 @@ function rebuildHeaderGeometry(){
     progRAF = requestAnimationFrame(tick);
   }
   function stopProgress(){
-      geoSvg?.classList.add('is-paused');
+  geoSvg?.classList.add('is-paused');
     cancelAnimationFrame(progRAF);
     progRAF = 0;
     if (progressR && progressL) {
