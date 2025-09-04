@@ -274,14 +274,10 @@ const PARALLAX_DISABLED = window.matchMedia('(pointer: coarse), (hover: none)').
     track.insertBefore(lastClone, originals[0]);
     track.appendChild(firstClone);
   }
-  const slides     = Array.from(track.querySelectorAll('.slide'));
+  const slides = Array.from(track.querySelectorAll('.slide'));
 setResponsiveBackgrounds();
   // Defer first autoplay a bit so the first background can decode
 setTimeout(() => { play(); }, 250);
-  // Warm the next slide so the first transition is smooth
-warmSlideBgAt((typeof idx !== 'undefined' ? idx : FIRST_REAL) + 1);
-
-
 
   if (PARALLAX_DISABLED){
   slides.forEach(s => s.querySelector('.bg')?.style.setProperty('--p','0px'));
@@ -289,6 +285,7 @@ warmSlideBgAt((typeof idx !== 'undefined' ? idx : FIRST_REAL) + 1);
   const FIRST_REAL = 1;
   const LAST_REAL  = slides.length - 2;
   let idx = FIRST_REAL;
+  warmSlideBgAt(idx + 1);
   let timer = null;
   let isHovering = false;
   let isResizing = false;
