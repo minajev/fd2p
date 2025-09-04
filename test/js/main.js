@@ -25,6 +25,9 @@
   const ocNav     = document.querySelector('.offcanvas-nav');
 
   const IS_MOBILE = window.matchMedia('(pointer: coarse), (hover: none)').matches;
+  let LOCKED_BG_SIZE = null;   // пока не null — используем фиксированный size
+let FIRST_STEP_DONE = false; // снимем блок после первого завершённого перехода
+
 
   // Early exit for pages without hero/slider
   if (!slider || !hero || !dockPanel) {
@@ -93,28 +96,30 @@ const SIZES = [2560, 1920, 1280, 768]; // descending order is fine too
 function pickSize(){
   const dpr = Math.min(2, window.devicePixelRatio || 1);
   const need = Math.round(window.innerWidth * dpr);
-  // choose the smallest size that is >= need, else the largest available
   for (let i = 0; i < SIZES.length; i++){
     if (SIZES[i] >= need) return SIZES[i];
   }
-  return SIZES[0]; // 2560 fallback
+  return SIZES[0];
 }
 
-function setResponsiveBackgrounds(){
-  const size = pickSize();
+function setResponsiveBackgrounds(forcedSize){
+  const size = forcedSize ?? LOCKED_BG_SIZE ?? pickSize();
   document.querySelectorAll('.slide .bg').forEach(bg => {
     const base = bg.dataset.img;
     if (!base) return;
     const url = `${IMG_PATH}${base}-${size}.avif`;
-    // only update if changed, to avoid flicker
     const curr = bg.style.backgroundImage || '';
     if (!curr.includes(url)){
       bg.style.backgroundImage = `url("${url}")`;
     }
   });
 }
-// Preload & decode the next slide's background, then start autoplay
-function bgUrlFor(base){ return `${IMG_PATH}${base}-${pickSize()}.avif`; }
+
+function bgUrlFor(base, sizeOverride){
+  const size = sizeOverride ?? LOCKED_BG_SIZE ?? pickSize();
+  return `${IMG_PATH}${base}-${size}.avif`;
+}
+
 
 function decodeNextThenStart(nextBase){
   const url = bgUrlFor(nextBase);
@@ -287,8 +292,13 @@ const PARALLAX_DISABLED = window.matchMedia('(pointer: coarse), (hover: none)').
     track.insertBefore(lastClone, originals[0]);
     track.appendChild(firstClone);
   }
-  const slides = Array.from(track.querySelectorAll('.slide'));
-setResponsiveBackgrounds();
+const slides = Array.from(track.querySelectorAll('.slide'));
+
+// 1) фиксируем стартовый size, чтобы прелоад и реальные фоны совпали
+LOCKED_BG_SIZE = pickSize();
+
+// 2) выставляем фоны с этим size
+setResponsiveBackgrounds(LOCKED_BG_SIZE);
 
 
   if (PARALLAX_DISABLED){
@@ -297,11 +307,14 @@ setResponsiveBackgrounds();
   const FIRST_REAL = 1;
   const LAST_REAL  = slides.length - 2;
   let idx = FIRST_REAL;
-  // Start autoplay only after the next background decoded
+// 3) автозапуск после декода именно этого (зафиксированного) size у следующего слайда
 const nextSlide = slides[idx + 1];
 const nextBase  = nextSlide?.querySelector('.bg')?.dataset?.img;
-if (nextBase) decodeNextThenStart(nextBase);
-else setTimeout(() => { play(); }, 250); // fallback, if something is off
+if (nextBase) {
+  decodeNextThenStart(nextBase); // внутри bgUrlFor возьмётся LOCKED_BG_SIZE
+} else {
+  setTimeout(() => { play(); }, 250);
+}
   let timer = null;
   let isHovering = false;
   let isResizing = false;
@@ -403,6 +416,15 @@ function onSlideDone(){
   if (IS_MOBILE && atTop()){
     play();                       // автослайд и красная линия снова стартуют
   }
+  if (!FIRST_STEP_DONE){
+  FIRST_STEP_DONE = true;
+  LOCKED_BG_SIZE = null;              // снова разрешаем подбирать идеальный размер
+  // мягко обновим фоны уже в фоне, чтобы не мешать анимациям
+  requestIdleCallback
+    ? requestIdleCallback(() => setResponsiveBackgrounds())
+    : setTimeout(() => setResponsiveBackgrounds(), 0);
+}
+
 }
 
 
@@ -816,7 +838,7 @@ resizeTimer = setTimeout(() => {
       applyParallax();
 FrameSizer.resize();
 scheduleUpdateArrows();
-setResponsiveBackgrounds();
+setResponsiveBackgrounds(); // внутри сама учтёт LOCKED_BG_SIZE
       resizeRaf = null;
     });
   }, { passive:true });
