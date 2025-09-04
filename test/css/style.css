@@ -720,6 +720,7 @@ html, body{ overflow-x: clip; }
 
     max-height: none !important;
     aspect-ratio: auto !important; /* ignore any earlier aspect locks */
+     touch-action: pan-y;
   }
   .slider .slides,
   .slider .slide,
@@ -742,13 +743,10 @@ html, body{ overflow-x: clip; }
 
 /* Help GPU warm up slide backgrounds */
 .slide .bg{
-  will-change: background-position, transform;
+  will-change: background-position, opacity;
+    backface-visibility: hidden;
   contain: paint; /* не раздуваем область перерисовки */
-}
-
-/* Make horizontal swipe cheap on touch */
-.slider{
-  touch-action: pan-y;        /* мы свайпаем по X, вертикальный скролл разрешён */
+    transform: translateZ(0);   /* форсируем отдельный слой заранее */
 }
 
 /* Warm up compositor layers for the very first interaction */
@@ -757,12 +755,7 @@ html, body{ overflow-x: clip; }
   will-change: transform;     /* трек и слайды сразу поднимаются в композитор */
 }
 
-.slide .bg{
-  will-change: background-position, opacity;
-  backface-visibility: hidden;
-  contain: paint;             /* не раздуваем область перерисовки */
-  transform: translateZ(0);   /* форсируем отдельный слой заранее */
-}
+
 
 
 
