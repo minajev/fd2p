@@ -374,7 +374,6 @@ let dragCooldownUntil = 0; // timestamp (ms); ignore pointerdown if now < this
 FrameSizer.resize();
 scheduleUpdateArrows();
     warmSlideBgAt(targetIdx + 1);  // preload the upcoming slide background
-    warmSlideBgAt(targetIdx - 1);  // NEW: warm previous too
 
   }
 
