@@ -746,6 +746,24 @@ html, body{ overflow-x: clip; }
   contain: paint; /* не раздуваем область перерисовки */
 }
 
+/* Make horizontal swipe cheap on touch */
+.slider{
+  touch-action: pan-y;        /* мы свайпаем по X, вертикальный скролл разрешён */
+}
+
+/* Warm up compositor layers for the very first interaction */
+.slider .slides,
+.slider .slide{
+  will-change: transform;     /* трек и слайды сразу поднимаются в композитор */
+}
+
+.slide .bg{
+  will-change: background-position, opacity;
+  backface-visibility: hidden;
+  contain: paint;             /* не раздуваем область перерисовки */
+  transform: translateZ(0);   /* форсируем отдельный слой заранее */
+}
+
 
 
 
