@@ -260,6 +260,9 @@ const PARALLAX_DISABLED = window.matchMedia('(pointer: coarse), (hover: none)').
   }
   const slides     = Array.from(track.querySelectorAll('.slide'));
 setResponsiveBackgrounds();
+  // Defer first autoplay a bit so the first background can decode
+setTimeout(() => { play(); }, 250);
+
 
   if (PARALLAX_DISABLED){
   slides.forEach(s => s.querySelector('.bg')?.style.setProperty('--p','0px'));
@@ -791,9 +794,6 @@ window.addEventListener('orientationchange', () => {
   clearTimeout(orientTimer);
   orientTimer = setTimeout(() => { if (!isHovering) play(); }, 300);
 }, { passive:true });
-
-  // Start autoplay on load
-  play();
 
   // Parallax init + listeners
   initParallaxBase();
