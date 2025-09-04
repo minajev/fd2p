@@ -743,17 +743,11 @@ html, body{ overflow-x: clip; }
 
 /* Help GPU warm up slide backgrounds */
 .slide .bg{
-  will-change: background-position, opacity;
-    backface-visibility: hidden;
+  will-change: background-position, transform;
   contain: paint; /* не раздуваем область перерисовки */
-    transform: translateZ(0);   /* форсируем отдельный слой заранее */
 }
 
-/* Warm up compositor layers for the very first interaction */
-.slider .slides,
-.slider .slide{
-  will-change: transform;     /* трек и слайды сразу поднимаются в композитор */
-}
+
 
 
 
