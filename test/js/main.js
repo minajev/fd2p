@@ -113,10 +113,23 @@ function setResponsiveBackgrounds(){
     }
   });
 }
-// --- Preload helper for the next slide's background ---
-function bgUrlFor(base){
-  const size = pickSize();
-  return `${IMG_PATH}${base}-${size}.avif`;
+// Preload & decode the next slide's background, then start autoplay
+function bgUrlFor(base){ return `${IMG_PATH}${base}-${pickSize()}.avif`; }
+
+function decodeNextThenStart(nextBase){
+  const url = bgUrlFor(nextBase);
+  const img = new Image();
+  img.decoding = 'async';
+  img.src = url;
+
+  let started = false;
+  const start = () => { if (!started){ started = true; play(); } };
+
+  if (img.decode) img.decode().then(start).catch(start);
+  else { img.onload = start; img.onerror = start; }
+
+  // safety timeout in case decode() isn't supported or is slow
+  setTimeout(start, 1000);
 }
 
 function warmSlideBgAt(index){
@@ -276,8 +289,7 @@ const PARALLAX_DISABLED = window.matchMedia('(pointer: coarse), (hover: none)').
   }
   const slides = Array.from(track.querySelectorAll('.slide'));
 setResponsiveBackgrounds();
-  // Defer first autoplay a bit so the first background can decode
-setTimeout(() => { play(); }, 250);
+
 
   if (PARALLAX_DISABLED){
   slides.forEach(s => s.querySelector('.bg')?.style.setProperty('--p','0px'));
@@ -285,6 +297,11 @@ setTimeout(() => { play(); }, 250);
   const FIRST_REAL = 1;
   const LAST_REAL  = slides.length - 2;
   let idx = FIRST_REAL;
+  // Start autoplay only after the next background decoded
+const nextSlide = slides[idx + 1];
+const nextBase  = nextSlide?.querySelector('.bg')?.dataset?.img;
+if (nextBase) decodeNextThenStart(nextBase);
+else setTimeout(() => { play(); }, 250); // fallback, if something is off
   let timer = null;
   let isHovering = false;
   let isResizing = false;
