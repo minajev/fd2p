@@ -269,6 +269,7 @@ setResponsiveBackgrounds();
   let idx = FIRST_REAL;
   let timer = null;
   let isHovering = false;
+  let isResizing = false;
 
 // Slide navigation guard
 let isSliding = false;       // true while CSS transition is running
@@ -386,18 +387,17 @@ track.addEventListener('transitionend', e => {
 });
 
   /* --------------------------------- Autoplay -------------------------------- */
-  function play() {
-  if (reduceMotion ||!atTop()) return;
+function play() {
+  if (reduceMotion || !atTop()) return;
   if (isResizing) return;               // если используешь флаг при resize
-  if (isHovering && !IS_MOBILE) return; // ← на мобиле hover нет; не блокируем
+  if (isHovering && !IS_MOBILE) return; // на мобиле hover нет
 
   if (timer) clearInterval(timer);
   timer = setInterval(() => requestSlide(+1, true), autoplayMs);
   startProgress(autoplayMs);
 }
-timer = setInterval(() => requestSlide(+1, true), autoplayMs);
-    startProgress(autoplayMs);
-  }
+
+
   function stop() {
     if (timer) { clearInterval(timer); timer = null; }
     stopProgress();
