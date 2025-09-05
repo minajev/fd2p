@@ -370,6 +370,7 @@ function setResponsiveBackgrounds(forcedSize){
   let pendingDir = 0;          // queued direction: -1 or +1
   let slideGuard = 0;          // fallback timer id
   const SLIDE_GUARD_MS = 700;  // fallback if 'transitionend' gets lost
+let lastStepWasAuto = false; // true if the last slide change was triggered by autoplay
 
   // Prevent starting a new drag while a slide is in progress or right after it
   let dragCooldownUntil = 0; // timestamp (ms); ignore pointerdown if now < this
@@ -437,8 +438,7 @@ function setResponsiveBackgrounds(forcedSize){
     setTrackPosition(false);
     updateOverlayFor(idx);
 
-    if (withProgress) startProgress(autoplayMs);
-    else stopProgress();
+if (!withProgress) stopProgress(); // autoplay progress will restart in onSlideDone()
   }
 
   function onSlideDone(){
@@ -460,9 +460,9 @@ function setResponsiveBackgrounds(forcedSize){
       return;                        // wait for the next step to finish
     }
 
-// MOBILE POLICY: resume autoplay only if it is NOT already running
-if (IS_MOBILE && atTop() && !timer){
-  play(); // resume autoplay and progress once
+// After an autoplay-driven step, restart the wait window + progress smoothly
+if (lastStepWasAuto){
+  play();
 }
 
     if (!FIRST_STEP_DONE){
@@ -475,13 +475,14 @@ if (IS_MOBILE && atTop() && !timer){
     }
   }
 
-  function requestSlide(delta, withProgress = false){
-    if (isSliding){
-      pendingDir = Math.sign(delta);  // remember the last direction
-      return;
-    }
-    goTo(idx + delta, withProgress);
+function requestSlide(delta, withProgress = false){
+  if (isSliding){
+    pendingDir = Math.sign(delta);  // remember the last direction while sliding
+    return;
   }
+  lastStepWasAuto = !!withProgress; // <-- track who initiated this step
+  goTo(idx + delta, withProgress);
+}
 
   const next = () => goTo(idx + 1);
   const prev = () => goTo(idx - 1);
@@ -492,15 +493,24 @@ if (IS_MOBILE && atTop() && !timer){
   });
 
   /* --------------------------------- Autoplay ------------------------------- */
-  function play() {
-    if (reduceMotion || !atTop()) return;
-    if (isResizing) return;               // skip while resizing
-    if (isHovering && !IS_MOBILE) return; // no hover on mobile
+function play() {
+  if (reduceMotion || !atTop()) return;
+  if (isResizing) return;
+  if (isHovering && !IS_MOBILE) return; // no hover on mobile
 
-    if (timer) clearInterval(timer);
-    timer = setInterval(() => requestSlide(+1, true), autoplayMs);
-    startProgress(autoplayMs);
-  }
+  // Single-shot scheduling instead of interval, so we align progress with slides
+  if (timer) { clearTimeout(timer); timer = null; }
+
+  // Start the red progress line for the upcoming wait period
+  startProgress(autoplayMs);
+
+  // Schedule the next slide once, and mark it as autoplay-driven
+  timer = setTimeout(() => {
+    lastStepWasAuto = true;
+    timer = null;
+    requestSlide(+1, true); // do not start progress here; it will restart in onSlideDone()
+  }, autoplayMs);
+}
 
   function stop() {
     if (timer) { clearInterval(timer); timer = null; }
