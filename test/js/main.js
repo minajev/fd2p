@@ -507,13 +507,11 @@ if (PARALLAX_DISABLED){
 
 preloadSlideAt(idx + 1);
 
-// if autoplay is running, restart the red line for the new slide
-if (timer) startProgress(autoplayMs);
-
 // MOBILE POLICY: resume autoplay only if it is NOT already running
 if (IS_MOBILE && atTop() && !timer){
   play(); // resume autoplay and progress once
 }
+if (timer) startProgress(autoplayMs);
 
     if (!FIRST_STEP_DONE){
       FIRST_STEP_DONE = true;
@@ -550,14 +548,10 @@ if (IS_MOBILE && atTop() && !timer){
     if (timer) clearInterval(timer);
 timer = setInterval(() => {
   const target = idx + 1;
-  preloadSlideAt(target).then(() => {
-    // do not animate the red line during the slide transition
-    stopProgress();
-    requestSlide(+1, false);
-  });
+  preloadSlideAt(target).then(() => requestSlide(+1, false));
 }, autoplayMs);
-// show the red line for the current slide's wait window
-startProgress(autoplayMs);
+    startProgress(autoplayMs);
+  }
 
   function stop() {
     if (timer) { clearInterval(timer); timer = null; }
