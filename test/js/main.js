@@ -85,6 +85,8 @@
   }
   wireOffcanvas();
 
+document.body.classList.add('preloading');
+
   /* ---------------------------------- Utils -------------------------------- */
   const atTop       = () => (window.scrollY <= 1);
   const isCollapsed = () => body.classList.contains('is-collapsed');
@@ -167,31 +169,58 @@ function setResponsiveBackgrounds(forcedSize){
     return `${IMG_PATH}${base}-${size}.avif`;
   }
 
-  function decodeNextThenStart(nextBase){
-    const url = bgUrlFor(nextBase);
+// ===== Preloader utils =====
+function preloadImages(urls, onProgress) {
+  if (!urls || !urls.length) return Promise.resolve();
+  let loaded = 0;
+  const total = urls.length;
+  const bump = () => { loaded++; onProgress?.(loaded, total); };
+
+  return Promise.all(urls.map(url => new Promise(resolve => {
     const img = new Image();
     img.decoding = 'async';
+    img.onload = () => { bump(); resolve(); };
+    img.onerror = () => { bump(); resolve(); };
     img.src = url;
+    if (img.decode) img.decode().catch(() => {});
+  })));
+}
 
-    let started = false;
-    const start = () => { if (!started){ started = true; play(); } };
+function collectInitialBackgroundUrls() {
+  const size = LOCKED_BG_SIZE ?? pickSize();
+  const getBase = (i) => slides?.[i]?.querySelector('.bg')?.dataset?.img || null;
 
-    if (img.decode) img.decode().then(start).catch(start);
-    else { img.onload = start; img.onerror = start; }
+  const bases = [
+    getBase(idx),          // current
+    getBase(idx - 1),      // prev
+    getBase(idx + 1),      // next
+  ].filter(Boolean);
 
-    // Safety timeout if decode() isn't supported or is slow
-    setTimeout(start, 1000);
-  }
+  const urls = [...new Set(bases.map(b => `${IMG_PATH}${b}-${size}.avif`))];
+  return urls;
+}
 
-  function warmSlideBgAt(index){
-    const s = slides?.[realIndex(index)];
-    const base = s?.querySelector('.bg')?.dataset?.img;
-    if (!base) return;
-    const url = bgUrlFor(base);
-    const img = new Image();
-    img.decoding = 'async';
-    img.src = url; // browser will cache it
-  }
+async function runPreloader() {
+  const pre = document.getElementById('preloader');
+  const percentEl = document.getElementById('preloader-percent');
+  const update = (l, t) => { if (percentEl) percentEl.textContent = String(Math.round(l * 100 / t)); };
+
+  // Build the list of critical backgrounds (current + neighbors) for the locked size
+  const bgUrls = collectInitialBackgroundUrls();
+
+  // Wait for fonts and images to be ready/decoded
+  await Promise.all([
+    (document.fonts?.ready ?? Promise.resolve()),
+    preloadImages(bgUrls, update),
+  ]);
+
+  // Apply decoded backgrounds now (no flicker), then hide overlay
+  setResponsiveBackgrounds();
+
+  if (pre) pre.classList.add('is-hidden');
+  document.body.classList.remove('preloading');
+}
+
   
   /* -------- Unified header geometry (panel clip + progress paths) -------- */
   function rebuildHeaderGeometry(){
@@ -342,24 +371,19 @@ function setResponsiveBackgrounds(forcedSize){
   const LAST_REAL  = slides.length - 2;
   let idx = FIRST_REAL;
 
-  // 1) Lock initial background size so preload and actual backgrounds match
-  LOCKED_BG_SIZE = IS_MOBILE ? 478 : pickSize();
+// 1) Lock initial background size so preload and actual backgrounds match
+LOCKED_BG_SIZE = IS_MOBILE ? 478 : pickSize();
 
-  // 2) Apply backgrounds using the locked size
-  setResponsiveBackgrounds(LOCKED_BG_SIZE);
+if (PARALLAX_DISABLED){
+  slides.forEach(s => s.querySelector('.bg')?.style.setProperty('--p','0px'));
+}
 
-  if (PARALLAX_DISABLED){
-    slides.forEach(s => s.querySelector('.bg')?.style.setProperty('--p','0px'));
-  }
+// 2) Global preloader: wait for fonts + decoded backgrounds (current/prev/next)
+runPreloader().then(() => {
+  // Start autoplay only after overlay is hidden
+  if (!isHovering) play();
+});
 
-  // 3) Autostart after the next slide's background (with locked size) is decoded
-  const nextSlide = slides[idx + 1];
-  const nextBase  = nextSlide?.querySelector('.bg')?.dataset?.img;
-  if (nextBase) {
-    decodeNextThenStart(nextBase); // bgUrlFor will use LOCKED_BG_SIZE inside
-  } else {
-    setTimeout(() => { play(); }, 250);
-  }
 
   let timer = null;
   let isHovering = false;
@@ -420,9 +444,6 @@ function setResponsiveBackgrounds(forcedSize){
 
     FrameSizer.resize();
     scheduleUpdateArrows();
-
-    // Preload the upcoming slide background
-    warmSlideBgAt(targetIdx + 1);
   }
 
   function goTo(i, withProgress = true) {
