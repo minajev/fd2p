@@ -721,7 +721,7 @@ body.preloading {
 }
 
 /* Offcanvas: full-width panel on phones only */
-@media (max-width: 768px) {
+@media (max-width: 768px) and (hover: none) and (pointer: coarse) {
   .offcanvas-panel{
     width: 100vw !important;
     max-width: 100vw;
@@ -730,3 +730,4 @@ body.preloading {
     box-shadow: none;
   }
 }
+
