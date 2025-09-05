@@ -719,3 +719,14 @@ body.preloading {
   -webkit-user-drag: none;
   filter: drop-shadow(0 2px 8px rgba(0,0,0,.3));
 }
+
+/* Offcanvas: full-width panel on phones only */
+@media (max-width: 768px) {
+  .offcanvas-panel{
+    width: 100vw !important;
+    max-width: 100vw;
+    /* optional cosmetics for full-screen feel: */
+    border-right: none;
+    box-shadow: none;
+  }
+}
