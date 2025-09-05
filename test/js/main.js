@@ -460,10 +460,10 @@ function setResponsiveBackgrounds(forcedSize){
       return;                        // wait for the next step to finish
     }
 
-    // MOBILE POLICY: when page is at the very top, keep autoplay + progress running
-    if (IS_MOBILE && atTop()){
-      play(); // resume autoplay and red line
-    }
+// MOBILE POLICY: resume autoplay only if it is NOT already running
+if (IS_MOBILE && atTop() && !timer){
+  play(); // resume autoplay and progress once
+}
 
     if (!FIRST_STEP_DONE){
       FIRST_STEP_DONE = true;
