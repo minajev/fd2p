@@ -188,6 +188,23 @@ function preloadImages(urls, onProgress) {
   })));
 }
 
+function preloadSlideAt(i){
+  const s = slides?.[i];
+  const base = s?.querySelector('.bg')?.dataset?.img;
+  if (!base) return Promise.resolve();
+
+  const size = LOCKED_BG_SIZE ?? pickSize();
+  const url  = `${IMG_PATH}${base}-${size}.avif`;
+
+  return new Promise(resolve => {
+    const img = new Image();
+    img.decoding = 'async';
+    img.onload = img.onerror = () => resolve();
+    img.src = url;
+    if (img.decode) img.decode().then(resolve).catch(resolve);
+  });
+}
+
 function collectAllBackgroundUrls() {
   const size = LOCKED_BG_SIZE ?? pickSize();
   const bases = Array.from(document.querySelectorAll('.slide .bg'))
@@ -381,7 +398,7 @@ async function runPreloader() {
   const LAST_REAL  = slides.length - 2;
   let idx = FIRST_REAL;
 
-// 1) Lock initial background size so preload and actual backgrounds match
+// Lock initial background size so preload and actual backgrounds match
 LOCKED_BG_SIZE = IS_MOBILE ? 478 : pickSize();
 
 runPreloader().then(() => {
@@ -391,13 +408,6 @@ runPreloader().then(() => {
 if (PARALLAX_DISABLED){
   slides.forEach(s => s.querySelector('.bg')?.style.setProperty('--p','0px'));
 }
-
-// 2) Global preloader: wait for fonts + decoded backgrounds (current/prev/next)
-runPreloader().then(() => {
-  // Start autoplay only after overlay is hidden
-  if (!isHovering) play();
-});
-
 
   let timer = null;
   let isHovering = false;
@@ -495,6 +505,8 @@ runPreloader().then(() => {
       return;                        // wait for the next step to finish
     }
 
+preloadSlideAt(idx + 1);
+
 // MOBILE POLICY: resume autoplay only if it is NOT already running
 if (IS_MOBILE && atTop() && !timer){
   play(); // resume autoplay and progress once
@@ -533,7 +545,10 @@ if (IS_MOBILE && atTop() && !timer){
     if (isHovering && !IS_MOBILE) return; // no hover on mobile
 
     if (timer) clearInterval(timer);
-    timer = setInterval(() => requestSlide(+1, true), autoplayMs);
+timer = setInterval(() => {
+  const target = idx + 1;
+  preloadSlideAt(target).then(() => requestSlide(+1, true));
+}, autoplayMs);
     startProgress(autoplayMs);
   }
 
