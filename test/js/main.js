@@ -52,22 +52,31 @@ const PRELOADER_MIN_MS = 1000; // minimum preloader display time
       ocNav.appendChild(copy);
     });
   }
-  function openMenu(){
-    if (!offcanvas || !menuBtn) return;
-    clonePrimaryNavIntoOffcanvas();
-    body.classList.add('is-menu-open');
-    offcanvas.setAttribute('aria-hidden', 'false');
-    menuBtn.setAttribute('aria-expanded', 'true');
-    const firstLink = ocNav?.querySelector('a');
-    (firstLink || ocClose || menuBtn).focus?.({ preventScroll:true });
+
+function openMenu(){
+  if (!offcanvas || !menuBtn) return;
+  clonePrimaryNavIntoOffcanvas();
+  body.classList.add('is-menu-open');
+  offcanvas.setAttribute('aria-hidden', 'false');
+  menuBtn.setAttribute('aria-expanded', 'true');
+
+  stop(); // NEW: pause autoplay immediately when menu opens
+
+  const firstLink = ocNav?.querySelector('a');
+  (firstLink || ocClose || menuBtn).focus?.({ preventScroll:true });
+}
+function closeMenu(){
+  if (!offcanvas || !menuBtn) return;
+  body.classList.remove('is-menu-open');
+  offcanvas.setAttribute('aria-hidden', 'true');
+  menuBtn.setAttribute('aria-expanded', 'false');
+  menuBtn.focus?.({ preventScroll:true });
+
+  // NEW: resume autoplay only when it makes sense
+  if (atTop() && !isHovering && !reduceMotion && document.visibilityState === 'visible'){
+    play();
   }
-  function closeMenu(){
-    if (!offcanvas || !menuBtn) return;
-    body.classList.remove('is-menu-open');
-    offcanvas.setAttribute('aria-hidden', 'true');
-    menuBtn.setAttribute('aria-expanded', 'false');
-    menuBtn.focus?.({ preventScroll:true });
-  }
+}
   function wireOffcanvas(){
     menuBtn?.addEventListener('click', () => {
       const open = body.classList.contains('is-menu-open');
@@ -540,6 +549,7 @@ if (IS_MOBILE && atTop() && !timer){
 
   /* --------------------------------- Autoplay ------------------------------- */
   function play() {
+  if (body.classList.contains('is-menu-open')) return; // NEW: pause when menu is open
     if (reduceMotion || !atTop()) return;
     if (isResizing) return;               // skip while resizing
     if (isHovering && !IS_MOBILE) return; // no hover on mobile
