@@ -91,7 +91,7 @@ let FIRST_STEP_DONE = false; // снимем блок после первого 
 
 // ========= Responsive backgrounds (AVIF 2560/1920/1280/768) =========
 const IMG_PATH = 'assets/';
-const SIZES = [2560, 1920, 1280, 768]; // descending order is fine too
+const SIZES = [478, 1280, 1920, 2560];
 
 function pickSize(){
   const dpr = Math.min(2, window.devicePixelRatio || 1);
