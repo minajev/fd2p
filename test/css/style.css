@@ -652,3 +652,58 @@ html, body{ overflow-x: clip; }
 .header-geo.is-paused  .progress-line{ opacity: 0; }
 /* And on the very first frame, before js-ready, keep them hidden too */
 body:not(.js-ready) .header-geo .progress-line{ opacity: 0 !important; }
+
+/* === Global Site Preloader === */
+:root {
+  --preloader-bg: #0b0b0b;
+  --preloader-fg: #ffffff;
+}
+
+body.preloading {
+  overflow: hidden; /* lock scroll while loading */
+}
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--preloader-bg);
+  color: var(--preloader-fg);
+  z-index: 9999;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity .35s ease, visibility .35s ease;
+}
+
+.preloader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.preloader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.preloader-spinner {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 4px solid rgba(255,255,255,.25);
+  border-top-color: currentColor;
+  animation: preloader-spin 1s linear infinite;
+}
+
+.preloader-text {
+  font: 600 14px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  letter-spacing: .08em;
+  opacity: .85;
+}
+
+@keyframes preloader-spin {
+  to { transform: rotate(360deg); }
+}
