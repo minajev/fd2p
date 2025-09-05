@@ -1,4 +1,6 @@
-/* ========== Root ========== */
+/* =========================
+   Root
+   ========================= */
 :root{
   --bg:#ffffff;
   --ink:#111111;
@@ -16,31 +18,33 @@
   /* Header geometry */
   --header-h:64px;
   --dock-w:500px;
-  --dock-h:120px;     /* extra height below header */
-  --bevel:120px;      /* top-right cut of the left panel */
-  --logo-scale:1;     /* large logo scale */
+  --dock-h:120px;        /* extra height below header */
+  --bevel:120px;         /* top-right cut of the left panel */
+  --logo-scale:1;        /* large logo scale */
 }
 
-html{
-  scrollbar-gutter: stable both-edges;
-}
+html{ scrollbar-gutter: stable both-edges; }
 /* Fallback for browsers without scrollbar-gutter support */
 @supports not (scrollbar-gutter: stable) {
   html { overflow-y: scroll; } /* reserve scrollbar space to avoid layout shift */
 }
 
-/* ========== Base ========== */
-*{box-sizing:border-box}
-html,body{height:100%}
+/* =========================
+   Base
+   ========================= */
+*{ box-sizing:border-box }
+html,body{ height:100% }
 body{
   margin:0; color:var(--ink); background:var(--bg);
   font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
   -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
 }
-img{display:block; max-width:100%; height:auto}
-.container{max-width:var(--container); margin:0 auto; padding:0 24px}
+img{ display:block; max-width:100%; height:auto }
+.container{ max-width:var(--container); margin:0 auto; padding:0 24px }
 
-/* ========== Header shell ========== */
+/* =========================
+   Header shell
+   ========================= */
 .site-header{
   position:sticky; top:0; z-index:100;
   height:var(--header-h);
@@ -119,25 +123,24 @@ body.is-collapsed .logo-panel{
   white-space:nowrap; flex-wrap:nowrap;
   transition:opacity .28s ease, visibility .28s ease;
 }
-.brand img{height:32px; flex:0 0 auto}
-.brand-text{font-weight:700}
+.brand img{ height:32px; flex:0 0 auto }
+.brand-text{ font-weight:700 }
 
-/* --- Keep the small logo size constant --- */
+/* Keep the small logo size constant */
 .site-header .brand{
   flex: 0 0 auto;        /* don't let the brand block shrink */
   min-width: fit-content;
   white-space: nowrap;
 }
-
 .site-header .brand img{
   height: 32px;          /* fixed pixel height for the small logo */
   width: auto;           /* keep aspect ratio */
   max-width: none;       /* never cap by container width */
   flex: 0 0 auto;        /* don't shrink inside flex */
-  object-fit: contain;   /* just in case */
+  object-fit: contain;   /* safety */
 }
 
-/* Optional: a bit less side padding on ultra-narrow screens to avoid crowding */
+/* Optional: a bit less side padding on ultra‑narrow screens to avoid crowding */
 @media (max-width: 420px){
   .container{ padding-left:16px; padding-right:16px; }
 }
@@ -170,13 +173,13 @@ body.is-collapsed .logo-panel{
 }
 .site-header .main-nav a:hover::after,
 .site-header .main-nav a:focus-visible::after,
-.site-header .main-nav a[aria-current="page"]::after{transform:translateX(-50%) scaleX(1)}
+.site-header .main-nav a[aria-current="page"]::after{ transform:translateX(-50%) scaleX(1) }
 
 /* Buttons */
-.btn{display:inline-flex; align-items:center; justify-content:center; height:40px; padding:0 16px; border-radius:10px; border:1px solid transparent; text-decoration:none; font-weight:700; cursor:pointer}
-.btn-outline{border-color:var(--line); color:#111}
-.btn-outline-dark{border:1px solid rgba(0,0,0,.30)}
-.btn-accent{background:var(--accent); color:var(--accent-ink)}
+.btn{ display:inline-flex; align-items:center; justify-content:center; height:40px; padding:0 16px; border-radius:10px; border:1px solid transparent; text-decoration:none; font-weight:700; cursor:pointer }
+.btn-outline{ border-color:var(--line); color:#111 }
+.btn-outline-dark{ border:1px solid rgba(0,0,0,.30) }
+.btn-accent{ background:var(--accent); color:var(--accent-ink) }
 .overlay .btn.btn-accent{
   transition: color .18s ease, background-color .18s ease, transform .12s ease, box-shadow .18s ease;
 }
@@ -191,7 +194,9 @@ body.is-collapsed .logo-panel{
   box-shadow: 0 4px 10px rgba(0,0,0,.08) inset;
 }
 
-/* ========== Header progress ========== */
+/* =========================
+   Header progress
+   ========================= */
 .header-progress{
   position:absolute; left:0; top:0; z-index:3;
   width:100%;
@@ -207,25 +212,27 @@ body.is-collapsed .logo-panel{
   shape-rendering: geometricPrecision;
   stroke-width:4px;
 }
-.hp.is-running{animation:hpDash var(--progress-duration,5000ms) linear forwards}
-@keyframes hpDash{to{stroke-dashoffset:0}}
+.hp.is-running{ animation:hpDash var(--progress-duration,5000ms) linear forwards }
+@keyframes hpDash{ to{ stroke-dashoffset:0 } }
 
-/* ========== State drivers ========== */
+/* =========================
+   State drivers
+   ========================= */
 /* Collapse (hide big dock panel, show small brand) */
 body.is-collapsed{
   --dock-h:0px;
   --bevel:0px;
   --logo-scale:.42;
 }
-body.is-collapsed .header-progress{opacity:1}
+body.is-collapsed .header-progress{ opacity:1 }
 
 /* Large docked logo: visible only when open */
-body:not(.is-collapsed) .brand-dock{opacity:1; visibility:visible}
-body.is-collapsed .brand-dock{opacity:0; visibility:hidden; transform:scale(.6)}
+body:not(.is-collapsed) .brand-dock{ opacity:1; visibility:visible }
+body.is-collapsed .brand-dock{ opacity:0; visibility:hidden; transform:scale(.6) }
 
 /* Small brand row: visible only when collapsed */
-body:not(.is-collapsed) .site-header .brand{opacity:0; visibility:hidden; pointer-events:none}
-body.is-collapsed .site-header .brand{opacity:1; visibility:visible; pointer-events:auto}
+body:not(.is-collapsed) .site-header .brand{ opacity:0; visibility:hidden; pointer-events:none }
+body.is-collapsed .site-header .brand{ opacity:1; visibility:visible; pointer-events:auto }
 
 /* Hidden nav: keep it out of flow and pinned to the right (no left “jump”) */
 body.is-nav-hidden .main-nav{
@@ -239,16 +246,16 @@ body.is-nav-hidden .main-nav{
 }
 
 /* Show the Menu button in that moment */
-body.is-nav-hidden .menu-toggle{
-  display:inline-flex;
-}
-body.is-nav-hidden .site-header .brand{opacity:1; visibility:visible}
+body.is-nav-hidden .menu-toggle{ display:inline-flex; }
+body.is-nav-hidden .site-header .brand{ opacity:1; visibility:visible }
 
-/* ========== Hero slider ========== */
-.hero{position:relative; height:78vh; min-height:520px; overflow:hidden}
-.slider{position:relative; height:100%}
-.slides{position:relative; height:100%; display:flex; transition:transform .6s ease-in-out; will-change:transform}
-.slide{position:relative; flex:0 0 100%; height:100%; overflow:hidden}
+/* =========================
+   Hero slider
+   ========================= */
+.hero{ position:relative; height:78vh; min-height:520px; overflow:hidden }
+.slider{ position:relative; height:100% }
+.slides{ position:relative; height:100%; display:flex; transition:transform .6s ease-in-out; will-change:transform }
+.slide{ position:relative; flex:0 0 100%; height:100%; overflow:hidden }
 .slide .bg{
   position:absolute; inset:0; z-index:1;
   background-size:cover; background-repeat:no-repeat;
@@ -270,15 +277,11 @@ body.is-nav-hidden .site-header .brand{opacity:1; visibility:visible}
   background:rgba(20,22,24,.34);
 }
 
-/* Let slider receive drags even when starting over the overlay text */
-.hero .overlay{
-  pointer-events: none;                /* overlay itself does not intercept pointer events */
-}
+/* Let the slider receive drags even when starting over the overlay text */
+.hero .overlay{ pointer-events: none; }
 
 /* Keep the big button clickable */
-.hero .overlay .js-learn{
-  pointer-events: auto;                /* re-enable interactions for the button only */
-}
+.hero .overlay .js-learn{ pointer-events: auto; }
 
 /* Make the text block non-interactive and non-selectable */
 .hero .hero-frame,
@@ -288,14 +291,10 @@ body.is-nav-hidden .site-header .brand{opacity:1; visibility:visible}
   user-select: none;                   /* modern browsers */
   -webkit-touch-callout: none;         /* disable long-press menu on iOS */
 }
-
 /* (Optional) prevent accidental text cursor on double-click */
-.hero .hero-text{
-  cursor: default;
-}
+.hero .hero-text{ cursor: default; }
 
-
-/* Collapsed look on small screens BEFORE JS runs (prevents flash on reload) */
+/* Pre-collapsed look on small screens BEFORE JS runs (prevents flash on reload) */
 @media (max-width: 1024px){
   body:not(.js-ready) .brand-dock{        /* big logo on the panel */
     opacity: 0; pointer-events: none;
@@ -320,17 +319,11 @@ body.is-nav-hidden .site-header .brand{opacity:1; visibility:visible}
     pointer-events: none;
   }
   /* SHOW the burger button before JS sets is-nav-hidden */
-  body:not(.js-ready) .menu-toggle{
-    visibility: hidden;
-  }
+  body:not(.js-ready) .menu-toggle{ visibility: hidden; }
   /* Make the small brand visible in pre-collapsed look */
-  body:not(.js-ready) .site-header .brand{
-    opacity: 1; visibility: visible; pointer-events: auto;
-  }
-  /* And fully hide the big docked logo (not только opacity) */
-  body:not(.js-ready) .brand-dock{
-    visibility: hidden;
-  }
+  body:not(.js-ready) .site-header .brand{ opacity: 1; visibility: visible; pointer-events: auto; }
+  /* Fully hide the big docked logo (not only opacity) */
+  body:not(.js-ready) .brand-dock{ visibility: hidden; }
 }
 
 /* Tags and caption scale too */
@@ -344,7 +337,7 @@ body.is-nav-hidden .site-header .brand{opacity:1; visibility:visible}
 .hero-frame{
   /* tighter padding on phones, fuller on desktop */
   padding: clamp(12px, 2.0vw, 22px) clamp(16px, 2.6vw, 28px);
-  /* prevent overspill and let the form actually get smaller */
+  /* prevent overspill and let the frame actually get smaller */
   max-width: min(92vw, 720px);
 }
 /* Smoothly animate frame size as we re-measure on resize */
@@ -353,10 +346,8 @@ body.is-nav-hidden .site-header .brand{opacity:1; visibility:visible}
   will-change: width, height;
 }
 
-/* Optional: slightly narrower on very small screens */
-@media (max-width: 480px){
-  .hero-frame{ max-width: 94vw; }
-}
+/* Slightly narrower on very small screens */
+@media (max-width: 480px){ .hero-frame{ max-width: 94vw; } }
 
 /* Helpful defaults for wrapping long words if content is wide */
 .hero-frame .line{
@@ -364,38 +355,33 @@ body.is-nav-hidden .site-header .brand{opacity:1; visibility:visible}
   hyphens: auto;
 }
 
-.hero-text{display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center}
-.line{color:#fff}
+.hero-text{ display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center }
+.line{ color:#fff }
 
-.line-headline{font-weight:800; font-size:44px; line-height:1.12; text-shadow:0 1px 2px rgba(0,0,0,.45), 0 0 1px rgba(0,0,0,.35);
-font-size: clamp(var(--headline-min), 4.2vw, var(--headline-max));
-line-height: 1.1;
+.line-headline{
+  font-weight:800; font-size:44px; line-height:1.12;
+  text-shadow:0 1px 2px rgba(0,0,0,.45), 0 0 1px rgba(0,0,0,.35);
+  font-size: clamp(var(--headline-min), 4.2vw, var(--headline-max));
+  line-height: 1.1;
 }
 
+.line-tags{ font-weight:800; font-size:13px; letter-spacing:.36px; text-transform:uppercase; white-space:nowrap; opacity:.95 }
+.line-caption{ font-weight:800; font-size:20px; opacity:.98; text-shadow:0 1px 2px rgba(0,0,0,.40) }
+.overlay .js-learn{ pointer-events:auto; height:52px; padding:0 26px; font-size:17px; border-radius:12px }
 
-
-.line-tags{font-weight:800; font-size:13px; letter-spacing:.36px; text-transform:uppercase; white-space:nowrap; opacity:.95}
-.line-caption{font-weight:800; font-size:20px; opacity:.98; text-shadow:0 1px 2px rgba(0,0,0,.40)}
-.overlay .js-learn{pointer-events:auto; height:52px; padding:0 26px; font-size:17px; border-radius:12px}
 /* Responsive sizing for the LEARN MORE button */
 .hero .js-learn{
   /* gets smaller on narrow screens, capped on desktops */
   font-size: clamp(14px, 1.8vw, 16px);
   line-height: 1.2;
-
   /* scale padding with viewport; stays comfy on mobile */
   padding: clamp(8px, 1.4vw, 12px) clamp(14px, 2.4vw, 20px);
-
-  /* optional: keep the outline thickness proportional */
+  /* keep the outline thickness proportional */
   border-width: clamp(1px, 0.25vw, 2px);
 }
-
-/* (Optional) make it a touch smaller on very narrow phones */
+/* A touch smaller on very narrow phones */
 @media (max-width: 420px){
-  .hero .js-learn{
-    font-size: 12px;
-    padding: 8px 12px;
-  }
+  .hero .js-learn{ font-size: 12px; padding: 8px 12px; }
 }
 
 /* Arrows */
@@ -406,43 +392,39 @@ line-height: 1.1;
   display:flex; align-items:center; justify-content:center; opacity:.85;
   transition:opacity .2s ease, background .2s ease, transform .06s ease; z-index:5;
 }
-.arrow:hover{opacity:1; background:rgba(17,17,17,.55)}
-.arrow:active{transform:translateY(-50%) scale(.96)}
-.arrow-prev{left:24px} .arrow-next{right:24px}
+.arrow:hover{ opacity:1; background:rgba(17,17,17,.55) }
+.arrow:active{ transform:translateY(-50%) scale(.96) }
+.arrow-prev{ left:24px } .arrow-next{ right:24px }
 
 /* Arrows are always visible except on narrow screens */
 .slider .arrow{
   opacity: 1;
   pointer-events: auto;
   transition: opacity .2s ease;
-  z-index: 5; /* поверх overlay/panel */
+  z-index: 5; /* above overlay/panel */
 }
-
-body.is-collapsed .slider .arrow{
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
+body.is-collapsed .slider .arrow{ opacity: 1 !important; pointer-events: auto !important; }
 /* Allow overlap logic to hide arrows even when header is collapsed */
-body.is-collapsed .slider .arrow.is-hidden{
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
+body.is-collapsed .slider .arrow.is-hidden{ opacity: 0 !important; pointer-events: none !important; }
 
 /* Sections / footer */
-.section{padding:72px 0; border-top:1px solid var(--line)}
-.section-title{margin:0 0 24px; font-weight:800; font-size:28px}
-.cards{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
-.card{display:block; padding:20px; border:1px solid var(--line); border-radius:14px; text-decoration:none; color:inherit; transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease}
-.card:hover{transform:translateY(-2px); box-shadow:0 10px 24px rgba(0,0,0,.06); border-color:#dfe3e8}
-.card h3{margin:0 0 6px; font-size:18px; font-weight:800}
-.card p{margin:0; color:var(--muted)}
+.section{ padding:72px 0; border-top:1px solid var(--line) }
+.section-title{ margin:0 0 24px; font-weight:800; font-size:28px }
+.cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px }
+.card{ display:block; padding:20px; border:1px solid var(--line); border-radius:14px; text-decoration:none; color:inherit; transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease }
+.card:hover{ transform:translateY(-2px); box-shadow:0 10px 24px rgba(0,0,0,.06); border-color:#dfe3e8 }
+.card h3{ margin:0 0 6px; font-size:18px; font-weight:800 }
+.card p{ margin:0; color:var(--muted) }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce){
-  .slides{transition:none!important}
-  .arrow{transition:none!important}
+  .slides{ transition:none!important }
+  .arrow{ transition:none!important }
 }
-/* Base */
+
+/* =========================
+   Menu toggle (header burger)
+   ========================= */
 .menu-toggle{
   position: absolute;
   right: 16px;
@@ -461,11 +443,9 @@ body.is-collapsed .slider .arrow.is-hidden{
   white-space: nowrap;
   appearance: none;
   background: #fff;
-
   /* Keep border width constant to avoid layout jump on hover */
   border: 1px solid transparent;
   border-radius: 10px;
-
   padding: 8px 10px;
   cursor: pointer;
   font: inherit;
@@ -473,33 +453,19 @@ body.is-collapsed .slider .arrow.is-hidden{
   color: #1f2937;
   flex: 0 0 auto;
 }
-
 /* Show when nav is hidden */
-body.is-nav-hidden .menu-toggle{
-  visibility: visible;
-  opacity: 1;
-}
-
+body.is-nav-hidden .menu-toggle{ visibility: visible; opacity: 1; }
 /* Hover: move slightly UP, same as nav links */
 .menu-toggle:hover{
-  /* if your links move up by 2px, mirror that here */
   transform: translateY(calc(-50% - 2px));
-  background-color: #f9fafb; /* match your link hover bg if any */
-  border-color: #e5e7eb;     /* match your link hover border if any */
+  background-color: #f9fafb; /* match link hover bg */
+  border-color: #e5e7eb;     /* match link hover border */
 }
-
 /* Active/pressed: a bit less lift than hover (like links) */
-.menu-toggle:active{
-  transform: translateY(calc(-50% - 1px));
-}
-
-/* Keyboard focus accessibility to match link focus style */
-.menu-toggle:focus-visible{
-  outline: 2px solid #2563eb; /* adjust to your theme */
-  outline-offset: 2px;
-}
-
-/* animated underline bar (identical behavior to .main-nav a::after) */
+.menu-toggle:active{ transform: translateY(calc(-50% - 1px)); }
+/* Keyboard focus to match link focus style */
+.menu-toggle:focus-visible{ outline: 2px solid #2563eb; outline-offset: 2px; }
+/* Animated underline bar (identical behavior to .main-nav a::after) */
 .menu-toggle::after{
   content:"";
   position:absolute;
@@ -514,24 +480,19 @@ body.is-nav-hidden .menu-toggle{
   transform-origin:center;
   transition:transform .22s ease;
 }
-
-/* show underline on hover/focus, and keep it when menu is open */
+/* Show underline on hover/focus, and keep it when menu is open */
 .menu-toggle:hover::after,
 .menu-toggle:focus-visible::after,
-body.is-menu-open .menu-toggle::after{
-  transform:translateX(-50%) scaleX(1);
-}
+body.is-menu-open .menu-toggle::after{ transform:translateX(-50%) scaleX(1); }
 
-/* ===== Offcanvas menu ===== */
+/* =========================
+   Off‑canvas menu
+   ========================= */
 .offcanvas{
   position:fixed; inset:0; z-index:120; pointer-events:none; opacity:0;
   transition:opacity .2s ease;
 }
-.offcanvas-backdrop{
-  position:absolute; inset:0;
-  background:transparent;
-  opacity:0;
-}
+.offcanvas-backdrop{ position:absolute; inset:0; background:transparent; opacity:0; }
 .offcanvas-panel{
   position:absolute; top:0; left:0; height:100%; width:min(360px, 90vw);
   background:#fff; border-right:1px solid var(--line);
@@ -539,64 +500,35 @@ body.is-menu-open .menu-toggle::after{
   transform:translateX(-100%); transition:transform .28s ease;
   display:flex; flex-direction:column;
 }
-.offcanvas-head{
-  display:flex; align-items:center; justify-content:space-between;
-  height:64px; padding:0 16px; border-bottom:1px solid var(--line);
-}
+.offcanvas-head{ display:flex; align-items:center; justify-content:space-between; height:64px; padding:0 16px; border-bottom:1px solid var(--line) }
 .offcanvas-brand img{ height:32px; width:auto }
 .offcanvas-close{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  height:40px;
-  width:40px;
-  border-radius:10px;
-  border:1px solid var(--line);
-  background:#fff;
-  cursor:pointer;
-  font-size:18px;
-  font-weight:800;
-  color:#1f2937;
+  display:inline-flex; align-items:center; justify-content:center;
+  height:40px; width:40px; border-radius:10px; border:1px solid var(--line);
+  background:#fff; cursor:pointer; font-size:18px; font-weight:800; color:#1f2937;
   transition:transform .12s ease, border-color .18s ease, background .18s ease;
 }
-
 .offcanvas-close:hover,
-.offcanvas-close:focus-visible{
-  transform:translateY(-1px);
-  border-color:#dfe3e8;
-  background:#fafafa;
-}
-
-.offcanvas-nav{
-  padding:14px; display:flex; flex-direction:column; gap:8px; overflow:auto;
-}
+.offcanvas-close:focus-visible{ transform:translateY(-1px); border-color:#dfe3e8; background:#fafafa }
+.offcanvas-nav{ padding:14px; display:flex; flex-direction:column; gap:8px; overflow:auto }
 .offcanvas-nav a{
-  display:flex;                 /* use flexbox for centering */
-  align-items:center;
-  justify-content:center;       /* center text horizontally */
-  padding:12px 14px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  text-decoration:none;
-  color:#1f2937;
-
-  font: inherit;                /* inherit same font as header links */
-  font-weight:600;              /* match .main-nav a */
-  text-align:center;
-  white-space:nowrap;           /* prevent text wrapping */
-
+  display:flex; align-items:center; justify-content:center; /* center text */
+  padding:12px 14px; border:1px solid var(--line); border-radius:12px;
+  text-decoration:none; color:#1f2937;
+  font: inherit; font-weight:600; text-align:center; white-space:nowrap;
   transition:transform .12s ease, border-color .18s ease, background .18s ease;
 }
 .offcanvas-nav a:hover{ transform:translateY(-1px); border-color:#dfe3e8; background:#fafafa }
-
 /* Open state */
 body.is-menu-open .offcanvas{ pointer-events:auto; opacity:1 }
 body.is-menu-open .offcanvas-backdrop{ opacity:1 }
 body.is-menu-open .offcanvas-panel{ transform:none }
-
 /* Lock scroll when menu open */
 body.is-menu-open{ overflow:hidden }
 
+/* =========================
+   Nav stability on resize
+   ========================= */
 /* Prevent nav from shrinking/wrapping to avoid jank on resize */
 .site-header .main-nav{
   display: flex;
@@ -604,8 +536,8 @@ body.is-menu-open{ overflow:hidden }
   gap: 18px;
   margin-left: auto;
   transition: opacity .25s ease, visibility .25s ease;
-  flex: 0 0 auto;       /* NEW: keep width stable (no flex-shrink) */
-  white-space: nowrap;  /* NEW: prevent wrapping */
+  flex: 0 0 auto;       /* keep width stable (no flex-shrink) */
+  white-space: nowrap;  /* prevent wrapping */
 }
 .site-header .main-nav a{
   padding: 8px 10px;
@@ -616,19 +548,13 @@ body.is-menu-open{ overflow:hidden }
   font-weight: 600;
   position: relative;
   transition: color .18s ease, background-color .18s ease, transform .12s ease, border-color .18s ease;
-  flex: 0 0 auto;       /* NEW: prevent individual link shrink */
+  flex: 0 0 auto;       /* prevent individual link shrink */
 }
 
 /* Stack "What we do" cards vertically on narrow screens */
 @media (max-width: 860px){
-  .cards{
-    display: grid;                 /* works whether you used grid or flex above */
-    grid-template-columns: 1fr;    /* one column */
-    gap: 16px;                     /* comfortable vertical spacing */
-  }
-  .cards .card{
-    width: 100%;                   /* ensure full width */
-  }
+  .cards{ display: grid; grid-template-columns: 1fr; gap: 16px; }
+  .cards .card{ width: 100%; }
 }
 
 /* Global safety: never allow horizontal scrolling caused by tiny overshoots */
@@ -636,22 +562,18 @@ html, body{ overflow-x: clip; }
 
 /* Hide an arrow when it visually overlaps the text frame */
 .slider .arrow.is-hidden{
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .2s ease;
+  opacity: 0; pointer-events: none; transition: opacity .2s ease;
 }
 /* Hide arrows on narrow screens where there's no room */
 @media (max-width: 1024px){
-  .slider .arrow{
-    opacity: 0;
-    pointer-events: none;
-  }
+  .slider .arrow{ opacity: 0; pointer-events: none; }
   /* prepaint: hide arrows before JS runs to prevent flash */
-  body:not(.js-ready) .slider .arrow{
-    display: none !important;
-  }
+  body:not(.js-ready) .slider .arrow{ display: none !important; }
 }
 
+/* =========================
+   Touch/mobile adjustments
+   ========================= */
 /* Parallax OFF on touch/mobile: stop using the --p offset entirely */
 @media (pointer: coarse), (hover: none){
   .slide .bg{
@@ -660,107 +582,73 @@ html, body{ overflow-x: clip; }
     --p: 0px !important;
   }
 }
-
 /* Touch devices only: make slider 2× shorter → more left/right visible */
 @media (pointer: coarse), (hover: none){
   .slider{
     /* half of viewport height; provide a basic vh fallback, then stable svh */
     height: 50vh;
-    height: 50svh;          /* iOS/Android: не прыгает от адресной строки */
-    aspect-ratio: auto;     /* отключаем прежнюю фиксацию аспекта на мобиле */
-    max-height: 50svh;      /* страховка, чтобы не вылезти за экран */
+    height: 50svh;          /* iOS/Android: stable vs. URL bar show/hide */
+    aspect-ratio: auto;     /* disable legacy aspect lock on mobile */
+    max-height: 50svh;      /* safety: don't exceed screen */
   }
-
-  /* внутренности растягиваем на всю высоту бокса */
+  /* make internals fill the box height */
   .slider .slides,
   .slider .slide,
-  .slider .bg{
-    height: 100%;
-  }
-
-  /* хотим максимум видимой ширины — уберём overscan, если он был */
+  .slider .bg{ height: 100%; }
+  /* maximize visible width — remove overscan if it was set */
   :root{ --overscan: 0%; }
 }
-
 /* Fix big gap under the slider on touch devices */
 @media (pointer: coarse), (hover: none){
   /* 1) Kill the legacy aspect-ratio spacer that adds extra height */
-  .slider::before{
-    content: none !important;
-    display: none !important;
-  }
-
+  .slider::before{ content: none !important; display: none !important; }
   /* 2) Don't reserve the header's dock tail on mobile */
-  :root{
-    --dock-h: 0px;
-  }
-
-  /* 3) Make sure the hero doesn't enforce extra height/spacing */
-  .hero{
-    height: auto !important;
-    min-height: 0 !important;
-    padding-bottom: 0 !important;
-    margin-bottom: 0 !important;
-    overflow: visible !important;
-  }
-
+  :root{ --dock-h: 0px; }
+  /* 3) Ensure the hero doesn't enforce extra height/spacing */
+  .hero{ height: auto !important; min-height: 0 !important; padding-bottom: 0 !important; margin-bottom: 0 !important; overflow: visible !important; }
   /* (optional safety) If any top margin on the first section after hero — remove it */
-  .hero + section{
-    margin-top: 0 !important;
-  }
+  .hero + section{ margin-top: 0 !important; }
 }
-
-/* Touch landscape: force full-height slider (override the 50svh rule) */
+/* Touch landscape: force full‑height slider (override the 50svh rule) */
 @media (pointer: coarse) and (orientation: landscape){
   .slider{
     /* fallbacks: old → stable → dynamic; last wins if supported */
     height: 110vh !important;
     height: 110svh !important;
     height: 110dvh !important;
-
     max-height: none !important;
-    aspect-ratio: auto !important; /* ignore any earlier aspect locks */
+    aspect-ratio: auto !important; /* ignore earlier aspect locks */
   }
   .slider .slides,
   .slider .slide,
-  .slider .bg{
-    height: 100%;
-  }
+  .slider .bg{ height: 100%; }
 }
 
-/* Hide red progress line when paused (prevents end-cap dots on mobile) */
+/* =========================
+   Progress visibility safety
+   ========================= */
+/* Hide red progress line when paused (prevents end‑cap dots on mobile) */
 .header-geo.is-paused #progress-left,
-.header-geo.is-paused #progress-right{
-  opacity: 0;
-}
-
+.header-geo.is-paused #progress-right{ opacity: 0; }
 .header-geo #progress-left,
-.header-geo #progress-right{
-  opacity: 1;
-  transition: opacity .12s linear; /* quick fade for nicer feel */
-}
+.header-geo #progress-right{ opacity: 1; transition: opacity .12s linear; /* quick fade for nicer feel */ }
 
+/* =========================
+   Performance niceties
+   ========================= */
 /* Help GPU warm up slide backgrounds */
 .slide .bg{
-  will-change: background-position, transform;
-  contain: paint; /* не раздуваем область перерисовки */
+  will-change: background-position, background-image, transform;
+  contain: paint; /* avoid enlarging paint area */
 }
 
 /* 1) Never show arrows on narrow screens — even before JS is ready */
 @media (max-width: 1024px){
-  .slider .arrow{
-    display: none !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
+  .slider .arrow{ display: none !important; opacity: 0 !important; pointer-events: none !important; }
 }
-
-/* 2) Hide progress lines by default to prevent end-cap flash */
+/* 2) Hide progress lines by default to prevent end‑cap flash */
 .header-geo .progress-line{ opacity: 0; }
 .header-geo.is-running .progress-line{ opacity: 1; }
 .header-geo.is-paused  .progress-line{ opacity: 0; }
-
-/* и на самый первый кадр, до js-ready, тоже держим скрытыми */
+/* And on the very first frame, before js-ready, keep them hidden too */
 body:not(.js-ready) .header-geo .progress-line{ opacity: 0 !important; }
-
-
