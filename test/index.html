@@ -7,13 +7,19 @@
   <meta name="description" content="Reliable engineering for marine, subsea, civil & industrial projects." />
 
   <link rel="stylesheet" href="css/style.css" />
+<link rel="preload" as="image" href="assets/logo3.jpg" />
 </head>
 <body>
 <!-- Site Preloader -->
-<div id="preloader" class="preloader" role="status" aria-live="polite" aria-label="Loading">
+<div id="preloader" class="preloader" hidden role="status" aria-live="polite" aria-label="Loading">
   <div class="preloader-inner">
+    <img class="preloader-logo"
+         src="assets/logo3.jpg"
+         alt="FD2P logo"
+         decoding="async"
+         fetchpriority="high" />
     <div class="preloader-spinner"></div>
-    <p class="preloader-text"><span id="preloader-percent">0</span>%</p>
+    <p class="preloader-text"><span id="preloader-percent">0%</span></p>
   </div>
 </div>
   <!-- HEADER -->
