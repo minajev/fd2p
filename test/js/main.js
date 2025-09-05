@@ -30,6 +30,8 @@
   const IS_MOBILE = window.matchMedia('(pointer: coarse), (hover: none)').matches;
   let LOCKED_BG_SIZE = null;   // while not null — use a fixed background size
   let FIRST_STEP_DONE = false; // lift the size lock after the first completed transition
+const PRELOADER_MIN_MS = 1000; // minimum preloader display time
+
 
   // Early exit for pages without hero/slider (still wire up menu)
   if (!slider || !hero || !dockPanel) {
@@ -186,41 +188,49 @@ function preloadImages(urls, onProgress) {
   })));
 }
 
-function collectInitialBackgroundUrls() {
+function collectAllBackgroundUrls() {
   const size = LOCKED_BG_SIZE ?? pickSize();
-  const getBase = (i) => slides?.[i]?.querySelector('.bg')?.dataset?.img || null;
-
-  const bases = [
-    getBase(idx),          // current
-    getBase(idx - 1),      // prev
-    getBase(idx + 1),      // next
-  ].filter(Boolean);
-
+  const bases = Array.from(document.querySelectorAll('.slide .bg'))
+    .map(bg => bg.dataset?.img)
+    .filter(Boolean);
   const urls = [...new Set(bases.map(b => `${IMG_PATH}${b}-${size}.avif`))];
   return urls;
 }
 
 async function runPreloader() {
+  const t0 = performance.now();
+
   const pre = document.getElementById('preloader');
   const percentEl = document.getElementById('preloader-percent');
-  const update = (l, t) => { if (percentEl) percentEl.textContent = String(Math.round(l * 100 / t)); };
+  if (pre && pre.hasAttribute('hidden')) pre.removeAttribute('hidden');
 
-  // Build the list of critical backgrounds (current + neighbors) for the locked size
-  const bgUrls = collectInitialBackgroundUrls();
+  const update = (loaded, total) => {
+    if (percentEl) percentEl.textContent = `${Math.round((loaded / total) * 100)}%`;
+  };
 
-  // Wait for fonts and images to be ready/decoded
+  // Build the list of ALL slide backgrounds for the locked size
+  const bgUrls = collectAllBackgroundUrls();
+
+  // Load fonts + decode images
   await Promise.all([
     (document.fonts?.ready ?? Promise.resolve()),
     preloadImages(bgUrls, update),
   ]);
 
+  // Enforce a minimum preloader display time
+  const elapsed = performance.now() - t0;
+  const remain = Math.max(0, PRELOADER_MIN_MS - elapsed);
+  if (remain > 0) await new Promise(r => setTimeout(r, remain));
+
   // Apply decoded backgrounds now (no flicker), then hide overlay
   setResponsiveBackgrounds();
 
-  if (pre) pre.classList.add('is-hidden');
+  if (pre) {
+    pre.classList.add('is-hidden');
+    setTimeout(() => pre.setAttribute('hidden',''), 400);
+  }
   document.body.classList.remove('preloading');
 }
-
   
   /* -------- Unified header geometry (panel clip + progress paths) -------- */
   function rebuildHeaderGeometry(){
@@ -373,6 +383,10 @@ async function runPreloader() {
 
 // 1) Lock initial background size so preload and actual backgrounds match
 LOCKED_BG_SIZE = IS_MOBILE ? 478 : pickSize();
+
+runPreloader().then(() => {
+  if (!isHovering) play();
+});
 
 if (PARALLAX_DISABLED){
   slides.forEach(s => s.querySelector('.bg')?.style.setProperty('--p','0px'));
