@@ -511,7 +511,6 @@ preloadSlideAt(idx + 1);
 if (IS_MOBILE && atTop() && !timer){
   play(); // resume autoplay and progress once
 }
-if (timer) startProgress(autoplayMs);
 
     if (!FIRST_STEP_DONE){
       FIRST_STEP_DONE = true;
@@ -548,7 +547,7 @@ if (timer) startProgress(autoplayMs);
     if (timer) clearInterval(timer);
 timer = setInterval(() => {
   const target = idx + 1;
-  preloadSlideAt(target).then(() => requestSlide(+1, false));
+  preloadSlideAt(target).then(() => requestSlide(+1, true));
 }, autoplayMs);
     startProgress(autoplayMs);
   }
