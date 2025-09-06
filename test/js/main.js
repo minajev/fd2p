@@ -1,3 +1,4 @@
+document.documentElement.classList.remove('no-js');
 'use strict';
 
 /*
