@@ -32,15 +32,152 @@
   let FIRST_STEP_DONE = false; // lift the size lock after the first completed transition
 const PRELOADER_MIN_MS = 1000; // minimum preloader display time
 
+// ---------------- Page fade transitions ----------------
+(function setupPageFade(){
+  const DURATION = 360; // sync with --fade-duration
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Early exit for pages without hero/slider (still wire up menu)
-  if (!slider || !hero || !dockPanel) {
-    wireOffcanvas();
-    return;
+  // create overlay once (no HTML edits needed)
+  const fade = document.createElement('div');
+  fade.className = 'page-fade';
+  document.body.appendChild(fade);
+
+  // Enter animation on load (dark -> clear)
+  requestAnimationFrame(() => {
+    if (reduce) return;
+    document.body.classList.add('is-fade-enter-start');
+    // next frame triggers transition to clear
+    requestAnimationFrame(() => {
+      document.body.classList.add('is-fade-enter');
+      document.body.classList.remove('is-fade-enter-start');
+      const cleanup = () => document.body.classList.remove('is-fade-enter');
+      fade.addEventListener('transitionend', (e) => {
+        if (e.propertyName === 'opacity') cleanup();
+      }, { once: true });
+      setTimeout(cleanup, DURATION + 80); // fallback
+    });
+  });
+
+  // Helpers
+  function isInternalLink(a){
+    if (!a || a.target === '_blank') return false;
+    const href = a.getAttribute('href') || '';
+    if (href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return false;
+    try {
+      const url = new URL(href, location.href);
+      return url.origin === location.origin;
+    } catch { return false; }
   }
+
+  function navigateWithFade(url){
+    if (reduce) { location.href = url; return; }
+    try { if (typeof closeMenu === 'function') closeMenu(); } catch(e){}
+
+    // Force a reflow so the next class change animates for sure
+    // (avoids "blink" when the browser batches writes)
+    // eslint-disable-next-line no-unused-expressions
+    fade.offsetWidth;
+
+    let navigated = false;
+    const go = () => {
+      if (!navigated) { navigated = true; location.href = url; }
+    };
+
+    // Start fade-out on the next frame to guarantee paint
+    requestAnimationFrame(() => {
+      document.body.classList.add('is-fade-leave');
+      const onEnd = (e) => { if (e.propertyName === 'opacity') go(); };
+      fade.addEventListener('transitionend', onEnd, { once: true });
+      setTimeout(go, DURATION + 100); // safety fallback
+    });
+  }
+
+  // Intercept internal link clicks
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest?.('a');
+    if (!a || !isInternalLink(a)) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const url = a.href.replace(/#.*$/,'');
+    if (url === location.href.replace(/#.*$/,'')) return;
+    e.preventDefault();
+    navigateWithFade(url);
+  });
+
+  // Handle BFCache restores
+  window.addEventListener('pageshow', (ev) => {
+    if (reduce) return;
+    if (ev.persisted) {
+      document.body.classList.add('is-fade-enter-start');
+      requestAnimationFrame(() => {
+        document.body.classList.add('is-fade-enter');
+        document.body.classList.remove('is-fade-enter-start');
+        const cleanup = () => document.body.classList.remove('is-fade-enter');
+        fade.addEventListener('transitionend', (e) => {
+          if (e.propertyName === 'opacity') cleanup();
+        }, { once: true });
+        setTimeout(cleanup, DURATION + 80);
+      });
+    }
+  });
+})();
+
+
+// Early exit for pages without hero/slider (still wire up menu)
+// Also mark JS ready and run a compact header fallback so the Menu button works.
+if (!slider || !hero || !dockPanel) {
+  wireOffcanvas();
+  document.body.classList.add('js-ready');
+
+  const brand     = document.querySelector('.site-header .brand');
+  const nav       = document.querySelector('.main-nav');
+  const headerRow = document.querySelector('.header-inner');
+
+  function fallbackHideNav(){
+    if (!brand || !nav || !headerRow) return;
+    const rBrand  = brand.getBoundingClientRect();
+    const rHeader = headerRow.getBoundingClientRect();
+    const navW    = Math.ceil(nav.scrollWidth);
+    const gap     = (rHeader.right - navW) - rBrand.right;
+
+    const HIDE_GAP = 50;
+    const SHOW_GAP = 70;
+
+    const small    = window.innerWidth <= 1024;
+
+    const isHidden = document.body.classList.contains('is-nav-hidden');
+    let nextHidden = isHidden;
+
+    if (!isHidden && (gap <= HIDE_GAP || small)) nextHidden = true;
+    else if (isHidden && (gap > SHOW_GAP && !small)) nextHidden = false;
+
+    if (nextHidden !== isHidden) {
+      document.body.classList.toggle('is-nav-hidden', nextHidden);
+    }
+  }
+
+  fallbackHideNav();
+  // после раскраски/шрифтов
+  window.addEventListener('load', fallbackHideNav, { passive:true });
+  window.addEventListener('orientationchange', fallbackHideNav, { passive:true });
+  window.addEventListener('resize', fallbackHideNav, { passive:true });
+
+  setTimeout(fallbackHideNav, 0);
+  setTimeout(fallbackHideNav, 200);
+
+  return;
+}
 
   /* ----------------------------- Off‑canvas menu ---------------------------- */
   function clonePrimaryNavIntoOffcanvas(){
+  // Mark current page active inside the offcanvas
+  if (ocNav) {
+    const current = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+    ocNav.querySelectorAll('a').forEach(a => {
+      const href = (a.getAttribute('href') || '').split('/').pop().toLowerCase();
+      a.removeAttribute('aria-current');
+      if (href === current) a.setAttribute('aria-current', 'page');
+    });
+  }
     if (!ocNav) return;
     const main = document.querySelector('.main-nav');
     if (!main) return;
