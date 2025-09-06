@@ -143,7 +143,10 @@ if (!slider || !hero || !dockPanel) {
     const HIDE_GAP = 50;
     const SHOW_GAP = 70;
 
-    const small    = window.innerWidth <= 1024;
+const CONTACT_BURGER_BP =
+  parseInt(document.body.getAttribute('data-burger-bp') || '1024', 10);
+
+const small = window.innerWidth <= CONTACT_BURGER_BP;
 
     const isHidden = document.body.classList.contains('is-nav-hidden');
     let nextHidden = isHidden;
