@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>FD2P — Contact</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Get in touch with FD2P — Mechanical & Structural Engineering." />
+
+  <!-- Global site styles -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preload" as="image" href="assets/logo2.jpg" />
+
+  <!-- Page-local styles -->
+  <style>
+    .page-hero{ padding:48px 0 24px; border-bottom:1px solid var(--line); }
+.page-hero h1{ margin:8px 0 0; font-size:clamp(28px,4.4vw,40px); line-height:1.08; }
+/* Center hero */
+.page-hero .container{ text-align:center; }
+.page-hero p{ margin:10px auto 0; color:var(--muted); max-width:70ch; }
+/* Emphasized inline link in hero */
+.page-hero a.hero-link{
+  font-weight: 600;            /* bold */
+  font-size: 1.08em;           /* a bit larger */
+  text-decoration: none;       /* remove default underline */
+  color: inherit;              /* keep text color */
+  border-bottom: 2px solid var(--accent);  /* red line under the word */
+  padding-bottom: 1px;
+  cursor: pointer;
+}
+.page-hero a.hero-link:hover,
+.page-hero a.hero-link:focus-visible{
+  color: var(--accent);
+  border-bottom-width: 3px;
+  outline: none;
+}
+
+    .contact-grid{ display:grid; grid-template-columns:1.05fr .95fr; gap:28px; padding:0px clamp(24px, 6vw, 56px); }
+@media (max-width:980px){
+  .contact-grid{
+    grid-template-columns:1fr;
+    padding:28px clamp(18px, 6vw, 32px);
+  }
+}
+
+    .contact-card{ border:1px solid var(--line); border-radius:14px; padding:18px; display:grid; grid-template-columns:auto 1fr; gap:12px 14px; align-items:start; background:#fff; }
+    .contact-card + .contact-card{ margin-top:12px; }
+    .contact-card .icon{ width:36px; height:36px; border-radius:10px; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; }
+    .contact-card h3{ margin:2px 0 0; font-size:16px; }
+    .contact-card p{ margin:0; color:var(--muted); }
+    .contact-card a{ font-weight:700; text-decoration:none; }
+
+    .contact-form{ border:1px solid var(--line); border-radius:14px; padding:18px; background:#fff; }
+    .contact-form h2{ margin:0 0 8px; font-size:18px; }
+    .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    @media (max-width:680px){ .form-row{ grid-template-columns:1fr; } }
+    .field{ display:flex; flex-direction:column; gap:6px; }
+.field label{
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.2;
+}
+    .field input, .field textarea{
+      font:inherit; padding:12px; border:1px solid var(--line); border-radius:12px;
+      outline:none; background:#fff; transition:border-color .18s ease, box-shadow .18s ease;
+    }
+    .field input:focus, .field textarea:focus{ border-color:#d1d5db; box-shadow:0 0 0 3px rgba(227,6,19,.10); }
+    .field textarea{ min-height:77px; resize:vertical; }
+    .hint{ color:var(--muted); font-size:12px; margin-top:-2px; }
+
+    .actions{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:flex-start; margin-top:12px; }
+    .actions .btn{ height:40px; border-radius:12px; padding:0 18px; }
+
+    .map-wrap{ border-top:1px solid var(--line); }
+    .map-embed{ width:100%; height:420px; border:0; display:block; }
+
+    .site-footer{ margin-top:24px; }
+/* Button typography — match contact-card headings (Email/Phone/Location) */
+.btn,
+a.btn,
+button.btn,
+.menu-toggle,
+.offcanvas-panel .offcanvas-close {
+  font-weight: 700;   /* same boldness as .contact-card h3 */
+  font-size: 14px;    /* same size as .contact-card h3 */
+  line-height: 1.2;
+}
+  </style>
+</head>
+
+<body class="contact-page is-collapsed">
+  <!-- HEADER: small logo + same Menu as Home -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="FD2P — Home">
+        <img src="assets/logo2.jpg" alt="FD2P small logo"
+             onerror="this.onerror=null;this.src='assets/logo1.jpg'"/>
+      </a>
+
+      <nav class="main-nav" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="projects.html">Projects</a>
+        <a href="about.html">About</a>
+        <a class="btn btn-outline btn-outline-dark" href="contact.html" aria-current="page">Contact</a>
+      </nav>
+
+      <button class="menu-toggle btn btn-outline-dark" type="button"
+              aria-label="Open menu" aria-expanded="false">☰ Menu</button>
+    </div>
+  </header>
+
+  <!-- OFFCANVAS -->
+  <div class="offcanvas" aria-hidden="true">
+    <div class="offcanvas-backdrop"></div>
+    <aside class="offcanvas-panel" role="dialog" aria-modal="true" aria-label="Site menu">
+      <div class="offcanvas-head">
+        <a class="offcanvas-brand" href="index.html" aria-label="FD2P — Home">
+          <img src="assets/logo2.jpg" alt="FD2P small logo" />
+        </a>
+        <button class="offcanvas-close" type="button" aria-label="Close menu">✕</button>
+      </div>
+      <nav class="offcanvas-nav" aria-label="Mobile"></nav>
+    </aside>
+  </div>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <h1>Let's talk about your next project</h1>
+<p>
+  Contact us by phone or email, stop by our office, or send a note via the form below.
+  For direct lines to our specialists, explore the team page
+  <a class="hero-link" href="about.html">here</a>.
+  We’re happy to discuss your project.
+</p>
+    </div>
+  </section>
+
+  <!-- CONTACT GRID -->
+  <section class="section">
+    <div class="container contact-grid">
+      <div>
+        <div class="contact-card">
+          <div class="icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 xmlns="http://www.w3.org/2000/svg"><path d="M4 6h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm0 0 8 6 8-6"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <h3>Email</h3>
+            <p>Send an email at</p>
+            <a id="email-link" href="mailto:info@fd2p.com">info@fd2p.com</a>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <div class="icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 xmlns="http://www.w3.org/2000/svg"><path d="M22 16.92v2a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 2.08 4.18 2 2 0 0 1 4.06 2h2a2 2 0 0 1 2 1.72c.12.9.3 1.78.54 2.64a2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.44-1.06a2 2 0 0 1 2.11-.45c.86.24 1.74.42 2.64.54A2 2 0 0 1 22 16.92Z"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <h3>Phone</h3>
+            <p>Call us by</p>
+            <a id="phone-link" href="tel:+37256279949">+372 56 279 949</a>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <div class="icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7-4.35-7-10a7 7 0 1 1 14 0c0 5.65-7 10-7 10Z"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="11" r="3" stroke="currentColor" stroke-width="2"/></svg>
+          </div>
+          <div>
+            <h3>Location</h3>
+            <p>Visit us at</p>
+            <span>Kivimurru 34, Tallinn, Estonia</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <form class="contact-form" id="contactForm" autocomplete="on" novalidate>
+          <div class="form-row">
+            <div class="field">
+              <label for="name">Your name</label>
+              <input id="name" name="name" type="text" placeholder="John Wick" required />
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com" inputmode="email" required />
+            </div>
+          </div>
+          <div class="field" style="margin-top:12px;">
+            <label for="subject">Subject</label>
+            <input id="subject" name="subject" type="text" placeholder="Installation frame for subsea clamp" required />
+          </div>
+          <div class="field" style="margin-top:12px;">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Project scope, standards, expected timeline…" required></textarea>
+          </div>
+          <div class="actions">
+            <button class="btn btn-accent btn-outline-dark" type="submit">Send</button>
+            <button class="btn btn-outline btn-outline-dark" type="button" id="mailtoBtn">Open in Mail app</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+<!-- MAP -->
+<section class="map-wrap" aria-label="Map">
+  <iframe class="map-embed" title="Tallinn map"
+    src="https://www.openstreetmap.org/export/embed.html?bbox=24.775278%2C59.418389%2C24.805278%2C59.434389&layer=mapnik&marker=59.426389%2C24.790278"></iframe>
+</section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <span>© FD2P Technologies</span>
+    </div>
+  </footer>
+
+  <!-- Global scripts -->
+  <script src="js/main.js"></script>
+  <script>
+    (function(){
+      const form = document.getElementById('contactForm');
+      const mailBtn = document.getElementById('mailtoBtn');
+      const emailTo = (document.getElementById('email-link')?.getAttribute('href') || 'mailto:contact@example.com').replace('mailto','').replace(':','');
+
+      function buildMailto(){
+        const name = document.getElementById('name').value.trim();
+        const from = document.getElementById('email').value.trim();
+        const subject = document.getElementById('subject').value.trim() || 'Project inquiry';
+        const msg = document.getElementById('message').value.trim();
+        const body = [ name ? `Name: ${name}` : '', from ? `Email: ${from}` : '', '', msg ]
+          .filter(Boolean).join('%0D%0A');
+        return `mailto:${encodeURIComponent(emailTo)}?subject=${encodeURIComponent(subject)}&body=${body}`;
+      }
+
+      form?.addEventListener('submit', function(e){
+        e.preventDefault();
+        const ids = ['name','email','subject','message'];
+        let ok = true;
+        ids.forEach(id => {
+          const el = document.getElementById(id);
+          if (!el.checkValidity() || !el.value.trim()) { el.reportValidity?.(); ok = false; }
+        });
+        if (!ok) return;
+        window.location.href = buildMailto();
+      });
+
+      mailBtn?.addEventListener('click', function(){
+        window.location.href = buildMailto();
+      });
+    })();
+  </script>
+</body>
+</html>
