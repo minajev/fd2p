@@ -526,6 +526,39 @@ body.is-menu-open .offcanvas-panel{ transform:none }
 /* Lock scroll when menu open */
 body.is-menu-open{ overflow:hidden }
 
+/* Offcanvas: compact red lines for active page */
+.offcanvas-nav a{
+  display: flex;
+  align-items: center;
+  justify-content: center;     /* center text between lines */
+  gap: 8px;
+  padding: 12px 0;
+  text-decoration: none;
+}
+
+.offcanvas-nav a::before,
+.offcanvas-nav a::after{
+  content: "";
+  height: 2px;
+  background: transparent;     /* hidden by default */
+  border-radius: 2px;
+  width: clamp(20px, 6vw, 56px); /* << shorter lines (about 20–56px) */
+  flex: 0 0 auto;               /* fixed length, no stretching */
+}
+
+.offcanvas-nav a[aria-current="page"]::before,
+.offcanvas-nav a[aria-current="page"]::after{
+  background: var(--accent);    /* same red as header */
+  opacity: .95;
+}
+
+/* If nav links clone in as .btn, keep them flat */
+.offcanvas-nav a.btn{
+  border: 0 !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  padding-left: 0; padding-right: 0;
+}
 /* =========================
    Nav stability on resize
    ========================= */
@@ -731,3 +764,34 @@ body.preloading {
   }
 }
 
+/* ===== Page fade transition (dim overlay) ===== */
+:root{
+  --fade-duration: 300ms;
+  --fade-ease: cubic-bezier(.22,.61,.36,1);
+  --fade-color: rgba(0,0,0,.99);
+}
+
+.page-fade{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--fade-color);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--fade-duration) var(--fade-ease);
+  will-change: opacity;
+}
+
+body.is-fade-enter-start .page-fade{ opacity: 1; }
+body.is-fade-enter .page-fade{ opacity: 0; }
+
+body.is-fade-leave .page-fade{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .page-fade{ transition: none; }
+  body.is-fade-enter-start .page-fade,
+  body.is-fade-leave .page-fade{ opacity: 0; }
+}
