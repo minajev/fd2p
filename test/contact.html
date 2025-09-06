@@ -75,16 +75,6 @@
 
     .site-footer{ margin-top:24px; }
 
-/* Button typography — match contact-card headings (Email/Phone/Location) */
-.btn,
-a.btn,
-button.btn,
-.menu-toggle,
-.offcanvas-panel .offcanvas-close {
-  font-weight: 700;   /* same boldness as .contact-card h3 */
-  font-size: 14px;    /* same size as .contact-card h3 */
-  line-height: 1.2;
-}
 /* Muted blue links — scoped to Contact content (not header/offcanvas) */
 .contact-page {
   --link-muted: #2f6aa8;
@@ -110,6 +100,20 @@ button.btn,
 .contact-page .page-hero a:visited:not(.btn),
 .contact-page .section a:visited:not(.btn) {
   color: var(--link-muted-visited);
+}
+
+/* --- Exact 50px gaps above and below the contact grid --- */
+.contact-page .section{
+  padding: 50px 0;
+}
+
+.contact-page .contact-grid{
+  padding: 0 clamp(24px, 6vw, 56px);
+}
+@media (max-width: 980px){
+  .contact-page .contact-grid{
+    padding: 0 clamp(18px, 6vw, 32px);
+  }
 }
 
   </style>
