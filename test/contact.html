@@ -64,11 +64,15 @@
       outline:none; background:#fff; transition:border-color .18s ease, box-shadow .18s ease;
     }
     .field input:focus, .field textarea:focus{ border-color:#d1d5db; box-shadow:0 0 0 3px rgba(227,6,19,.10); }
-    .field textarea{ min-height:77px; resize:vertical; }
+    .field textarea{ min-height:75px; resize:vertical; }
     .hint{ color:var(--muted); font-size:12px; margin-top:-2px; }
 
     .actions{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:flex-start; margin-top:12px; }
-    .actions .btn{ height:40px; border-radius:12px; padding:0 18px; }
+.actions .btn{
+  height:42px;
+  border-radius:12px;
+  padding:0 18px;
+}
 
     .map-wrap{ border-top:1px solid var(--line); }
     .map-embed{ width:100%; height:420px; border:0; display:block; }
@@ -115,6 +119,60 @@
     padding: 0 clamp(18px, 6vw, 32px);
   }
 }
+/* Force same typography for all buttons */
+.btn {
+  font-size: 16px;       /* как у Home */
+  font-weight: 600;      /* как у Home */
+  line-height: 1.2;      /* как у Home */
+  font-family: inherit;  /* тот же шрифт, что и у body */
+}
+/* disable textarea's own resizer */
+.contact-form .field textarea {
+  resize: none;
+  min-height: 75px;
+  height: 100%;
+}
+
+/* make form positioned to host the handle */
+.contact-form{ position: relative; }
+
+/* draggable triangle in bottom-right of the form */
+.form-resize-handle{
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 18px; height: 18px;
+  cursor: nwse-resize;
+  /* draw a bold black triangle */
+  background:
+    linear-gradient(135deg, transparent 0 50%, #000 50% 100%);
+  border-radius: 2px;
+  opacity: .95;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+/* keep the triangle visible over form border radius */
+.contact-form{ overflow: visible; }
+
+/* Apply same animation as LEARN MORE to form buttons */
+.contact-form .btn {
+  transition: color .18s ease, background-color .18s ease,
+              border-color .18s ease, transform .12s ease, box-shadow .18s ease;
+}
+
+.contact-form .btn:hover,
+.contact-form .btn:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(0,0,0,.10);
+  outline: none;
+}
+
+.contact-form .btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(0,0,0,.08) inset;
+}
+
   </style>
 </head>
 
@@ -127,7 +185,7 @@
              onerror="this.onerror=null;this.src='assets/logo1.jpg'"/>
       </a>
 
-      <nav class="main-nav" aria-label="Primary">
+      <nav class="main-nav" aria-label="Primary" hidden>
         <a href="index.html">Home</a>
         <a href="services.html">Services</a>
         <a href="projects.html">Projects</a>
@@ -229,12 +287,16 @@
           </div>
           <div class="field" style="margin-top:12px;">
             <label for="message">Message</label>
-            <textarea id="message" name="message" placeholder="This message concerns the design and delivery of an installation frame for a subsea clamp…" required></textarea>
+<textarea id="message" name="message" 
+  placeholder="This message concerns the design and delivery of an installation&#10;frame for a subsea clamp…" 
+  required></textarea>
           </div>
           <div class="actions">
             <button class="btn btn-accent btn-outline-dark" type="submit">Send</button>
             <button class="btn btn-outline btn-outline-dark" type="button" id="mailtoBtn">Open in Mail app</button>
           </div>
+<!-- resize handle -->
+<span class="form-resize-handle" aria-hidden="true" title="Drag to resize form"></span>
         </form>
       </div>
     </div>
@@ -255,6 +317,7 @@
 
   <!-- Global scripts -->
   <script src="js/main.js"></script>
+
   <script>
     (function(){
       const form = document.getElementById('contactForm');
@@ -287,6 +350,54 @@
         window.location.href = buildMailto();
       });
     })();
-  </script>
+
+(function(){
+  const form = document.querySelector('.contact-form');
+  const handle = document.querySelector('.form-resize-handle');
+  if (!form || !handle) return;
+
+const message = form.querySelector('textarea');
+const MIN_H = 368;
+let startY = 0, startH = 0, startMsgH = 0, dragging = false;
+
+const onMove = (clientY) => {
+  const dy = clientY - startY;
+  const newH = Math.max(MIN_H, startH + dy);
+  form.style.height = newH + 'px';
+
+  if (message) {
+    const msgH = Math.max(75, startMsgH + dy);
+    message.style.height = msgH + 'px';
+  }
+};
+
+  const onMouseMove = (e) => { if (dragging) onMove(e.clientY); };
+  const onTouchMove = (e) => { if (dragging && e.touches[0]) onMove(e.touches[0].clientY); };
+
+  const stop = () => {
+    if (!dragging) return;
+    dragging = false;
+    document.body.style.userSelect = '';
+    window.removeEventListener('mousemove', onMouseMove);
+    window.removeEventListener('touchmove', onTouchMove, { passive:false });
+    window.removeEventListener('mouseup', stop);
+    window.removeEventListener('touchend', stop);
+  };
+
+const start = (clientY) => {
+  dragging = true;
+  startY = clientY;
+  startH = form.offsetHeight;
+  startMsgH = message ? message.offsetHeight : 0;    document.body.style.userSelect = 'none';
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('touchmove', onTouchMove, { passive:false });
+    window.addEventListener('mouseup', stop);
+    window.addEventListener('touchend', stop);
+  };
+
+  handle.addEventListener('mousedown', (e)=> { e.preventDefault(); start(e.clientY); });
+  handle.addEventListener('touchstart', (e)=> { e.preventDefault(); start(e.touches[0].clientY); }, { passive:false });
+})();
+</script>
 </body>
 </html>
