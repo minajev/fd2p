@@ -12,43 +12,52 @@
 
   <!-- Page-local styles -->
   <style>
-  /* Hard-hide top nav on narrow viewports BEFORE JS marks .js-ready */
-  @media (max-width:1024px){
-    .contact-page .site-header .main-nav{
+    /* Anti-flash: hide header bits until JS applies the correct state */
+    .contact-page:not(.js-ready-contact) .site-header .main-nav{
       position:absolute; right:0; top:0; height:var(--header-h);
       opacity:0; visibility:hidden; pointer-events:none;
     }
-    .contact-page .menu-toggle{ visibility:visible; opacity:1; }
-  }
+    .contact-page:not(.js-ready-contact) .menu-toggle{
+      opacity:0; visibility:hidden; pointer-events:none;
+    }
+
+    /* Desktop defaults for Contact (switched by .is-mobile-contact) */
+    .contact-page .menu-toggle { display: none; }
+    .contact-page .main-nav { display: flex; }
+
+    /* Mobile state toggled by JS based on data-burger-bp */
+    .contact-page.is-mobile-contact .menu-toggle { display: block; }
+    .contact-page.is-mobile-contact .main-nav { display: none; }
+
     .page-hero{ padding:48px 0 24px; border-bottom:1px solid var(--line); }
-.page-hero h1{ margin:8px 0 0; font-size:clamp(28px,4.4vw,40px); line-height:1.08; }
-/* Center hero */
-.page-hero .container{ text-align:center; }
-.page-hero p{ margin:10px auto 0; color:var(--muted); max-width:70ch; }
-/* Emphasized inline link in hero */
-.page-hero a.hero-link{
-  font-weight: 600;            /* bold */
-  font-size: 1.08em;           /* a bit larger */
-  text-decoration: none;       /* remove default underline */
-  color: inherit;              /* keep text color */
-  border-bottom: 2px solid var(--accent);  /* red line under the word */
-  padding-bottom: 1px;
-  cursor: pointer;
-}
-.page-hero a.hero-link:hover,
-.page-hero a.hero-link:focus-visible{
-  color: var(--accent);
-  border-bottom-width: 3px;
-  outline: none;
-}
+    .page-hero h1{ margin:8px 0 0; font-size:clamp(28px,4.4vw,40px); line-height:1.08; }
+    /* Center hero */
+    .page-hero .container{ text-align:center; }
+    .page-hero p{ margin:10px auto 0; color:var(--muted); max-width:70ch; }
+    /* Emphasized inline link in hero */
+    .page-hero a.hero-link{
+      font-weight: 600;
+      font-size: 1.08em;
+      text-decoration: none;
+      color: inherit;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 1px;
+      cursor: pointer;
+    }
+    .page-hero a.hero-link:hover,
+    .page-hero a.hero-link:focus-visible{
+      color: var(--accent);
+      border-bottom-width: 3px;
+      outline: none;
+    }
 
     .contact-grid{ display:grid; grid-template-columns:1.05fr .95fr; gap:28px; padding:0px clamp(24px, 6vw, 56px); }
-@media (max-width:980px){
-  .contact-grid{
-    grid-template-columns:1fr;
-    padding:28px clamp(18px, 6vw, 32px);
-  }
-}
+    @media (max-width:980px){
+      .contact-grid{
+        grid-template-columns:1fr;
+        padding:28px clamp(18px, 6vw, 32px);
+      }
+    }
 
     .contact-card{ border:1px solid var(--line); border-radius:14px; padding:18px; display:grid; grid-template-columns:auto 1fr; gap:12px 14px; align-items:start; background:#fff; }
     .contact-card + .contact-card{ margin-top:12px; }
@@ -60,24 +69,22 @@
     .contact-form{ border:1px solid var(--line); border-radius:14px; padding:18px; background:#fff; }
     .contact-form h2{ margin:0 0 8px; font-size:18px; }
 
-/* Базовые минимальные высоты (сейчас) */
-.contact-form { min-height: 368px; }
-.contact-form .field textarea { min-height: 75px; }
+    .contact-form { min-height: 368px; }
+    .contact-form .field textarea { min-height: 75px; }
 
-/* Когда форма перестраивается в один столбец */
-@media (max-width: 700px){
-  .contact-form { min-height: 468px; }
-  .contact-form .field textarea { min-height: 175px; }
-}
+    @media (max-width: 700px){
+      .contact-form { min-height: 468px; }
+      .contact-form .field textarea { min-height: 175px; }
+    }
 
     .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
     @media (max-width:680px){ .form-row{ grid-template-columns:1fr; } }
     .field{ display:flex; flex-direction:column; gap:6px; }
-.field label{
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 1.2;
-}
+    .field label{
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 1.2;
+    }
     .field input, .field textarea{
       font:inherit; padding:12px; border:1px solid var(--line); border-radius:12px;
       outline:none; background:#fff; transition:border-color .18s ease, box-shadow .18s ease;
@@ -87,115 +94,108 @@
     .hint{ color:var(--muted); font-size:12px; margin-top:-2px; }
 
     .actions{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:flex-start; margin-top:12px; }
-.actions .btn{
-  height:42px;
-  border-radius:12px;
-  padding:0 18px;
-}
+    .actions .btn{
+      height:42px;
+      border-radius:12px;
+      padding:0 18px;
+    }
 
     .map-wrap{ border-top:1px solid var(--line); }
     .map-embed{ width:100%; height:420px; border:0; display:block; }
 
     .site-footer{ margin-top:24px; }
 
-/* Muted blue links — scoped to Contact content (not header/offcanvas) */
-.contact-page {
-  --link-muted: #2f6aa8;
-  --link-muted-hover: #245a90;
-  --link-muted-visited: #2a5f98;
-}
+    /* Muted blue links — scoped to Contact content (not header/offcanvas) */
+    .contact-page {
+      --link-muted: #2f6aa8;
+      --link-muted-hover: #245a90;
+      --link-muted-visited: #2a5f98;
+    }
 
-.contact-page .page-hero a:not(.btn),
-.contact-page .section a:not(.btn) {
-  color: var(--link-muted);
-  text-decoration-color: currentColor;
-}
+    .contact-page .page-hero a:not(.btn),
+    .contact-page .section a:not(.btn) {
+      color: var(--link-muted);
+      text-decoration-color: currentColor;
+    }
 
-.contact-page .page-hero a:hover:not(.btn),
-.contact-page .section a:hover:not(.btn),
-.contact-page .page-hero a:focus-visible:not(.btn),
-.contact-page .section a:focus-visible:not(.btn) {
-  color: var(--link-muted-hover);
-  text-decoration-color: currentColor;
-  outline: none;
-}
+    .contact-page .page-hero a:hover:not(.btn),
+    .contact-page .section a:hover:not(.btn),
+    .contact-page .page-hero a:focus-visible:not(.btn),
+    .contact-page .section a:focus-visible:not(.btn) {
+      color: var(--link-muted-hover);
+      text-decoration-color: currentColor;
+      outline: none;
+    }
 
-.contact-page .page-hero a:visited:not(.btn),
-.contact-page .section a:visited:not(.btn) {
-  color: var(--link-muted-visited);
-}
+    .contact-page .page-hero a:visited:not(.btn),
+    .contact-page .section a:visited:not(.btn) {
+      color: var(--link-muted-visited);
+    }
 
-/* --- Exact 50px gaps above and below the contact grid --- */
-.contact-page .section{
-  padding: 50px 0;
-}
+    /* --- Exact 50px gaps above and below the contact grid --- */
+    .contact-page .section{ padding: 50px 0; }
 
-.contact-page .contact-grid{
-  padding: 0 clamp(24px, 6vw, 56px);
-}
-@media (max-width: 980px){
-  .contact-page .contact-grid{
-    padding: 0 clamp(18px, 6vw, 32px);
-  }
-}
-/* Force same typography for all buttons */
-.btn {
-  font-size: 16px;       /* как у Home */
-  font-weight: 600;      /* как у Home */
-  line-height: 1.2;      /* как у Home */
-  font-family: inherit;  /* тот же шрифт, что и у body */
-}
-/* disable textarea's own resizer */
-.contact-form .field textarea {
-  resize: none;
-  min-height: 75px;
-  height: 100%;
-}
+    .contact-page .contact-grid{ padding: 0 clamp(24px, 6vw, 56px); }
+    @media (max-width: 980px){
+      .contact-page .contact-grid{ padding: 0 clamp(18px, 6vw, 32px); }
+    }
 
-/* make form positioned to host the handle */
-.contact-form{ position: relative; }
+    /* Force same typography for all buttons */
+    .btn {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.2;
+      font-family: inherit;
+    }
 
-/* draggable triangle in bottom-right of the form */
-.form-resize-handle{
-  position: absolute;
-  right: 6px;
-  bottom: 6px;
-  width: 18px; height: 18px;
-  cursor: nwse-resize;
-  /* draw a bold black triangle */
-  background:
-    linear-gradient(135deg, transparent 0 50%, #000 50% 100%);
-  border-radius: 2px;
-  opacity: .95;
-  z-index: 2;
-  pointer-events: auto;
-}
+    /* disable textarea's own resizer */
+    .contact-form .field textarea {
+      resize: none;
+      min-height: 75px;
+      height: 100%;
+    }
 
-/* keep the triangle visible over form border radius */
-.contact-form{ overflow: visible; }
+    /* make form positioned to host the handle */
+    .contact-form{ position: relative; }
 
-/* Apply same animation as LEARN MORE to form buttons */
-.contact-form .btn {
-  transition: color .18s ease, background-color .18s ease,
-              border-color .18s ease, transform .12s ease, box-shadow .18s ease;
-}
+    /* draggable triangle in bottom-right of the form */
+    .form-resize-handle{
+      position: absolute;
+      right: 6px;
+      bottom: 6px;
+      width: 18px; height: 18px;
+      cursor: nwse-resize;
+      background: linear-gradient(135deg, transparent 0 50%, #000 50% 100%);
+      border-radius: 2px;
+      opacity: .95;
+      z-index: 2;
+      pointer-events: auto;
+    }
 
-.contact-form .btn:hover,
-.contact-form .btn:focus-visible {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 18px rgba(0,0,0,.10);
-  outline: none;
-}
+    /* keep the triangle visible over form border radius */
+    .contact-form{ overflow: visible; }
 
-.contact-form .btn:active {
-  transform: translateY(0);
-  box-shadow: 0 4px 10px rgba(0,0,0,.08) inset;
-}
+    /* Apply same animation as LEARN MORE to form buttons */
+    .contact-form .btn {
+      transition: color .18s ease, background-color .18s ease,
+                  border-color .18s ease, transform .12s ease, box-shadow .18s ease;
+    }
 
+    .contact-form .btn:hover,
+    .contact-form .btn:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(0,0,0,.10);
+      outline: none;
+    }
+
+    .contact-form .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 10px rgba(0,0,0,.08) inset;
+    }
   </style>
 </head>
 
-<body class="contact-page is-collapsed">
+<body class="contact-page is-collapsed" data-burger-bp="500">
   <!-- HEADER: small logo + same Menu as Home -->
   <header class="site-header" role="banner">
     <div class="container header-inner">
@@ -235,12 +235,12 @@
   <section class="page-hero">
     <div class="container">
       <h1>Let's talk about your next project</h1>
-<p>
-  Contact us by phone or email, stop by our office, or send a note via the form below.
-  For direct lines to our specialists, explore the team page
-  <a class="hero-link" href="about.html">here</a>.
-  We’re happy to discuss your project.
-</p>
+      <p>
+        Contact us by phone or email, stop by our office, or send a note via the form below.
+        For direct lines to our specialists, explore the team page
+        <a class="hero-link" href="about.html">here</a>.
+        We’re happy to discuss your project.
+      </p>
     </div>
   </section>
 
@@ -306,26 +306,26 @@
           </div>
           <div class="field" style="margin-top:12px;">
             <label for="message">Message</label>
-<textarea id="message" name="message" 
-  placeholder="This message concerns the design and delivery of an installation&#10;frame for a subsea clamp…" 
-  required></textarea>
+            <textarea id="message" name="message"
+              placeholder="This message concerns the design and delivery of an installation&#10;frame for a subsea clamp…"
+              required></textarea>
           </div>
           <div class="actions">
             <button class="btn btn-accent btn-outline-dark" type="submit">Send</button>
             <button class="btn btn-outline btn-outline-dark" type="button" id="mailtoBtn">Open in Mail app</button>
           </div>
-<!-- resize handle -->
-<span class="form-resize-handle" aria-hidden="true" title="Drag to resize form"></span>
+          <!-- resize handle -->
+          <span class="form-resize-handle" aria-hidden="true" title="Drag to resize form"></span>
         </form>
       </div>
     </div>
   </section>
 
-<!-- MAP -->
-<section class="map-wrap" aria-label="Map">
-  <iframe class="map-embed" title="Tallinn map"
-    src="https://www.openstreetmap.org/export/embed.html?bbox=24.775278%2C59.418389%2C24.805278%2C59.434389&layer=mapnik&marker=59.426389%2C24.790278"></iframe>
-</section>
+  <!-- MAP -->
+  <section class="map-wrap" aria-label="Map">
+    <iframe class="map-embed" title="Tallinn map"
+      src="https://www.openstreetmap.org/export/embed.html?bbox=24.775278%2C59.418389%2C24.805278%2C59.434389&layer=mapnik&marker=59.426389%2C24.790278"></iframe>
+  </section>
 
   <!-- FOOTER -->
   <footer class="site-footer">
@@ -370,53 +370,80 @@
       });
     })();
 
-(function(){
-  const form = document.querySelector('.contact-form');
-  const handle = document.querySelector('.form-resize-handle');
-  if (!form || !handle) return;
+    (function(){
+      const form = document.querySelector('.contact-form');
+      const handle = document.querySelector('.form-resize-handle');
+      if (!form || !handle) return;
 
-const message = form.querySelector('textarea');
-const MIN_H = 368;
-let startY = 0, startH = 0, startMsgH = 0, dragging = false;
+      const message = form.querySelector('textarea');
+      const MIN_H = 368;
+      let startY = 0, startH = 0, startMsgH = 0, dragging = false;
 
-const onMove = (clientY) => {
-  const dy = clientY - startY;
-  const newH = Math.max(MIN_H, startH + dy);
-  form.style.height = newH + 'px';
+      const onMove = (clientY) => {
+        const dy = clientY - startY;
+        const newH = Math.max(MIN_H, startH + dy);
+        form.style.height = newH + 'px';
 
-  if (message) {
-    const msgH = Math.max(75, startMsgH + dy);
-    message.style.height = msgH + 'px';
-  }
-};
+        if (message) {
+          const msgH = Math.max(75, startMsgH + dy);
+          message.style.height = msgH + 'px';
+        }
+      };
 
-  const onMouseMove = (e) => { if (dragging) onMove(e.clientY); };
-  const onTouchMove = (e) => { if (dragging && e.touches[0]) onMove(e.touches[0].clientY); };
+      const onMouseMove = (e) => { if (dragging) onMove(e.clientY); };
+      const onTouchMove = (e) => { if (dragging && e.touches[0]) onMove(e.touches[0].clientY); };
 
-  const stop = () => {
-    if (!dragging) return;
-    dragging = false;
-    document.body.style.userSelect = '';
-    window.removeEventListener('mousemove', onMouseMove);
-    window.removeEventListener('touchmove', onTouchMove, { passive:false });
-    window.removeEventListener('mouseup', stop);
-    window.removeEventListener('touchend', stop);
-  };
+      const stop = () => {
+        if (!dragging) return;
+        dragging = false;
+        document.body.style.userSelect = '';
+        window.removeEventListener('mousemove', onMouseMove);
+        window.removeEventListener('touchmove', onTouchMove, { passive:false });
+        window.removeEventListener('mouseup', stop);
+        window.removeEventListener('touchend', stop);
+      };
 
-const start = (clientY) => {
-  dragging = true;
-  startY = clientY;
-  startH = form.offsetHeight;
-  startMsgH = message ? message.offsetHeight : 0;    document.body.style.userSelect = 'none';
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('touchmove', onTouchMove, { passive:false });
-    window.addEventListener('mouseup', stop);
-    window.addEventListener('touchend', stop);
-  };
+      const start = (clientY) => {
+        dragging = true;
+        startY = clientY;
+        startH = form.offsetHeight;
+        startMsgH = message ? message.offsetHeight : 0;
+        document.body.style.userSelect = 'none';
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('touchmove', onTouchMove, { passive:false });
+        window.addEventListener('mouseup', stop);
+        window.addEventListener('touchend', stop);
+      };
 
-  handle.addEventListener('mousedown', (e)=> { e.preventDefault(); start(e.clientY); });
-  handle.addEventListener('touchstart', (e)=> { e.preventDefault(); start(e.touches[0].clientY); }, { passive:false });
-})();
-</script>
+      handle.addEventListener('mousedown', (e)=> { e.preventDefault(); start(e.clientY); });
+      handle.addEventListener('touchstart', (e)=> { e.preventDefault(); start(e.touches[0].clientY); }, { passive:false });
+    })();
+  </script>
+
+  <!-- Burger breakpoint controller -->
+  <script>
+    (function(){
+      var bp = parseInt(document.body.getAttribute('data-burger-bp') || '1024', 10);
+
+      function applyBreakpoint() {
+        var isMobile = window.innerWidth <= bp;
+        document.body.classList.toggle('is-mobile-contact', isMobile);
+      }
+
+      function init(){
+        applyBreakpoint();
+        document.body.classList.add('js-ready-contact'); // stop anti-flash styles
+      }
+
+      window.addEventListener('resize', applyBreakpoint);
+      window.addEventListener('orientationchange', applyBreakpoint);
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
 </body>
 </html>
