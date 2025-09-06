@@ -51,6 +51,17 @@
 
     .contact-form{ border:1px solid var(--line); border-radius:14px; padding:18px; background:#fff; }
     .contact-form h2{ margin:0 0 8px; font-size:18px; }
+
+/* Базовые минимальные высоты (сейчас) */
+.contact-form { min-height: 368px; }
+.contact-form .field textarea { min-height: 75px; }
+
+/* Когда форма перестраивается в один столбец */
+@media (max-width: 700px){
+  .contact-form { min-height: 468px; }
+  .contact-form .field textarea { min-height: 175px; }
+}
+
     .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
     @media (max-width:680px){ .form-row{ grid-template-columns:1fr; } }
     .field{ display:flex; flex-direction:column; gap:6px; }
