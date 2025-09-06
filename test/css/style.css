@@ -23,6 +23,17 @@
   --logo-scale:1;        /* large logo scale */
 }
 
+/* Prevent mobile nav flash before JS */
+@media (max-width:1024px){
+  .no-js .site-header .main-nav{
+    position:absolute; right:0; top:0; height:var(--header-h);
+    opacity:0; visibility:hidden; pointer-events:none;
+  }
+  .no-js .site-header .menu-toggle{
+    visibility:visible; opacity:1;
+  }
+}
+
 html{ scrollbar-gutter: stable both-edges; }
 /* Fallback for browsers without scrollbar-gutter support */
 @supports not (scrollbar-gutter: stable) {
@@ -319,7 +330,7 @@ body.is-nav-hidden .site-header .brand{ opacity:1; visibility:visible }
     pointer-events: none;
   }
   /* SHOW the burger button before JS sets is-nav-hidden */
-  body:not(.js-ready) .menu-toggle{ visibility: hidden; }
+body:not(.js-ready) .menu-toggle{ visibility: visible; opacity:1; }
   /* Make the small brand visible in pre-collapsed look */
   body:not(.js-ready) .site-header .brand{ opacity: 1; visibility: visible; pointer-events: auto; }
   /* Fully hide the big docked logo (not only opacity) */
