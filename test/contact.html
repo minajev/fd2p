@@ -69,14 +69,6 @@
     .contact-form{ border:1px solid var(--line); border-radius:14px; padding:18px; background:#fff; }
     .contact-form h2{ margin:0 0 8px; font-size:18px; }
 
-    .contact-form { min-height: 368px; }
-    .contact-form .field textarea { min-height: 75px; }
-
-    @media (max-width: 700px){
-      .contact-form { min-height: 468px; }
-      .contact-form .field textarea { min-height: 175px; }
-    }
-
     .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
     @media (max-width:680px){ .form-row{ grid-template-columns:1fr; } }
     .field{ display:flex; flex-direction:column; gap:6px; }
@@ -370,54 +362,126 @@
       });
     })();
 
-    (function(){
-      const form = document.querySelector('.contact-form');
-      const handle = document.querySelector('.form-resize-handle');
-      if (!form || !handle) return;
+(function () {
+  const form = document.querySelector('.contact-form');
+  const handle = document.querySelector('.form-resize-handle');
+  if (!form || !handle) return;
 
-      const message = form.querySelector('textarea');
-      const MIN_H = 368;
-      let startY = 0, startH = 0, startMsgH = 0, dragging = false;
+  const message = form.querySelector('textarea');
+  const actions = form.querySelector('.actions');
 
-      const onMove = (clientY) => {
-        const dy = clientY - startY;
-        const newH = Math.max(MIN_H, startH + dy);
-        form.style.height = newH + 'px';
+  // Match your CSS breakpoints/mins
+  function getMins() {
+    const narrow = window.innerWidth <= 700;
+    return {
+      form: narrow ? 528 : 368,
+      msg:  narrow ? 135 : 75
+    };
+  }
 
-        if (message) {
-          const msgH = Math.max(75, startMsgH + dy);
-          message.style.height = msgH + 'px';
-        }
-      };
+  // Compute available space for the textarea so its bottom aligns to the bottom of the form
+  function fitMessageToForm() {
+    if (!message) return;
 
-      const onMouseMove = (e) => { if (dragging) onMove(e.clientY); };
-      const onTouchMove = (e) => { if (dragging && e.touches[0]) onMove(e.touches[0].clientY); };
+    const { msg: minMsg } = getMins();
 
-      const stop = () => {
-        if (!dragging) return;
-        dragging = false;
-        document.body.style.userSelect = '';
-        window.removeEventListener('mousemove', onMouseMove);
-        window.removeEventListener('touchmove', onTouchMove, { passive:false });
-        window.removeEventListener('mouseup', stop);
-        window.removeEventListener('touchend', stop);
-      };
+    // Form paddings
+    const fs = getComputedStyle(form);
+    const padT = parseFloat(fs.paddingTop) || 0;
+    const padB = parseFloat(fs.paddingBottom) || 0;
 
-      const start = (clientY) => {
-        dragging = true;
-        startY = clientY;
-        startH = form.offsetHeight;
-        startMsgH = message ? message.offsetHeight : 0;
-        document.body.style.userSelect = 'none';
-        window.addEventListener('mousemove', onMouseMove);
-        window.addEventListener('touchmove', onTouchMove, { passive:false });
-        window.addEventListener('mouseup', stop);
-        window.addEventListener('touchend', stop);
-      };
+    // Inner height = content box without borders
+    const innerFormH = form.clientHeight - padT - padB;
 
-      handle.addEventListener('mousedown', (e)=> { e.preventDefault(); start(e.clientY); });
-      handle.addEventListener('touchstart', (e)=> { e.preventDefault(); start(e.touches[0].clientY); }, { passive:false });
-    })();
+    // Distance from the form's inner top to the textarea's inner top
+    const formTop = form.getBoundingClientRect().top;
+    const msgTop  = message.getBoundingClientRect().top;
+    const offsetTopInside = (msgTop - formTop) - padT;
+
+    // Height of actions block (including its top margin)
+    let actionsH = 0;
+    if (actions) {
+      const as = getComputedStyle(actions);
+      actionsH = actions.getBoundingClientRect().height + (parseFloat(as.marginTop) || 0);
+    }
+
+    // Space we can give to the textarea
+    const available = innerFormH - offsetTopInside - actionsH;
+
+    // Apply
+    const target = Math.max(minMsg, available);
+    message.style.height = target + 'px';
+    message.style.minHeight = (getMins().msg) + 'px'; // keep min in sync with breakpoint
+  }
+
+  // Keep min-heights in sync with CSS and do an initial fit
+  function applyMinHeights() {
+    const { form: minForm, msg: minMsg } = getMins();
+    form.style.minHeight = minForm + 'px';
+    message.style.minHeight = minMsg + 'px';
+    fitMessageToForm();
+  }
+
+  // Initialize
+  applyMinHeights();
+
+  // Auto-update on window changes
+  window.addEventListener('resize', applyMinHeights);
+  window.addEventListener('orientationchange', applyMinHeights);
+
+  // Also observe actual size changes of the form (e.g., fonts/layout)
+  const ro = new ResizeObserver(applyMinHeights);
+  ro.observe(form);
+
+  // Drag-to-resize logic
+  let startY = 0, startFormH = 0, startMsgH = 0, dragging = false;
+
+  const onMove = (clientY) => {
+    const { form: minForm, msg: minMsg } = getMins();
+    const dy = clientY - startY;
+
+    // Resize the form
+    const newFormH = Math.max(minForm, startFormH + dy);
+    form.style.height = newFormH + 'px';
+
+    // Resize the textarea along the way (never below min)
+    const newMsgH = Math.max(minMsg, startMsgH + dy);
+    message.style.height = newMsgH + 'px';
+
+    // Final snap to bottom, accounting for paddings/buttons
+    fitMessageToForm();
+  };
+
+  const onMouseMove = (e) => { if (dragging) onMove(e.clientY); };
+  const onTouchMove = (e) => { if (dragging && e.touches[0]) onMove(e.touches[0].clientY); };
+
+  const stop = () => {
+    if (!dragging) return;
+    dragging = false;
+    document.body.style.userSelect = '';
+    window.removeEventListener('mousemove', onMouseMove);
+    window.removeEventListener('touchmove', onTouchMove, { passive: false });
+    window.removeEventListener('mouseup', stop);
+    window.removeEventListener('touchend', stop);
+    fitMessageToForm(); // clean snap after release
+  };
+
+  const start = (clientY) => {
+    dragging = true;
+    startY = clientY;
+    startFormH = form.offsetHeight;
+    startMsgH = message ? message.offsetHeight : 0;
+    document.body.style.userSelect = 'none';
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
+    window.addEventListener('mouseup', stop);
+    window.addEventListener('touchend', stop);
+  };
+
+  handle.addEventListener('mousedown', (e) => { e.preventDefault(); start(e.clientY); });
+  handle.addEventListener('touchstart', (e) => { e.preventDefault(); start(e.touches[0].clientY); }, { passive: false });
+})();
+
   </script>
 
   <!-- Burger breakpoint controller -->
