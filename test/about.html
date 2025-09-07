@@ -54,7 +54,7 @@
     .about-list li{ margin:6px 0; }
 
     /* Team strip (5 cards) */
-    .team-strip{ padding: 24px 0 8px; }
+.team-strip { padding: 40px clamp(24px, 6vw, 26px); }
     .team-title{ margin:0 0 14px; font-size:20px; }
     .team{ display:grid; grid-template-columns: repeat(5, 1fr); gap:12px; }
     @media (max-width: 1100px){ .team{ grid-template-columns: repeat(3, 1fr); } }
@@ -119,8 +119,112 @@
   max-width: 100%;
 }
 
-.team-strip {
-  padding: 40px clamp(24px, 6vw, 26px);}
+.page-hero ul,
+.page-hero li {
+  color: var(--muted);
+}
+
+/* Team cards: photo on top, text below */
+.team .person{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  padding: 12px;
+  height: 100%;
+}
+
+.team .person img{
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 1px;
+  border: none;
+  background: #f6f7f9;
+}
+
+.team .person h3{
+  margin: 2px 0 0;
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.team .person .role{
+  margin: 4px 0 8px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* Email/Phone block */
+.team .person .meta{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+
+.team .person .meta .line{
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+  margin-top: 2px;
+}
+
+/* Make labels visible and bold */
+.team .person .meta .label {
+  font-weight: 600;            /* bold text */
+  color: #000;                 /* black text */
+  min-width: 60px;             /* keeps some spacing */
+  display: inline-block;
+}
+
+.team .person .meta a{
+  border: none;
+  padding: 0;
+  font-weight: 700;
+  color: var(--link-muted);
+  text-decoration: none;
+}
+.team .person .meta a:hover,
+.team .person .meta a:focus-visible{
+  color: var(--link-muted-hover);
+  outline: none;
+}
+.team .person .meta a:visited{
+  color: var(--link-muted-visited);
+}
+
+.team{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+/* Keep all text inside the card */
+.team .person { overflow: hidden; }
+
+/* Allow wrapping on label+value rows */
+.team .person .meta .line {
+  flex-wrap: wrap;
+}
+
+/* Make long links wrap inside the card instead of overflowing */
+.team .person .meta a {
+  display: inline-block;
+  max-width: 100%;
+  overflow-wrap: anywhere;   /* modern, safest */
+  word-break: break-word;    /* fallback */
+  white-space: normal;
+}
+
+/* Also allow names/roles to wrap safely if needed */
+.team .person h3,
+.team .person .role {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
   </style>
 </head>
 
@@ -188,72 +292,95 @@
   </div>
 </section>
 
-    <!-- TEAM (5 people) -->
-    <div class="container team-strip">
-      <h2 class="team-title">Team & Direct Contacts</h2>
-      <div class="team" role="list">
-        <!-- 1 -->
-        <div class="person" role="listitem">
-          <img src="assets/Engineer1.jpg" alt="Engeneer1" />
-          <div>
-            <h3>Engineer 1</h3>
-            <div class="role">Project Engineer</div>
-          </div>
-          <div class="meta">
-            <a href="tel:+37256279949">+372 56 279 949</a>
-            <a href="mailto:info@fd2p.com">info@fd2p.com</a>
-          </div>
+<!-- TEAM (5 people) -->
+<div class="container team-strip">
+  <h2 class="team-title">Team & Direct Contacts</h2>
+  <div class="team" role="list">
+    <!-- 1 -->
+    <div class="person" role="listitem">
+      <img src="assets/Engineer1.jpg" alt="Engineer 1" />
+      <h3>Maksim Minajev</h3>
+      <div class="role">Project Engineer</div>
+      <div class="meta">
+        <div class="line">
+          <span class="label">Phone:</span>
+          <a href="tel:+37256279949">+372 56 279 949</a>
         </div>
-        <!-- 2 -->
-        <div class="person" role="listitem">
-          <img src="assets/Engineer2.jpg" alt="Engeneer2" />
-          <div>
-            <h3>Engineer 2</h3>
-            <div class="role">Project Engineer</div>
-          </div>
-          <div class="meta">
-            <a href="tel:+37256279949">+372 56 279 949</a>
-            <a href="mailto:info@fd2p.com">info@fd2p.com</a>
-          </div>
-        </div>
-        <!-- 3 -->
-        <div class="person" role="listitem">
-          <img src="assets/Engineer3.jpg" alt="Engeneer3" />
-          <div>
-            <h3>Engineer 3</h3>
-            <div class="role">Project Engineer</div>
-          </div>
-          <div class="meta">
-            <a href="tel:+37256279949">+372 56 279 949</a>
-            <a href="mailto:info@fd2p.com">info@fd2p.com</a>
-          </div>
-        </div>
-        <!-- 4 -->
-        <div class="person" role="listitem">
-          <img src="assets/Engineer4.jpg" alt="Engeneer4" />
-          <div>
-            <h3>Engineer 4</h3>
-            <div class="role">Project Engineer</div>
-          </div>
-          <div class="meta">
-            <a href="tel:+37256279949">+372 56 279 949</a>
-            <a href="mailto:info@fd2p.com">info@fd2p.com</a>
-          </div>
-        </div>
-        <!-- 5 -->
-        <div class="person" role="listitem">
-          <img src="assets/Engineer5.jpg" alt="Engeneer5" />
-          <div>
-            <h3>Engineer 5</h3>
-            <div class="role">Project Engineer</div>
-          </div>
-          <div class="meta">
-            <a href="tel:+37256279949">+372 56 279 949</a>
-            <a href="mailto:info@fd2p.com">info@fd2p.com</a>
-          </div>
+        <div class="line">
+          <span class="label">Email:</span>
+          <a href="mailto:maksim.minajev@fd2p.com">maksim.minajev@fd2p.com</a>
         </div>
       </div>
     </div>
+
+    <!-- 2 -->
+    <div class="person" role="listitem">
+      <img src="assets/Engineer2.jpg" alt="Engineer 2" />
+      <h3>Maxim Zuev</h3>
+      <div class="role">Project Engineer</div>
+      <div class="meta">
+        <div class="line">
+          <span class="label">Phone:</span>
+          <a href="tel:+37256279949">+372 56 279 949</a>
+        </div>
+        <div class="line">
+          <span class="label">Email:</span>
+          <a href="mailto:maxim.zuev@fd2p.com">maxim.zuev@fd2p.com</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="person" role="listitem">
+      <img src="assets/Engineer3.jpg" alt="Engineer 3" />
+      <h3>Sergei Oksanen</h3>
+      <div class="role">Project Engineer</div>
+      <div class="meta">
+        <div class="line">
+          <span class="label">Phone:</span>
+          <a href="tel:+37256279949">+372 56 279 949</a>
+        </div>
+        <div class="line">
+          <span class="label">Email:</span>
+          <a href="mailto:sergei.oksanen@fd2p.com">sergei.oksanen@fd2p.com</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="person" role="listitem">
+      <img src="assets/Engineer4.jpg" alt="Engineer 4" />
+      <h3>Maksim Rozinfeld</h3>
+      <div class="role">Project Engineer</div>
+      <div class="meta">
+        <div class="line">
+          <span class="label">Phone:</span>
+          <a href="tel:+37256279949">+372 56 279 949</a>
+        </div>
+        <div class="line">
+          <span class="label">Email:</span>
+          <a href="mailto:maksim.rozinfeld@fd2p.com">maksim.rozinfeld@fd2p.com</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="person" role="listitem">
+      <img src="assets/Engineer5.jpg" alt="Engineer 5" />
+      <h3>Timur Klepikovski</h3>
+      <div class="role">Project Engineer</div>
+      <div class="meta">
+        <div class="line">
+          <span class="label">Phone:</span>
+          <a href="tel:+37256279949">+372 56 279 949</a>
+        </div>
+        <div class="line">
+          <span class="label">Email:</span>
+          <a href="mailto:timur.klepikovski@fd2p.com">timur.klepikovski@fd2p.com</a>
+        </div>
+      </div>
+    </div>
+  </div>
   </section>
 
   <!-- FOOTER -->
