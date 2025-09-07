@@ -75,6 +75,20 @@
     .person .meta{ grid-column: 1 / -1; display:flex; gap:10px; flex-wrap:wrap; }
     .person .meta a{ border:1px solid var(--line); border-radius:10px; padding:6px 10px; }
 
+.person .meta a {
+  color: var(--link-muted);
+  text-decoration: none;
+}
+
+.person .meta a:hover,
+.person .meta a:focus {
+  color: var(--link-muted-hover);
+}
+
+.person .meta a:visited {
+  color: var(--link-muted-visited);
+}
+
     /* Link colors scoped to About content */
     .about-page {
       --link-muted: #2f6aa8;
