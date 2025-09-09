@@ -34,51 +34,33 @@ document.documentElement.classList.remove('no-js');
 const PRELOADER_MIN_MS = 1000; // minimum preloader display time
 
 // ---------------- Page fade transitions ----------------
-(function setupPageFade() {
-  const DURATION = 360;
+(function setupPageFade(){
+  const DURATION = 360; // sync with --fade-duration
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  let fade = document.querySelector('.page-fade');
-  if (!fade) {
-    fade = document.createElement('div');
-    fade.className = 'page-fade';
-    document.body.appendChild(fade);
-  }
+  // create overlay once (no HTML edits needed)
+  const fade = document.createElement('div');
+  fade.className = 'page-fade';
+  document.body.appendChild(fade);
 
-  function clearFade() {
-    document.body.classList.remove('is-fade-enter-start', 'is-fade-enter', 'is-fade-leave');
-    fade.style.removeProperty('opacity');
-  }
-
-  function enterFadeOnce() {
+  // Enter animation on load (dark -> clear)
+  requestAnimationFrame(() => {
     if (reduce) return;
-    clearFade();
     document.body.classList.add('is-fade-enter-start');
+    // next frame triggers transition to clear
     requestAnimationFrame(() => {
       document.body.classList.add('is-fade-enter');
       document.body.classList.remove('is-fade-enter-start');
       const cleanup = () => document.body.classList.remove('is-fade-enter');
-      const onEnd = e => { if (e.propertyName === 'opacity') cleanup(); };
-      fade.addEventListener('transitionend', onEnd, { once: true });
-      setTimeout(cleanup, DURATION + 120);
+      fade.addEventListener('transitionend', (e) => {
+        if (e.propertyName === 'opacity') cleanup();
+      }, { once: true });
+      setTimeout(cleanup, DURATION + 80); // fallback
     });
-  }
+  });
 
-  function leaveFadeAnd(callback) {
-    if (reduce) { callback(); return; }
-    clearFade();
-    document.body.classList.add('is-fade-leave');
-    const go = () => { callback(); };
-    const onEnd = e => { if (e.propertyName === 'opacity') go(); };
-    fade.addEventListener('transitionend', onEnd, { once: true });
-    setTimeout(go, DURATION + 120);
-  }
-
-  function navigateWithFade(url) {
-    leaveFadeAnd(() => { location.href = url; });
-  }
-
-  function isInternalLink(a) {
+  // Helpers
+  function isInternalLink(a){
     if (!a || a.target === '_blank') return false;
     const href = a.getAttribute('href') || '';
     if (href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return false;
@@ -88,40 +70,57 @@ const PRELOADER_MIN_MS = 1000; // minimum preloader display time
     } catch { return false; }
   }
 
-  document.addEventListener('click', e => {
+  function navigateWithFade(url){
+    if (reduce) { location.href = url; return; }
+    try { if (typeof closeMenu === 'function') closeMenu(); } catch(e){}
+
+    // Force a reflow so the next class change animates for sure
+    // (avoids "blink" when the browser batches writes)
+    // eslint-disable-next-line no-unused-expressions
+    fade.offsetWidth;
+
+    let navigated = false;
+    const go = () => {
+      if (!navigated) { navigated = true; location.href = url; }
+    };
+
+    // Start fade-out on the next frame to guarantee paint
+    requestAnimationFrame(() => {
+      document.body.classList.add('is-fade-leave');
+      const onEnd = (e) => { if (e.propertyName === 'opacity') go(); };
+      fade.addEventListener('transitionend', onEnd, { once: true });
+      setTimeout(go, DURATION + 100); // safety fallback
+    });
+  }
+
+  // Intercept internal link clicks
+  document.addEventListener('click', (e) => {
     const a = e.target.closest?.('a');
     if (!a || !isInternalLink(a)) return;
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    const url = a.href.replace(/#.*$/, '');
-    if (url === location.href.replace(/#.*$/, '')) return;
+    const url = a.href.replace(/#.*$/,'');
+    if (url === location.href.replace(/#.*$/,'')) return;
     e.preventDefault();
     navigateWithFade(url);
   });
 
-  // Initial page entry
-  requestAnimationFrame(enterFadeOnce);
-
-  // Back/forward navigation: show fade-out too
-  window.addEventListener('popstate', () => {
-    leaveFadeAnd(() => {
-      // After fade, browser will restore the previous page
-      history.go(0);
-    });
-  });
-
-  // BFCache restore: ensure overlay clears
-  window.addEventListener('pageshow', ev => {
-    clearFade();
-    if (!reduce && ev.persisted) enterFadeOnce();
-  });
-
-  // Safety: if page was hidden/visible, ensure no stuck overlay
-  window.addEventListener('pagehide', clearFade);
-  document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') clearFade();
+  // Handle BFCache restores
+  window.addEventListener('pageshow', (ev) => {
+    if (reduce) return;
+    if (ev.persisted) {
+      document.body.classList.add('is-fade-enter-start');
+      requestAnimationFrame(() => {
+        document.body.classList.add('is-fade-enter');
+        document.body.classList.remove('is-fade-enter-start');
+        const cleanup = () => document.body.classList.remove('is-fade-enter');
+        fade.addEventListener('transitionend', (e) => {
+          if (e.propertyName === 'opacity') cleanup();
+        }, { once: true });
+        setTimeout(cleanup, DURATION + 80);
+      });
+    }
   });
 })();
-
 
 
 // Early exit for pages without hero/slider (still wire up menu)
