@@ -34,11 +34,10 @@ document.documentElement.classList.remove('no-js');
 const PRELOADER_MIN_MS = 1000; // minimum preloader display time
 
 // ---------------- Page fade transitions ----------------
-(function setupPageFade(){
-  const DURATION = 360; // keep in sync with CSS if you use a CSS variable
+(function setupPageFade() {
+  const DURATION = 360;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Create (or reuse) a single overlay element
   let fade = document.querySelector('.page-fade');
   if (!fade) {
     fade = document.createElement('div');
@@ -46,15 +45,12 @@ const PRELOADER_MIN_MS = 1000; // minimum preloader display time
     document.body.appendChild(fade);
   }
 
-  // Hard reset for any stuck states
-function clearFade() {
-  document.body.classList.remove('is-fade-enter-start', 'is-fade-enter', 'is-fade-leave');
-  // Important: remove inline opacity so CSS can animate to black on leave
-  fade.style.removeProperty('opacity');
-}
+  function clearFade() {
+    document.body.classList.remove('is-fade-enter-start', 'is-fade-enter', 'is-fade-leave');
+    fade.style.removeProperty('opacity');
+  }
 
-  // Entry animation (only when appropriate)
-  function enterFadeOnce(){
+  function enterFadeOnce() {
     if (reduce) return;
     clearFade();
     document.body.classList.add('is-fade-enter-start');
@@ -62,34 +58,27 @@ function clearFade() {
       document.body.classList.add('is-fade-enter');
       document.body.classList.remove('is-fade-enter-start');
       const cleanup = () => document.body.classList.remove('is-fade-enter');
-      const onEnd = (e) => { if (e.propertyName === 'opacity') cleanup(); };
+      const onEnd = e => { if (e.propertyName === 'opacity') cleanup(); };
       fade.addEventListener('transitionend', onEnd, { once: true });
-      setTimeout(cleanup, DURATION + 120); // safety fallback
+      setTimeout(cleanup, DURATION + 120);
     });
   }
 
-  // Navigate with fade-out
-  function navigateWithFade(url){
-    if (reduce) { location.href = url; return; }
-    try { if (typeof closeMenu === 'function') closeMenu(); } catch(e){}
-
-    // Ensure next frame paints
-    void fade.offsetWidth;
-
-    let navigated = false;
-    const go = () => { if (!navigated) { navigated = true; location.href = url; } };
-
-    requestAnimationFrame(() => {
-      clearFade();
-      document.body.classList.add('is-fade-leave');
-      const onEnd = (e) => { if (e.propertyName === 'opacity') go(); };
-      fade.addEventListener('transitionend', onEnd, { once: true });
-      setTimeout(go, DURATION + 120); // safety fallback
-    });
+  function leaveFadeAnd(callback) {
+    if (reduce) { callback(); return; }
+    clearFade();
+    document.body.classList.add('is-fade-leave');
+    const go = () => { callback(); };
+    const onEnd = e => { if (e.propertyName === 'opacity') go(); };
+    fade.addEventListener('transitionend', onEnd, { once: true });
+    setTimeout(go, DURATION + 120);
   }
 
-  // Intercept only internal links
-  function isInternalLink(a){
+  function navigateWithFade(url) {
+    leaveFadeAnd(() => { location.href = url; });
+  }
+
+  function isInternalLink(a) {
     if (!a || a.target === '_blank') return false;
     const href = a.getAttribute('href') || '';
     if (href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return false;
@@ -99,33 +88,35 @@ function clearFade() {
     } catch { return false; }
   }
 
-  document.addEventListener('click', (e) => {
+  document.addEventListener('click', e => {
     const a = e.target.closest?.('a');
     if (!a || !isInternalLink(a)) return;
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    const url = a.href.replace(/#.*$/,'');
-    if (url === location.href.replace(/#.*$/,'')) return;
+    const url = a.href.replace(/#.*$/, '');
+    if (url === location.href.replace(/#.*$/, '')) return;
     e.preventDefault();
     navigateWithFade(url);
   });
 
-  // Initial enter
+  // Initial page entry
   requestAnimationFrame(enterFadeOnce);
 
-  // BFCache / Back-Forward restore: always clear first
-  window.addEventListener('pageshow', (ev) => {
-    clearFade();
-    if (reduce) return;
-    if (ev.persisted) enterFadeOnce();
+  // Back/forward navigation: show fade-out too
+  window.addEventListener('popstate', () => {
+    leaveFadeAnd(() => {
+      // After fade, browser will restore the previous page
+      history.go(0);
+    });
   });
 
-  // History navigation safety
-  window.addEventListener('popstate', clearFade);
+  // BFCache restore: ensure overlay clears
+  window.addEventListener('pageshow', ev => {
+    clearFade();
+    if (!reduce && ev.persisted) enterFadeOnce();
+  });
 
-  // Page is being hidden (helps on Safari/Firefox)
+  // Safety: if page was hidden/visible, ensure no stuck overlay
   window.addEventListener('pagehide', clearFade);
-
-  // When tab becomes visible again, ensure overlay isn’t stuck
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') clearFade();
   });
