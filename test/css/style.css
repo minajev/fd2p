@@ -798,24 +798,21 @@ body.preloading {
   --fade-color: rgba(0,0,0,.99);
 }
 
+/* Page fade overlay */
 .page-fade{
   position: fixed;
   inset: 0;
-  z-index: 9999;
-  background: var(--fade-color);
+  background: #000;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--fade-duration) var(--fade-ease);
-  will-change: opacity;
+  transition: opacity .36s ease;
+  z-index: 9999;
 }
 
 body.is-fade-enter-start .page-fade{ opacity: 1; }
-body.is-fade-enter .page-fade{ opacity: 0; }
+body.is-fade-enter  .page-fade{ opacity: 0; }
 
-body.is-fade-leave .page-fade{
-  opacity: 1;
-  pointer-events: auto;
-}
+body.is-fade-leave .page-fade{ opacity: 1; }
 
 @media (prefers-reduced-motion: reduce){
   .page-fade{ transition: none; }
@@ -917,6 +914,7 @@ body.is-fade-leave .page-fade{
     margin: 4px 0;
   }
 }
+
 
 
 
