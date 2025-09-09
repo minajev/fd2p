@@ -47,10 +47,11 @@ const PRELOADER_MIN_MS = 1000; // minimum preloader display time
   }
 
   // Hard reset for any stuck states
-  function clearFade() {
-    document.body.classList.remove('is-fade-enter-start', 'is-fade-enter', 'is-fade-leave');
-    fade.style.opacity = '0'; // force-clear opacity in case transitionend didn’t fire
-  }
+function clearFade() {
+  document.body.classList.remove('is-fade-enter-start', 'is-fade-enter', 'is-fade-leave');
+  // Important: remove inline opacity so CSS can animate to black on leave
+  fade.style.removeProperty('opacity');
+}
 
   // Entry animation (only when appropriate)
   function enterFadeOnce(){
