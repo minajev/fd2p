@@ -846,12 +846,75 @@ body.is-fade-leave        .page-fade{ opacity: 1; pointer-events: auto; }
 }
 
 .site-footer {
-  background: linear-gradient(135deg, #1c1c1c, #2e2e2e); /* красивый градиент */
+  position: relative;
+  overflow: hidden;
   color: #e5e5e5;
   padding: 50px 0 40px;
   font-size: 0.95rem;
   line-height: 1.6;
   margin-top: 40px;
+
+  /* Base dark gradient */
+  background: linear-gradient(
+    -45deg,
+    #101010 0%,
+    #1b1b1b 50%,
+    #2e2e2e 100%
+  );
+}
+
+.site-footer {
+  position: relative;
+  overflow: hidden;
+  color: #e5e5e5;
+  padding: 50px 0 40px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-top: 40px;
+
+  /* Base dark gradient background */
+  background: linear-gradient(
+    -45deg,
+    #101010 0%,
+    #1b1b1b 50%,
+    #2e2e2e 100%
+  );
+}
+
+/* Wider vertical wave with softer brightness */
+.site-footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;             /* start far left */
+  width: 120%;             /* much wider wave */
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+
+  /* softer, darker vertical band */
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.05) 40%,
+    rgba(255, 255, 255, 0.10) 50%,
+    rgba(255, 255, 255, 0.05) 60%,
+    transparent 100%
+  );
+
+  animation: waveSweep 8s linear infinite;
+}
+
+/* Footer content stays above the wave */
+.site-footer > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Left to right sweep */
+@keyframes waveSweep {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(220%); }
 }
 
 .site-footer .container {
