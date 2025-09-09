@@ -793,7 +793,7 @@ body.preloading {
 
 /* ===== Page fade transition (dim overlay) ===== */
 :root{
-  --fade-duration: 300ms;
+  --fade-duration: 360ms;
   --fade-ease: cubic-bezier(.22,.61,.36,1);
   --fade-color: rgba(0,0,0,.99);
 }
@@ -801,21 +801,16 @@ body.preloading {
 .page-fade{
   position: fixed;
   inset: 0;
-  z-index: 9999;
+  z-index: 400;
   background: var(--fade-color);
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--fade-duration) var(--fade-ease);
-  will-change: opacity;
 }
 
-body.is-fade-enter-start .page-fade{ opacity: 1; }
-body.is-fade-enter .page-fade{ opacity: 0; }
-
-body.is-fade-leave .page-fade{
-  opacity: 1;
-  pointer-events: auto;
-}
+body.is-fade-enter-start .page-fade{ opacity: 1; pointer-events: auto; }
+body.is-fade-enter        .page-fade{ opacity: 0; }
+body.is-fade-leave        .page-fade{ opacity: 1; pointer-events: auto; }
 
 @media (prefers-reduced-motion: reduce){
   .page-fade{ transition: none; }
