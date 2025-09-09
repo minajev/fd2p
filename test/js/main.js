@@ -35,31 +35,59 @@ const PRELOADER_MIN_MS = 1000; // minimum preloader display time
 
 // ---------------- Page fade transitions ----------------
 (function setupPageFade(){
-  const DURATION = 360; // sync with --fade-duration
+  const DURATION = 360; // keep in sync with CSS if you use a CSS variable
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // create overlay once (no HTML edits needed)
-  const fade = document.createElement('div');
-  fade.className = 'page-fade';
-  document.body.appendChild(fade);
+  // Create (or reuse) a single overlay element
+  let fade = document.querySelector('.page-fade');
+  if (!fade) {
+    fade = document.createElement('div');
+    fade.className = 'page-fade';
+    document.body.appendChild(fade);
+  }
 
-  // Enter animation on load (dark -> clear)
-  requestAnimationFrame(() => {
+  // Hard reset for any stuck states
+  function clearFade() {
+    document.body.classList.remove('is-fade-enter-start', 'is-fade-enter', 'is-fade-leave');
+    fade.style.opacity = '0'; // force-clear opacity in case transitionend didn’t fire
+  }
+
+  // Entry animation (only when appropriate)
+  function enterFadeOnce(){
     if (reduce) return;
+    clearFade();
     document.body.classList.add('is-fade-enter-start');
-    // next frame triggers transition to clear
     requestAnimationFrame(() => {
       document.body.classList.add('is-fade-enter');
       document.body.classList.remove('is-fade-enter-start');
       const cleanup = () => document.body.classList.remove('is-fade-enter');
-      fade.addEventListener('transitionend', (e) => {
-        if (e.propertyName === 'opacity') cleanup();
-      }, { once: true });
-      setTimeout(cleanup, DURATION + 80); // fallback
+      const onEnd = (e) => { if (e.propertyName === 'opacity') cleanup(); };
+      fade.addEventListener('transitionend', onEnd, { once: true });
+      setTimeout(cleanup, DURATION + 120); // safety fallback
     });
-  });
+  }
 
-  // Helpers
+  // Navigate with fade-out
+  function navigateWithFade(url){
+    if (reduce) { location.href = url; return; }
+    try { if (typeof closeMenu === 'function') closeMenu(); } catch(e){}
+
+    // Ensure next frame paints
+    void fade.offsetWidth;
+
+    let navigated = false;
+    const go = () => { if (!navigated) { navigated = true; location.href = url; } };
+
+    requestAnimationFrame(() => {
+      clearFade();
+      document.body.classList.add('is-fade-leave');
+      const onEnd = (e) => { if (e.propertyName === 'opacity') go(); };
+      fade.addEventListener('transitionend', onEnd, { once: true });
+      setTimeout(go, DURATION + 120); // safety fallback
+    });
+  }
+
+  // Intercept only internal links
   function isInternalLink(a){
     if (!a || a.target === '_blank') return false;
     const href = a.getAttribute('href') || '';
@@ -70,30 +98,6 @@ const PRELOADER_MIN_MS = 1000; // minimum preloader display time
     } catch { return false; }
   }
 
-  function navigateWithFade(url){
-    if (reduce) { location.href = url; return; }
-    try { if (typeof closeMenu === 'function') closeMenu(); } catch(e){}
-
-    // Force a reflow so the next class change animates for sure
-    // (avoids "blink" when the browser batches writes)
-    // eslint-disable-next-line no-unused-expressions
-    fade.offsetWidth;
-
-    let navigated = false;
-    const go = () => {
-      if (!navigated) { navigated = true; location.href = url; }
-    };
-
-    // Start fade-out on the next frame to guarantee paint
-    requestAnimationFrame(() => {
-      document.body.classList.add('is-fade-leave');
-      const onEnd = (e) => { if (e.propertyName === 'opacity') go(); };
-      fade.addEventListener('transitionend', onEnd, { once: true });
-      setTimeout(go, DURATION + 100); // safety fallback
-    });
-  }
-
-  // Intercept internal link clicks
   document.addEventListener('click', (e) => {
     const a = e.target.closest?.('a');
     if (!a || !isInternalLink(a)) return;
@@ -104,23 +108,28 @@ const PRELOADER_MIN_MS = 1000; // minimum preloader display time
     navigateWithFade(url);
   });
 
-  // Handle BFCache restores
+  // Initial enter
+  requestAnimationFrame(enterFadeOnce);
+
+  // BFCache / Back-Forward restore: always clear first
   window.addEventListener('pageshow', (ev) => {
+    clearFade();
     if (reduce) return;
-    if (ev.persisted) {
-      document.body.classList.add('is-fade-enter-start');
-      requestAnimationFrame(() => {
-        document.body.classList.add('is-fade-enter');
-        document.body.classList.remove('is-fade-enter-start');
-        const cleanup = () => document.body.classList.remove('is-fade-enter');
-        fade.addEventListener('transitionend', (e) => {
-          if (e.propertyName === 'opacity') cleanup();
-        }, { once: true });
-        setTimeout(cleanup, DURATION + 80);
-      });
-    }
+    if (ev.persisted) enterFadeOnce();
+  });
+
+  // History navigation safety
+  window.addEventListener('popstate', clearFade);
+
+  // Page is being hidden (helps on Safari/Firefox)
+  window.addEventListener('pagehide', clearFade);
+
+  // When tab becomes visible again, ensure overlay isn’t stuck
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') clearFade();
   });
 })();
+
 
 
 // Early exit for pages without hero/slider (still wire up menu)
