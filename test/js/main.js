@@ -35,27 +35,35 @@ const PRELOADER_MIN_MS = 1000; // minimum preloader display time
 
 // ---------------- Page fade transitions ----------------
 (function setupPageFade(){
-  const DURATION = 360; // sync with --fade-duration
+  const DURATION = 360;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // create overlay once (no HTML edits needed)
+  // create overlay once
   const fade = document.createElement('div');
   fade.className = 'page-fade';
   document.body.appendChild(fade);
+
+  // NEW: hard reset to avoid "stuck black" on history navigation
+  function clearFade(){
+    document.body.classList.remove('is-fade-enter-start','is-fade-enter','is-fade-leave');
+    // make sure inline opacity never overrides CSS
+    fade.style.removeProperty('opacity');
+  }
+
+  // clear immediately on this page
+  clearFade();
 
   // Enter animation on load (dark -> clear)
   requestAnimationFrame(() => {
     if (reduce) return;
     document.body.classList.add('is-fade-enter-start');
-    // next frame triggers transition to clear
     requestAnimationFrame(() => {
       document.body.classList.add('is-fade-enter');
       document.body.classList.remove('is-fade-enter-start');
       const cleanup = () => document.body.classList.remove('is-fade-enter');
-      fade.addEventListener('transitionend', (e) => {
-        if (e.propertyName === 'opacity') cleanup();
-      }, { once: true });
-      setTimeout(cleanup, DURATION + 80); // fallback
+      const onEnd = (e) => { if (e.propertyName === 'opacity') cleanup(); };
+      fade.addEventListener('transitionend', onEnd, { once: true });
+      setTimeout(cleanup, DURATION + 80);
     });
   });
 
@@ -104,21 +112,28 @@ const PRELOADER_MIN_MS = 1000; // minimum preloader display time
     navigateWithFade(url);
   });
 
-  // Handle BFCache restores
+  // NEW: always clear on pageshow (BFCache or full load)
   window.addEventListener('pageshow', (ev) => {
-    if (reduce) return;
-    if (ev.persisted) {
+    clearFade();                          // <- key line
+    if (!reduce && ev.persisted) {
+      // optional: do a short enter when restored from bfcache
       document.body.classList.add('is-fade-enter-start');
       requestAnimationFrame(() => {
         document.body.classList.add('is-fade-enter');
         document.body.classList.remove('is-fade-enter-start');
         const cleanup = () => document.body.classList.remove('is-fade-enter');
-        fade.addEventListener('transitionend', (e) => {
-          if (e.propertyName === 'opacity') cleanup();
-        }, { once: true });
+        const onEnd = (e) => { if (e.propertyName === 'opacity') cleanup(); };
+        fade.addEventListener('transitionend', onEnd, { once: true });
         setTimeout(cleanup, DURATION + 80);
       });
     }
+  });
+
+  // Optional extra safety
+  window.addEventListener('popstate', clearFade);
+  window.addEventListener('pagehide', clearFade);
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') clearFade();
   });
 })();
 
@@ -160,7 +175,6 @@ const small = window.innerWidth <= CONTACT_BURGER_BP;
   }
 
   fallbackHideNav();
-  // после раскраски/шрифтов
   window.addEventListener('load', fallbackHideNav, { passive:true });
   window.addEventListener('orientationchange', fallbackHideNav, { passive:true });
   window.addEventListener('resize', fallbackHideNav, { passive:true });
