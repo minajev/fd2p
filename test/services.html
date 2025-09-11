@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <title>FD2P — Services</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="FD2P services for marine, civil, and industrial projects." />
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preload" as="image" href="assets/logo2.jpg" />
+  <link rel="preload" as="image" href="assets/services-hero.jpg" />
+  <link rel="preload" as="image" href="assets/map-partners.jpg" />
+
+  <style>
+    :root{
+      --line:#e5e7eb; --ink:#111827; --muted:#606973;
+    }
+    body.services-page{ color:var(--ink); background:#fff; }
+
+    /* шапка как на других страницах */
+    .site-header{ border-bottom:1px solid var(--line); position:relative; z-index:5; }
+
+.site-header{
+  position: fixed; top:0; left:0; right:0;
+  z-index:1000; background:#fff; border-bottom:1px solid var(--line);
+}
+.header-inner{
+  height: 64px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.brand img{ max-height: 40px; height:auto; }
+.page-offset{ margin-top: 64px; }
+
+
+
+/* Anti-flash: прячем неправильное состояние до инициализации JS */
+.services-page:not(.js-ready-services) .site-header .main-nav{
+  position:absolute; right:0; top:0; height:var(--header-h, 64px);
+  opacity:0; visibility:hidden; pointer-events:none;
+}
+.services-page:not(.js-ready-services) .menu-toggle{
+  opacity:0; visibility:hidden; pointer-events:none;
+}
+
+/* Десктоп по умолчанию (переключается классом .is-mobile-services) */
+.services-page .menu-toggle { display: none; }
+.services-page .main-nav { display: flex; }
+
+/* Мобильное состояние — показывает бургер, прячет десктоп-меню */
+.services-page.is-mobile-services .menu-toggle { display: block; }
+.services-page.is-mobile-services .main-nav { display: none; }
+
+/* Offcanvas поднимаем над мозайкой/контентом */
+.offcanvas {
+  position: fixed;
+  inset: 0;
+  z-index: 3000; /* выше .cover и хедера */
+}
+.offcanvas-backdrop { position:absolute; inset:0; z-index:0; }
+.offcanvas-panel    { position:absolute; z-index:1; }
+
+
+    /* ===== 1) Сцена: один экран 100vh с тремя формами ===== */
+.stage{
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: visible;  /* ← так фуллблид-карта не будет обрезаться */
+  background:#fff;
+  z-index: 1;
+}
+
+
+.forms {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;   /* три равные строки */
+  width: 100%;
+  max-width: 100%;                  /* никогда не шире экрана */
+  box-sizing: border-box;            /* учитываем паддинги */
+}
+
+.form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;                   /* немного внутреннего отступа */
+  width: 100%;                       /* форма всегда по ширине экрана */
+  max-width: 100%;                   /* защита от вылета */
+  box-sizing: border-box;
+}
+
+.card {
+  width: 100%;
+  max-width: 1100px;                 /* контент не растягивается сверх меры */
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.06);
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+    .form:nth-child(2) .card{ background:#f7f9fb; }
+
+    .card p{
+      margin:0;
+      font-size: clamp(1.05rem, 1.35vw, 1.2rem);
+      line-height:1.55;
+      color:var(--ink);
+    }
+    .muted{ color:var(--muted); }
+
+    /* карта в третьей форме */
+    .map{
+      margin-top:12px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      background:#fff;
+      padding:10px;
+    }
+    .map img{ display:block; width:100%; height:auto; border-radius:8px; }
+    .map figcaption{ margin-top:6px; font-size:.9rem; color:var(--muted); text-align:center; }
+
+    /* ===== 2) Картинка поверх верхних 2/3 экрана (fixed) ===== */
+.cover{
+  position: fixed;
+  left: 0; right: 0;
+  bottom: 0;                  /* ← форма заканчивается ровно по нижней кромке */
+  height: calc(66vh - 0.5px); /* маленькая компенсация субпикс. округлений */
+  overflow: hidden;
+  z-index: 2;
+  pointer-events: none;
+  background: transparent;
+  transform: translate3d(0,0,0);
+  will-change: transform;
+}
+
+
+    .cover__img{
+      position:absolute; inset:0;
+      width:100%; height:100%; object-fit:cover;
+      transform: translate3d(0,0,0);
+      will-change: transform, opacity;
+      transition: opacity .25s ease;
+      user-select:none;
+    }
+
+.mosaic{
+  position: absolute; inset: 0;
+  box-sizing: border-box;     /* паддинги/гепы учитываются в высоте */
+  height: 100%;
+  display: grid;
+  gap: clamp(8px, 1.2vw, 12px);
+  padding: clamp(8px, 1.2vw, 12px);
+  background: #fff;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+@media (min-width:1025px){
+  .mosaic{
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+  .mosaic .tile:nth-child(9){ display:none; }
+}
+
+
+.tile{
+  width: 100%;
+  height: 100%;                 /* заполняем свою ячейку */
+  object-fit: cover;            /* «зум» без искажений, с обрезкой по краям */
+  object-position: 50% 50%;     /* по центру */
+  border-radius: 10px;
+  user-select: none;
+  -webkit-user-drag: none;
+  /* без тени, чтобы фон сливался */
+}
+
+    /* ===== 3) Прокрутка для эффекта (просто пустое пространство) =====
+       Нужно, чтобы было КУДА скроллить, пока картинка уезжает.
+       Высота ~ 120vh = на сколько уедет картинка. */
+    .scrollpad{ height: 120vh; }
+
+    @media (prefers-reduced-motion: reduce){
+      .cover__img{ transform:none !important; opacity:1 !important; }
+    }
+
+/* Смещение первой формы на высоту шапки */
+.forms .form:first-child {
+  margin-top: 64px;  /* если шапка 64px */
+}
+
+.forms .form:last-child{
+  justify-content: flex-start;  /* вместо центрирования */
+  width: 100%;
+}
+
+
+/* --- Disable hover/active/focus motion for the three forms on Services --- */
+
+/* не меняем фон секций при наведении */
+.forms .form:hover { background: inherit !important; }
+
+/* отключаем любые анимации/переходы внутри карточек форм */
+.forms .card,
+.forms .card * {
+  transition: none !important;
+}
+
+/* фиксируем визуальные свойства на hover/active/focus */
+.forms .card:hover,
+.forms .card:active,
+.forms .card:focus,
+.forms .card:focus-within {
+  transform: none !important;
+  box-shadow: 0 6px 20px rgba(0,0,0,.06) !important;  /* как в обычном состоянии */
+  border-color: var(--line) !important;
+  background: inherit !important;
+  outline: none !important;
+}
+
+/* если где-то задано смещение через translate/scale — гасим принудительно */
+.forms .card {
+  transform: none !important;
+  will-change: auto !important;
+}
+
+/* мобилки — убираем подсветку тапа */
+.forms .form {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.map--bleed{
+  display: block;
+  position: relative;
+  width: 100vw;                 /* ширина ровно во всю видимую область */
+  left: 50%;
+  transform: translateX(-50%);  /* центрируем — без calc() */
+  margin: 10px 0 0;             /* только вертикальный отступ сверху */
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: 0;
+  flex: 0 0 auto;
+}
+
+/* Там, где поддерживается dvw, используем его (не включает полосу прокрутки) */
+@supports (width: 100dvw) {
+  .map--bleed{ width: 100dvw; }
+}
+
+/* Картинка — зум по центру */
+.map--bleed img{
+  display: block;
+  width: 100%;
+  height: 28vh;                 /* подстрой по вкусу */
+  object-fit: cover;
+  object-position: 50% 50%;
+  border-radius: 0;
+}
+
+.map--bleed figcaption{
+  max-width: min(1100px, 92vw);
+  margin: 6px auto 0;
+  padding: 0 16px;
+  font-size: .9rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+
+
+/* формам и обёртке разрешаем выходить по X — нужно для full-bleed карты */
+.forms,
+.form {
+  overflow-x: visible;   /* было clip — из-за этого карту резало */
+}
+
+
+/* 1) У третьей формы убираем горизонтальные паддинги,
+      чтобы карта центрировалась относительно окна */
+.forms .form:last-child{
+  padding-left: 0;
+  padding-right: 0;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+/* Сохраняем привычные отступы для текста внутри формы */
+.forms .form:last-child .card{
+  margin: 0 16px 10px;
+}
+
+/* карта не должна пытаться «расти»/«сжиматься» внутри flex-колонки */
+.map--bleed{ 
+  flex: 0 0 auto;           /* фиксируем поведение в flex-контейнере */
+}
+
+/* Три формы в одном экране: по 33vh каждая */
+.stage{ height: 100vh; }
+.forms{
+  position: absolute; inset: 0;
+  display: grid;
+  grid-template-rows: 33vh 33vh 33vh;   /* как просил: 33vh */
+  width: 100%;
+}
+.form{
+  display: flex;
+  align-items: center;
+  /* без горизонтальных паддингов, чтобы «шашечка» упиралась к краю */
+  padding: 0;
+}
+.card{
+  width: min(1100px, 92vw);
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  box-shadow:0 6px 20px rgba(0,0,0,.06);
+  padding:16px;
+  margin: 0 auto;                 /* по умолчанию центр (узкие экраны) */
+}
+
+/* Широкие экраны: раскладка «шашечкой» */
+@media (min-width: 1025px){
+  :root{ --edge-pad: 24px; }      /* отступ от края экрана */
+
+  .form--left  .card{
+    margin-left: var(--edge-pad);
+    margin-right: auto;
+  }
+  .form--right .card{
+    margin-left: auto;
+    margin-right: var(--edge-pad);
+  }
+}
+
+/* Полностью убираем любые остатки стилей карты, если вдруг остались */
+.map, .map--bleed{ display:none !important; }
+
+/* Без ховер-скачков для карточек в этих трёх формах */
+.forms .card, .forms .card *{ transition:none !important; }
+.forms .card:hover{ transform:none !important; box-shadow:0 6px 20px rgba(0,0,0,.06) !important; }
+
+
+  </style>
+</head>
+
+<body class="services-page is-collapsed" data-burger-bp="500">
+  <!-- HEADER -->
+<header class="site-header" role="banner">
+  <div class="container header-inner">
+    <a class="brand" href="index.html" aria-label="FD2P — Home">
+      <img src="assets/logo2.jpg" alt="FD2P small logo"
+           onerror="this.onerror=null;this.src='assets/logo1.jpg'"/>
+    </a>
+
+    <nav class="main-nav" aria-label="Primary" hidden>
+      <a href="index.html">Home</a>
+      <a href="services.html" aria-current="page">Services</a>
+      <a href="projects.html">Projects</a>
+      <a href="about.html">About</a>
+      <a class="btn btn-outline btn-outline-dark" href="contact.html">Contact</a>
+    </nav>
+
+    <button class="menu-toggle btn btn-outline-dark" type="button"
+            aria-label="Open menu" aria-expanded="false">☰ Menu</button>
+  </div>
+</header>
+
+<!-- OFFCANVAS -->
+<div class="offcanvas" aria-hidden="true">
+  <div class="offcanvas-backdrop"></div>
+  <aside class="offcanvas-panel" role="dialog" aria-modal="true" aria-label="Site menu">
+    <div class="offcanvas-head">
+      <a class="offcanvas-brand" href="index.html" aria-label="FD2P — Home">
+        <img src="assets/logo2.jpg" alt="FD2P small logo" />
+      </a>
+      <button class="offcanvas-close" type="button" aria-label="Close menu">✕</button>
+    </div>
+    <nav class="offcanvas-nav" aria-label="Mobile"></nav>
+  </aside>
+</div>
+
+<div class="cover" id="cover">
+  <div class="mosaic" id="mosaic" aria-hidden="true">
+    <!-- заменишь на свои пути -->
+    <img class="tile" src="assets/mosaic-01.jpg" alt="" loading="eager">
+    <img class="tile" src="assets/mosaic-02.jpg" alt="" loading="eager">
+    <img class="tile" src="assets/mosaic-03.jpg" alt="" loading="lazy">
+    <img class="tile" src="assets/mosaic-04.jpg" alt="" loading="lazy">
+    <img class="tile" src="assets/mosaic-05.jpg" alt="" loading="lazy">
+    <img class="tile" src="assets/mosaic-06.jpg" alt="" loading="lazy">
+    <img class="tile" src="assets/mosaic-07.jpg" alt="" loading="lazy">
+    <img class="tile" src="assets/mosaic-08.jpg" alt="" loading="lazy">
+    <img class="tile" src="assets/mosaic-09.jpg" alt="" loading="lazy">
+  </div>
+</div>
+
+  <!-- ОДИН экран 100vh с тремя формами -->
+<section class="scene" id="scene">
+<section class="stage" id="stage">
+  <div class="forms">
+    <!-- 1. слева -->
+    <div class="form form--left">
+      <div class="card">
+        <p>At FD2P, we bring together experienced engineers, industrial designers, and 3D specialists to deliver practical, high-quality solutions for both offshore and onshore projects. Our independence from specific industries allows us to adapt quickly, focus on client needs, and provide the right expertise for every challenge.</p>
+      </div>
+    </div>
+
+    <!-- 2. справа -->
+    <div class="form form--right">
+      <div class="card">
+        <p class="muted">With a deep understanding of every stage in the mechanical industry project lifecycle, we provide qualified support wherever it is needed — from initial concept and engineering calculations to fabrication oversight and final installation. Our team’s experience across design, production, and mobilization keeps decisions practical and builds predictable outcomes.</p>
+      </div>
+    </div>
+
+    <!-- 3. снова слева (карта удалена) -->
+    <div class="form form--left">
+      <div class="card">
+        <p>We work directly with industry partners across Scandinavia and Europe—companies we have collaborated with for many years. Long-term relationships only work if quality holds; that’s been our focus from the start.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- Пустой пад для прокрутки: картинка будет «уезжать» вниз -->
+  <div class="scrollpad" aria-hidden="true"></div>
+</section>
+
+
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>FD<span style="color:#E30613;">2</span>P Technologies</h3>
+          <p class="footer-tagline">Engineering solutions for marine, civil & industrial sectors</p>
+        </div>
+        <div class="footer-contacts">
+          <p>Email: <a href="mailto:info@fd2p.com">info@fd2p.com</a></p>
+          <p>Phone: <a href="tel:+37256279949">+372 56 279 949</a></p>
+          <p>Address: Kivimurru 34, Tallinn, Estonia</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+
+  <!-- Скролл-логика: двигаем только картинку, формы статичны -->
+<script>
+(function(){
+  // поведение меню как на других страницах
+  var bp = parseInt(document.body.getAttribute('data-burger-bp') || '1024', 10);
+  function applyBP(){ document.body.classList.toggle('is-mobile-services', window.innerWidth <= bp); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyBP); else applyBP();
+  window.addEventListener('resize', applyBP, {passive:true});
+  window.addEventListener('orientationchange', applyBP, {passive:true});
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ключевые элементы
+  var scene  = document.getElementById('scene');   // ОБЩИЙ контейнер
+var cover  = document.getElementById('cover');   // фиксированный блок
+var mosaic = document.getElementById('mosaic');  // сетка 3×3
+
+  function clamp01(x){ return x<0?0:(x>1?1:x); }
+
+  function update(){
+    var vh   = window.innerHeight || 1;
+    var top  = scene.offsetTop || 0;
+    var h    = scene.offsetHeight || 1;           // высота: stage(100vh) + scrollpad
+    var y    = window.scrollY || window.pageYOffset || 0;
+
+    // Прогресс прокрутки внутри .scene: 0..1
+    var t = clamp01((y - top) / Math.max(1, h - vh));
+
+if (!reduce){
+  var move = t * 1.2 * vh;  // как и раньше: 120% высоты
+  mosaic.style.transform = 'translate3d(0,'+ move.toFixed(2) +'px,0)';
+  var fade = Math.min(1, Math.max(0, (t - 0.80) / 0.15));
+  mosaic.style.opacity = (1 - fade).toFixed(3);
+} else {
+  mosaic.style.transform = 'none';
+  mosaic.style.opacity = '1';
+}
+  }
+
+  update();
+  window.addEventListener('scroll', update, {passive:true});
+  window.addEventListener('resize', update, {passive:true});
+  window.addEventListener('orientationchange', update, {passive:true});
+})();
+</script>
+
+<!-- Burger breakpoint controller (like on Contact, scoped to Services) -->
+<script>
+  (function(){
+    var bp = parseInt(document.body.getAttribute('data-burger-bp') || '1024', 10);
+
+    function applyBreakpoint() {
+      var isMobile = window.innerWidth <= bp;
+      document.body.classList.toggle('is-mobile-services', isMobile);
+    }
+
+    function init(){
+      applyBreakpoint();
+      document.body.classList.add('js-ready-services'); // снимаем anti-flash стили
+    }
+
+    window.addEventListener('resize', applyBreakpoint);
+    window.addEventListener('orientationchange', applyBreakpoint);
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+</script>
+
+
+</body>
+</html>
