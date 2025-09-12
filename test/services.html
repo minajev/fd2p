@@ -17,91 +17,87 @@
     }
     body.services-page{ color:var(--ink); background:#fff; }
 
-    /* шапка как на других страницах */
+    /* Header (same look as other pages) */
     .site-header{ border-bottom:1px solid var(--line); position:relative; z-index:5; }
 
-.site-header{
-  position: fixed; top:0; left:0; right:0;
-  z-index:1000; background:#fff; border-bottom:1px solid var(--line);
-}
-.header-inner{
-  height: 64px;
-  display:flex; align-items:center; justify-content:space-between;
-}
-.brand img{ max-height: 40px; height:auto; }
-.page-offset{ margin-top: 64px; }
+    .site-header{
+      position: fixed; top:0; left:0; right:0;
+      z-index:1000; background:#fff; border-bottom:1px solid var(--line);
+    }
+    .header-inner{
+      height: 64px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .brand img{ max-height: 40px; height:auto; }
+    .page-offset{ margin-top: 64px; }
 
+    /* Anti-flash: hide incorrect state before JS initializes */
+    .services-page:not(.js-ready-services) .site-header .main-nav{
+      position:absolute; right:0; top:0; height:var(--header-h, 64px);
+      opacity:0; visibility:hidden; pointer-events:none;
+    }
+    .services-page:not(.js-ready-services) .menu-toggle{
+      opacity:0; visibility:hidden; pointer-events:none;
+    }
 
+    /* Desktop by default (toggled via .is-mobile-services) */
+    .services-page .menu-toggle { display: none; }
+    .services-page .main-nav { display: flex; }
 
-/* Anti-flash: прячем неправильное состояние до инициализации JS */
-.services-page:not(.js-ready-services) .site-header .main-nav{
-  position:absolute; right:0; top:0; height:var(--header-h, 64px);
-  opacity:0; visibility:hidden; pointer-events:none;
-}
-.services-page:not(.js-ready-services) .menu-toggle{
-  opacity:0; visibility:hidden; pointer-events:none;
-}
+    /* Mobile state — show burger, hide desktop menu */
+    .services-page.is-mobile-services .menu-toggle { display: block; }
+    .services-page.is-mobile-services .main-nav { display: none; }
 
-/* Десктоп по умолчанию (переключается классом .is-mobile-services) */
-.services-page .menu-toggle { display: none; }
-.services-page .main-nav { display: flex; }
+    /* Off-canvas above mosaic/content */
+    .offcanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 3000; /* above .cover and header */
+    }
+    .offcanvas-backdrop { position:absolute; inset:0; z-index:0; }
+    .offcanvas-panel    { position:absolute; z-index:1; }
 
-/* Мобильное состояние — показывает бургер, прячет десктоп-меню */
-.services-page.is-mobile-services .menu-toggle { display: block; }
-.services-page.is-mobile-services .main-nav { display: none; }
+    /* ===== 1) Scene: single 100vh screen with three forms ===== */
+    .stage{
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: visible;  /* prevents full-bleed image from being clipped */
+      background:#fff;
+      z-index: 1;
+    }
 
-/* Offcanvas поднимаем над мозайкой/контентом */
-.offcanvas {
-  position: fixed;
-  inset: 0;
-  z-index: 3000; /* выше .cover и хедера */
-}
-.offcanvas-backdrop { position:absolute; inset:0; z-index:0; }
-.offcanvas-panel    { position:absolute; z-index:1; }
+    .forms {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-rows: 1fr 1fr 1fr;   /* three equal rows */
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
 
+    .form {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 16px;                   /* small inner padding */
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
 
-    /* ===== 1) Сцена: один экран 100vh с тремя формами ===== */
-.stage{
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow: visible;  /* ← так фуллблид-карта не будет обрезаться */
-  background:#fff;
-  z-index: 1;
-}
-
-
-.forms {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-rows: 1fr 1fr 1fr;   /* три равные строки */
-  width: 100%;
-  max-width: 100%;                  /* никогда не шире экрана */
-  box-sizing: border-box;            /* учитываем паддинги */
-}
-
-.form {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 16px;                   /* немного внутреннего отступа */
-  width: 100%;                       /* форма всегда по ширине экрана */
-  max-width: 100%;                   /* защита от вылета */
-  box-sizing: border-box;
-}
-
-.card {
-  width: 100%;
-  max-width: 1100px;                 /* контент не растягивается сверх меры */
-  margin: 0 auto;
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0,0,0,.06);
-  padding: 16px;
-  box-sizing: border-box;
-}
+    .card {
+      width: 100%;
+      max-width: 1100px;                 /* content won’t stretch too wide */
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,.06);
+      padding: 16px;
+      box-sizing: border-box;
+    }
 
     .form:nth-child(2) .card{ background:#f7f9fb; }
 
@@ -113,20 +109,19 @@
     }
     .muted{ color:var(--muted); }
 
-    /* ===== 2) Картинка поверх верхних 2/3 экрана (fixed) ===== */
-.cover{
-  position: fixed;
-  left: 0; right: 0;
-  bottom: 0;                  /* ← форма заканчивается ровно по нижней кромке */
-  height: calc(66vh - 0.5px); /* маленькая компенсация субпикс. округлений */
-  overflow: hidden;
-  z-index: 2;
-  pointer-events: none;
-  background: transparent;
-  transform: translate3d(0,0,0);
-  will-change: transform;
-}
-
+    /* ===== 2) Fixed cover image filling the top 2/3 of the screen ===== */
+    .cover{
+      position: fixed;
+      left: 0; right: 0;
+      bottom: 0;                  /* aligns exactly with the bottom edge */
+      height: calc(66vh - 0.5px); /* tiny compensation for subpixel rounding */
+      overflow: hidden;
+      z-index: 2;
+      pointer-events: none;
+      background: transparent;
+      transform: translate3d(0,0,0);
+      will-change: transform;
+    }
 
     .cover__img{
       position:absolute; inset:0;
@@ -137,383 +132,424 @@
       user-select:none;
     }
 
-.mosaic{
-  position: absolute; inset: 0;
-  box-sizing: border-box;     /* паддинги/гепы учитываются в высоте */
-  height: 100%;
-  display: grid;
-  gap: clamp(8px, 1.2vw, 12px);
-  padding: clamp(8px, 1.2vw, 12px);
-  background: #fff;
-  border-top: 1px solid var(--line); /* <- line moves with mosaic */
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-}
+    .mosaic{
+      position: absolute; inset: 0;
+      box-sizing: border-box;     /* paddings/gaps count into height */
+      height: 100%;
+      display: grid;
+      gap: clamp(8px, 1.2vw, 12px);
+      padding: clamp(8px, 1.2vw, 12px);
+      background: #fff;
+      border-top: 1px solid var(--line); /* line moves with mosaic */
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+    }
 
-@media (min-width:1025px){
-  .mosaic{
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-  }
-  .mosaic .tile:nth-child(9){ display:none; }
-}
+    @media (min-width:769px){
+      .mosaic{
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+      }
+      .mosaic .tile:nth-child(9){ display:none; }
+    }
 
+    .tile{
+      width: 100%;
+      height: 100%;               /* fill its grid cell */
+      object-fit: cover;          /* zoom without distortion, crop edges */
+      object-position: 50% 50%;   /* centered */
+      border-radius: 10px;
+      user-select: none;
+      -webkit-user-drag: none;
+      /* no shadow so the background merges cleanly */
+    }
 
-.tile{
-  width: 100%;
-  height: 100%;                 /* заполняем свою ячейку */
-  object-fit: cover;            /* «зум» без искажений, с обрезкой по краям */
-  object-position: 50% 50%;     /* по центру */
-  border-radius: 10px;
-  user-select: none;
-  -webkit-user-drag: none;
-  /* без тени, чтобы фон сливался */
-}
-
-    /* ===== 3) Прокрутка для эффекта (просто пустое пространство) =====
-       Нужно, чтобы было КУДА скроллить, пока картинка уезжает.
-       Высота ~ 120vh = на сколько уедет картинка. */
+    /* ===== 3) Scroll pad for the effect (empty space) =====
+       Needed so there is room to scroll while the image moves.
+       Height ~ 120vh = how far the image will move. */
     .scrollpad{ height: 120vh; }
 
     @media (prefers-reduced-motion: reduce){
       .cover__img{ transform:none !important; opacity:1 !important; }
     }
 
-/* --- Disable hover/active/focus motion for the three forms on Services --- */
+    /* --- Disable hover/active/focus motion for the three forms on Services --- */
 
-/* не меняем фон секций при наведении */
-.forms .form:hover { background: inherit !important; }
+    /* don’t change section backgrounds on hover */
+    .forms .form:hover { background: inherit !important; }
 
-/* отключаем любые анимации/переходы внутри карточек форм */
-.forms .card,
-.forms .card * {
-  transition: none !important;
-}
+    /* disable any transitions inside the form cards */
+    .forms .card,
+    .forms .card * {
+      transition: none !important;
+    }
 
-/* фиксируем визуальные свойства на hover/active/focus */
-.forms .card:hover,
-.forms .card:active,
-.forms .card:focus,
-.forms .card:focus-within {
-  transform: none !important;
-  box-shadow: 0 6px 20px rgba(0,0,0,.06) !important;  /* как в обычном состоянии */
-  border-color: var(--line) !important;
-  background: inherit !important;
-  outline: none !important;
-}
+    /* lock visual styles on hover/active/focus */
+    .forms .card:hover,
+    .forms .card:active,
+    .forms .card:focus,
+    .forms .card:focus-within {
+      transform: none !important;
+      box-shadow: 0 6px 20px rgba(0,0,0,.06) !important;  /* same as normal */
+      border-color: var(--line) !important;
+      background: inherit !important;
+      outline: none !important;
+    }
 
-/* если где-то задано смещение через translate/scale — гасим принудительно */
-.forms .card {
-  transform: none !important;
-  will-change: auto !important;
-}
+    /* if some transform/scale is set elsewhere — force it off */
+    .forms .card {
+      transform: none !important;
+      will-change: auto !important;
+    }
 
-/* мобилки — убираем подсветку тапа */
-.forms .form {
-  -webkit-tap-highlight-color: transparent;
-}
+    /* mobile — remove tap highlight */
+    .forms .form {
+      -webkit-tap-highlight-color: transparent;
+    }
 
-/* формам и обёртке разрешаем выходить по X — нужно для full-bleed карты */
-.forms,
-.form {
-  overflow-x: visible;   /* было clip — из-за этого карту резало */
-}
+    /* allow horizontal overflow for full-bleed cover */
+    .forms,
+    .form {
+      overflow-x: visible;   /* was clip — that caused the cover to be cut */
+    }
 
-/* Три формы в одном экране: по 33vh каждая */
-.stage{ height: 100vh; }
-.forms{
-  position: absolute; inset: 0;
-  display: grid;
-  grid-template-rows: 33vh 33vh 33vh;   /* как просил: 33vh */
-  width: 100%;
-}
-.form{
-  display: flex;
-  align-items: center;
-  /* без горизонтальных паддингов, чтобы «шашечка» упиралась к краю */
-  padding: 0;
-}
-.card{
-  width: min(1100px, 92vw);
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:12px;
-  box-shadow:0 6px 20px rgba(0,0,0,.06);
-  padding:16px;
-  margin: 0 auto;                 /* по умолчанию центр (узкие экраны) */
-}
+    /* Three forms on one screen: 33vh each */
+    .stage{ height: 100vh; }
+    .forms{
+      position: absolute; inset: 0;
+      display: grid;
+      grid-template-rows: 33vh 33vh 33vh;   /* exactly 33vh each */
+      width: 100%;
+    }
+    .form{
+      display: flex;
+      align-items: center;
+      /* no horizontal padding so the “chessboard” touches the edges */
+      padding: 0;
+    }
+    .card{
+      width: min(1100px, 92vw);
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:12px;
+      box-shadow:0 6px 20px rgba(0,0,0,.06);
+      padding:16px;
+      margin: 0 auto; /* centered by default on narrow screens */
+    }
 
-/* Широкие экраны: раскладка «шашечкой» */
-@media (min-width: 1025px){
-  :root{ --edge-pad: 24px; }      /* отступ от края экрана */
+    /* Wide screens: chessboard layout (left/right) */
+    @media (min-width: 769px){
+      :root{ --edge-pad: 24px; } /* offset from the screen edges */
 
-  .form--left  .card{
-    margin-left: var(--edge-pad);
-    margin-right: auto;
-  }
-  .form--right .card{
-    margin-left: auto;
-    margin-right: var(--edge-pad);
-  }
-}
+      .form--left  .card{
+        margin-left: var(--edge-pad);
+        margin-right: auto;
+      }
+      .form--right .card{
+        margin-left: auto;
+        margin-right: var(--edge-pad);
+      }
+    }
 
-/* Без ховер-скачков для карточек в этих трёх формах */
-.forms .card, .forms .card *{ transition:none !important; }
-.forms .card:hover{ transform:none !important; box-shadow:0 6px 20px rgba(0,0,0,.06) !important; }
+    /* No hover jumps for these three cards */
+    .forms .card, .forms .card *{ transition:none !important; }
+    .forms .card:hover{ transform:none !important; box-shadow:0 6px 20px rgba(0,0,0,.06) !important; }
 
-/* Mobile-only: show first sentence and a corner toggle */
-@media (max-width: 768px) {
-  .forms .card {
-    position: relative;
-  }
+    /* Mobile-only: show first sentence + corner toggle */
+    @media (max-width: 769px) {
+      .forms .card { position: relative; }
 
-  /* hidden chunk (rest of the paragraph) */
-  .forms .card .more {
-    display: none;
-  }
+      /* hidden chunk (rest of the paragraph) */
+      .forms .card .more { display: none; }
 
-  /* expanded state reveals the rest */
-  .forms .card.expanded .more {
-    display: inline;
-  }
+      /* expanded state reveals the rest */
+      .forms .card.expanded .more { display: inline; }
 
-  /* corner triangle button */
-  .forms .card .card-toggle {
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
-    width: 28px;
-    height: 28px;
-    background: transparent;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    line-height: 0;
-  }
+      /* corner triangle button */
+      .forms .card .card-toggle {
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+        width: 28px;
+        height: 28px;
+        background: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        line-height: 0;
+      }
 
-  /* draw a triangle via CSS borders */
-  .forms .card .card-toggle::before {
-    content: "";
-    display: inline-block;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 12px solid #111; /* triangle color */
-    transform-origin: 50% 50%;
-    transition: transform 0.2s ease;
-  }
+      /* triangle via CSS borders */
+      .forms .card .card-toggle::before {
+        content: "";
+        display: inline-block;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-top: 12px solid #111;
+        transform-origin: 50% 50%;
+        transition: transform 0.2s ease;
+      }
 
-  /* rotate when expanded */
-  .forms .card.expanded .card-toggle::before {
-    transform: rotate(180deg);
-  }
-}
+      /* rotate when expanded */
+      .forms .card.expanded .card-toggle::before {
+        transform: rotate(180deg);
+      }
+    }
 
-/* Desktop/tablet: show everything, hide toggle */
-@media (min-width: 769px) {
-  .forms .card .more { display: inline; }
-  .forms .card .card-toggle { display: none; }
-}
+    /* Desktop/tablet: show full text, hide toggle */
+    @media (min-width: 769px) {
+      .forms .card .more { display: inline; }
+      .forms .card .card-toggle { display: none; }
+    }
 
-/* On small screens give right padding so forms don't hit the scrollbar */
-@media (max-width: 768px) {
-  .forms {
-    padding-right: 12px; /* adjust as needed */
-    box-sizing: border-box;
-  }
+    /* On small screens keep a right gutter so forms don’t hit the scrollbar */
+    @media (max-width: 769px) {
+      .forms {
+        padding-right: 12px;
+        box-sizing: border-box;
+      }
+      .card {
+        width: 100%;
+        max-width: 100%;
+        margin-right: 0;
+      }
+    }
 
-  .card {
-    width: 100%;
-    max-width: 100%;
-    margin-right: 0;
-  }
-}
+    /* Mobile rules to keep expanded cards centered and non-overlapping */
+    @media (max-width: 769px) {
+      :root { --header-gap: 12px; } /* small gap below the fixed header */
 
-/* Mobile rules to keep expanded cards centered and non-overlapping */
-@media (max-width: 768px) {
-  :root { --header-gap: 12px; } /* small space from header */
+      /* keep a tiny gutter on both sides */
+      .forms {
+        padding-left: 12px;
+        padding-right: 12px;
+        box-sizing: border-box;
+      }
 
-  /* keep a tiny gutter so nothing touches the scrollbar/edges */
-  .forms {
-    padding-left: 12px;
-    padding-right: 12px;
-    box-sizing: border-box;
-  }
+      /* each form is 33vh; keep content vertically centered */
+      .forms .form {
+        align-items: center;
+        justify-content: center;
+        overflow: hidden; /* never bleed into the next row */
+      }
 
-  /* each form is 33vh; keep content centered vertically */
-  .forms .form {
-    align-items: center;          /* center card in the form */
-    justify-content: center;
-    overflow: hidden;             /* forms never bleed into each other */
-  }
+      /* card stays centered and never exceeds its row height */
+      .forms .form .card {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        display: flex;                /* enable vertical centering */
+        align-items: center;
+        justify-content: center;
+        text-align: left;
+        box-shadow: none !important;
 
-  /* the card itself stays centered and never exceeds its form’s height */
-  .forms .form .card {
-    width: 100%;
-    max-width: 100%;
-    margin: 0;
-    display: flex;                /* allow vertical centering of text */
-    align-items: center;
-    justify-content: center;
-    text-align: left;
-  box-shadow: none !important;
+        /* if needed, scroll inside the card */
+        max-height: calc(33vh - 2 * var(--header-gap));
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+      }
 
-    /* never grow beyond the form’s height; if needed, scroll inside the card */
-    max-height: calc(33vh - 2 * var(--header-gap));
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-  }
+      /* base text size on phones */
+      .forms .form .card p {
+        font-size: clamp(0.96rem, 3.4vw, 1.05rem);
+        line-height: 1.55;
+        margin: 0;
+      }
 
-  /* base text size on phones */
-  .forms .form .card p {
-    font-size: clamp(0.96rem, 3.4vw, 1.05rem);
-    line-height: 1.55;
-    margin: 0;
-  }
+      /* when expanded, slightly reduce size so two sentences fit more often */
+      .forms .form .card.expanded p {
+        font-size: clamp(0.92rem, 3.2vw, 1.02rem);
+      }
 
-  /* when expanded (triangle pressed), slightly reduce size so both sentences fit more often */
-  .forms .form .card.expanded p {
-    font-size: clamp(0.92rem, 3.2vw, 1.02rem);
-  }
+      /* ensure the corner toggle sits inside without causing overflow */
+      .forms .form .card .card-toggle {
+        right: 10px;
+        bottom: 10px;
+      }
+    }
 
-  /* make sure corner toggle sits inside and does not cause overflow */
-  .forms .form .card .card-toggle {
-    right: 10px;
-    bottom: 10px;
-  }
-}
+    @media (max-width: 769px) {
+      /* make the 2nd form expand downward only */
+      .forms .form:nth-child(2) { align-items: flex-start; }
+      /* keep content contained; scrolling happens inside the card */
+      .forms .form .card {
+        max-height: 33vh;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
 
-@media (max-width: 768px) {
-  /* make the 2nd form expand downward instead of both ways */
-  .forms .form:nth-child(2) {
-    align-items: flex-start; /* top-align inside its 33vh zone */
-  }
-  /* keep content contained; scrolling happens inside the card if needed */
-  .forms .form .card {
-    max-height: 33vh;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-}
+    /* First form: fixed breathing space below the fixed header */
+    .forms .form:first-child {
+      align-items: flex-start;
+      padding-top: 90px;  /* distance from page top in px */
+    }
 
-  /* first form: small top breathing room under the fixed header */
-.forms .form:first-child {
-  align-items: flex-start;    /* remove vertical centering */
-  padding-top: 90px;         /* distance from top of the page in px */
-}
+    /* Last form: align to the top of its row */
+    .forms .form:last-child {
+      align-items: flex-start;
+      padding-top: 0px;
+    }
 
-/* First form: fixed distance from top instead of vertical centering */
-.forms .form:last-child {
-  align-items: flex-start;    /* remove vertical centering */
-  padding-top: 0px;         /* distance from top of the page in px */
-}
+    /* Middle form: small top offset */
+    .forms .form:nth-child(2) {
+      align-items: flex-start;
+      padding-top: 20px;
+    }
 
-.forms .form:nth-child(2) {
-  align-items: flex-start;    /* remove vertical centering */
-  padding-top: 20px;         /* distance from top of the page in px */
-}
+    /* Keep each row self-contained and clip content at the row boundary */
+    .forms .form { overflow: hidden; }
 
-/* Keep each row self-contained and clip content at the row boundary */
-.forms .form {
-  overflow: hidden; /* prevents a card from spilling into the next row */
-}
+    /* Cards must fit within their row height (incl. shorter first row) */
+    .forms .form .card { max-height: 100%; }
 
-/* Cards must fit inside their own row height (incl. the shorter first row) */
-.forms .form .card {
-  max-height: 100%; /* instead of 33vh */
-}
+    /* If max-height:33vh was set on mobile earlier, override it here as well */
+    @media (max-width: 769px) {
+      .forms .form .card { max-height: 100%; }
+    }
 
-/* If you previously set max-height:33vh on mobile, override it here too */
-@media (max-width: 768px) {
-  .forms .form .card { max-height: 100%; }
-}
+    /* Desktop: align chessboard to real header rails (logo left, Contact right) */
+    @media (min-width: 769px){
+      :root{
+        --rail-left: 16px;      /* fallback before JS sets real values */
+        --rail-right-pad: 16px; /* fallback before JS sets real values */
+      }
 
+      .forms{
+        /* keep absolute/inset:0; add dynamic paddings */
+        padding-left: var(--rail-left);
+        padding-right: var(--rail-right-pad);
+        box-sizing: border-box;
+      }
 
+      /* left cards hug left rail, right cards hug right rail */
+      .form.form--left  .card{ margin-left: 0;  margin-right: auto; max-width: 100%; }
+      .form.form--right .card{ margin-left: auto; margin-right: 0;  max-width: 100%; }
+    }
+
+    /* Limit max card width on desktop */
+    @media (min-width: 769px){
+      .forms .form .card{
+        max-width: 769px;
+        width: 100%;
+        box-shadow: none !important;
+      }
+    }
+
+    @media (min-width: 769px){
+      .forms .form:first-child {
+        align-items: flex-start;
+        padding-top: 140px; /* distance from top in px */
+        box-shadow: none !important;
+      }
+      .forms .form:nth-child(2) {
+        align-items: flex-start;
+        padding-top: 60px;
+        box-shadow: none !important;
+      }
+    }
+
+    /* 1) Don’t change card background on hover/focus anymore */
+    .forms .card:hover,
+    .forms .card:active,
+    .forms .card:focus,
+    .forms .card:focus-within{
+      background: initial !important; /* cancels previously set inherit */
+    }
+
+    /* 2) Preserve light gray background on the second card even on hover/focus */
+    .forms .form:nth-child(2) .card,
+    .forms .form:nth-child(2) .card:hover,
+    .forms .form:nth-child(2) .card:active,
+    .forms .form:nth-child(2) .card:focus,
+    .forms .form:nth-child(2) .card:focus-within{
+      background: #f7f9fb !important;
+    }
   </style>
 </head>
 
 <body class="services-page is-collapsed" data-burger-bp="500">
   <!-- HEADER -->
-<header class="site-header" role="banner">
-  <div class="container header-inner">
-    <a class="brand" href="index.html" aria-label="FD2P — Home">
-      <img src="assets/logo2.jpg" alt="FD2P small logo"
-           onerror="this.onerror=null;this.src='assets/logo1.jpg'"/>
-    </a>
-
-    <nav class="main-nav" aria-label="Primary" hidden>
-      <a href="index.html">Home</a>
-      <a href="services.html" aria-current="page">Services</a>
-      <a href="projects.html">Projects</a>
-      <a href="about.html">About</a>
-      <a class="btn btn-outline btn-outline-dark" href="contact.html">Contact</a>
-    </nav>
-
-    <button class="menu-toggle btn btn-outline-dark" type="button"
-            aria-label="Open menu" aria-expanded="false">☰ Menu</button>
-  </div>
-</header>
-
-<!-- OFFCANVAS -->
-<div class="offcanvas" aria-hidden="true">
-  <div class="offcanvas-backdrop"></div>
-  <aside class="offcanvas-panel" role="dialog" aria-modal="true" aria-label="Site menu">
-    <div class="offcanvas-head">
-      <a class="offcanvas-brand" href="index.html" aria-label="FD2P — Home">
-        <img src="assets/logo2.jpg" alt="FD2P small logo" />
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="FD2P — Home">
+        <img src="assets/logo2.jpg" alt="FD2P small logo"
+             onerror="this.onerror=null;this.src='assets/logo1.jpg'"/>
       </a>
-      <button class="offcanvas-close" type="button" aria-label="Close menu">✕</button>
-    </div>
-    <nav class="offcanvas-nav" aria-label="Mobile"></nav>
-  </aside>
-</div>
 
-<div class="cover" id="cover">
-  <div class="mosaic" id="mosaic" aria-hidden="true">
-    <!-- заменишь на свои пути -->
-    <img class="tile" src="assets/mosaic-01.jpg" alt="" loading="eager">
-    <img class="tile" src="assets/mosaic-02.jpg" alt="" loading="eager">
-    <img class="tile" src="assets/mosaic-03.jpg" alt="" loading="lazy">
-    <img class="tile" src="assets/mosaic-04.jpg" alt="" loading="lazy">
-    <img class="tile" src="assets/mosaic-05.jpg" alt="" loading="lazy">
-    <img class="tile" src="assets/mosaic-06.jpg" alt="" loading="lazy">
-    <img class="tile" src="assets/mosaic-07.jpg" alt="" loading="lazy">
-    <img class="tile" src="assets/mosaic-08.jpg" alt="" loading="lazy">
-    <img class="tile" src="assets/mosaic-09.jpg" alt="" loading="lazy">
+      <nav class="main-nav" aria-label="Primary" hidden>
+        <a href="index.html">Home</a>
+        <a href="services.html" aria-current="page">Services</a>
+        <a href="projects.html">Projects</a>
+        <a href="about.html">About</a>
+        <a class="btn btn-outline btn-outline-dark" href="contact.html">Contact</a>
+      </nav>
+
+      <button class="menu-toggle btn btn-outline-dark" type="button"
+              aria-label="Open menu" aria-expanded="false">☰ Menu</button>
+    </div>
+  </header>
+
+  <!-- OFFCANVAS -->
+  <div class="offcanvas" aria-hidden="true">
+    <div class="offcanvas-backdrop"></div>
+    <aside class="offcanvas-panel" role="dialog" aria-modal="true" aria-label="Site menu">
+      <div class="offcanvas-head">
+        <a class="offcanvas-brand" href="index.html" aria-label="FD2P — Home">
+          <img src="assets/logo2.jpg" alt="FD2P small logo" />
+        </a>
+        <button class="offcanvas-close" type="button" aria-label="Close menu">✕</button>
+      </div>
+      <nav class="offcanvas-nav" aria-label="Mobile"></nav>
+    </aside>
   </div>
-</div>
 
-  <!-- ОДИН экран 100vh с тремя формами -->
-<section class="scene" id="scene">
-<section class="stage" id="stage">
-  <div class="forms">
-    <!-- 1. слева -->
-    <div class="form form--left">
-      <div class="card">
-        <p>At FD2P, we bring together experienced engineers, and 3D specialists to deliver practical and high-quality solutions. Our independence from specific industries allows us to adapt quickly, focus on client needs, and provide the right expertise for every challenge.</p>
-      </div>
-    </div>
-
-    <!-- 2. справа -->
-    <div class="form form--right">
-      <div class="card">
-        <p class="muted">With a deep understanding of every stage in the project lifecycle, we provide qualified support wherever it is needed — from initial concept and engineering calculations to fabrication oversight and final installation. Our team’s experience across design, production, and mobilization keeps decisions practical and builds predictable outcomes.</p>
-      </div>
-    </div>
-
-    <!-- 3. снова слева (карта удалена) -->
-    <div class="form form--left">
-      <div class="card">
-        <p>We work directly with industry partners across Scandinavia and Europe — companies we have collaborated with for many years. Long-term relationships only work if quality holds; that’s been our focus and priority.</p>
-      </div>
+  <div class="cover" id="cover">
+    <div class="mosaic" id="mosaic" aria-hidden="true">
+      <!-- replace with your paths -->
+      <img class="tile" src="assets/mosaic-01.jpg" alt="" loading="eager">
+      <img class="tile" src="assets/mosaic-02.jpg" alt="" loading="eager">
+      <img class="tile" src="assets/mosaic-03.jpg" alt="" loading="lazy">
+      <img class="tile" src="assets/mosaic-04.jpg" alt="" loading="lazy">
+      <img class="tile" src="assets/mosaic-05.jpg" alt="" loading="lazy">
+      <img class="tile" src="assets/mosaic-06.jpg" alt="" loading="lazy">
+      <img class="tile" src="assets/mosaic-07.jpg" alt="" loading="lazy">
+      <img class="tile" src="assets/mosaic-08.jpg" alt="" loading="lazy">
+      <img class="tile" src="assets/mosaic-09.jpg" alt="" loading="lazy">
     </div>
   </div>
-</section>
 
-  <!-- Пустой пад для прокрутки: картинка будет «уезжать» вниз -->
-  <div class="scrollpad" aria-hidden="true"></div>
-</section>
+  <!-- ONE 100vh screen with three forms -->
+  <section class="scene" id="scene">
+    <section class="stage" id="stage">
+      <div class="forms">
+        <!-- 1. left -->
+        <div class="form form--left">
+          <div class="card">
+            <p>At FD2P, we bring together experienced engineers, and 3D specialists to deliver practical and high-quality solutions. Our independence from specific industries allows us to adapt quickly, focus on client needs, and provide the right expertise for every challenge.</p>
+          </div>
+        </div>
 
+        <!-- 2. right -->
+        <div class="form form--right">
+          <div class="card">
+            <p class="muted">With a deep understanding of every stage in the project lifecycle, we provide qualified support wherever it is needed — from initial concept and engineering calculations to fabrication oversight and final installation. Our team’s experience across design, production, and mobilization keeps decisions practical and builds predictable outcomes.</p>
+          </div>
+        </div>
 
+        <!-- 3. left -->
+        <div class="form form--left">
+          <div class="card">
+            <p>We work directly with industry partners across Scandinavia and Europe — companies we have collaborated with for many years. Long-term relationships only work if quality holds; that’s been our focus and priority.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Empty pad for scrolling: the picture will "slide" down -->
+    <div class="scrollpad" aria-hidden="true"></div>
+  </section>
 
   <!-- FOOTER -->
   <footer class="site-footer">
@@ -533,147 +569,187 @@
 
   <script src="js/main.js"></script>
 
-  <!-- Скролл-логика: двигаем только картинку, формы статичны -->
-<script>
-(function(){
-  // поведение меню как на других страницах
-  var bp = parseInt(document.body.getAttribute('data-burger-bp') || '1024', 10);
-  function applyBP(){ document.body.classList.toggle('is-mobile-services', window.innerWidth <= bp); }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyBP); else applyBP();
-  window.addEventListener('resize', applyBP, {passive:true});
-  window.addEventListener('orientationchange', applyBP, {passive:true});
+  <!-- Scroll logic: only the picture moves, forms stay static -->
+  <script>
+    (function(){
+      // menu behavior same as other pages
+      var bp = parseInt(document.body.getAttribute('data-burger-bp') || '1024', 10);
+      function applyBP(){ document.body.classList.toggle('is-mobile-services', window.innerWidth <= bp); }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyBP); else applyBP();
+      window.addEventListener('resize', applyBP, {passive:true});
+      window.addEventListener('orientationchange', applyBP, {passive:true});
 
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // ключевые элементы
-  var scene  = document.getElementById('scene');   // ОБЩИЙ контейнер
-var cover  = document.getElementById('cover');   // фиксированный блок
-var mosaic = document.getElementById('mosaic');  // сетка 3×3
+      // key elements
+      var scene  = document.getElementById('scene');   // MAIN container
+      var cover  = document.getElementById('cover');   // fixed block
+      var mosaic = document.getElementById('mosaic');  // grid 3×3
 
-  function clamp01(x){ return x<0?0:(x>1?1:x); }
+      function clamp01(x){ return x<0?0:(x>1?1:x); }
 
-  function update(){
-    var vh   = window.innerHeight || 1;
-    var top  = scene.offsetTop || 0;
-    var h    = scene.offsetHeight || 1;           // высота: stage(100vh) + scrollpad
-    var y    = window.scrollY || window.pageYOffset || 0;
+      function update(){
+        var vh   = window.innerHeight || 1;
+        var top  = scene.offsetTop || 0;
+        var h    = scene.offsetHeight || 1;           // height: stage(100vh) + scrollpad
+        var y    = window.scrollY || window.pageYOffset || 0;
 
-    // Прогресс прокрутки внутри .scene: 0..1
-    var t = clamp01((y - top) / Math.max(1, h - vh));
+        // Scroll progress inside .scene: 0..1
+        var t = clamp01((y - top) / Math.max(1, h - vh));
 
-if (!reduce){
-  var move = t * 1.2 * vh;  // как и раньше: 120% высоты
-  mosaic.style.transform = 'translate3d(0,'+ move.toFixed(2) +'px,0)';
-  var fade = Math.min(1, Math.max(0, (t - 0.80) / 0.15));
-  mosaic.style.opacity = (1 - fade).toFixed(3);
-} else {
-  mosaic.style.transform = 'none';
-  mosaic.style.opacity = '1';
-}
-  }
+        if (!reduce){
+          var move = t * 1.2 * vh;  // 120% of height
+          mosaic.style.transform = 'translate3d(0,'+ move.toFixed(2) +'px,0)';
+          var fade = Math.min(1, Math.max(0, (t - 0.80) / 0.15));
+          mosaic.style.opacity = (1 - fade).toFixed(3);
+        } else {
+          mosaic.style.transform = 'none';
+          mosaic.style.opacity = '1';
+        }
+      }
 
-  update();
-  window.addEventListener('scroll', update, {passive:true});
-  window.addEventListener('resize', update, {passive:true});
-  window.addEventListener('orientationchange', update, {passive:true});
-})();
-</script>
+      update();
+      window.addEventListener('scroll', update, {passive:true});
+      window.addEventListener('resize', update, {passive:true});
+      window.addEventListener('orientationchange', update, {passive:true});
+    })();
+  </script>
 
-<!-- Burger breakpoint controller (like on Contact, scoped to Services) -->
-<script>
-  (function(){
-    var bp = parseInt(document.body.getAttribute('data-burger-bp') || '1024', 10);
+  <!-- Burger breakpoint controller (like on Contact, scoped to Services) -->
+  <script>
+    (function(){
+      var bp = parseInt(document.body.getAttribute('data-burger-bp') || '1024', 10);
 
-    function applyBreakpoint() {
-      var isMobile = window.innerWidth <= bp;
-      document.body.classList.toggle('is-mobile-services', isMobile);
-    }
+      function applyBreakpoint() {
+        var isMobile = window.innerWidth <= bp;
+        document.body.classList.toggle('is-mobile-services', isMobile);
+      }
 
-    function init(){
-      applyBreakpoint();
-      document.body.classList.add('js-ready-services'); // снимаем anti-flash стили
-    }
+      function init(){
+        applyBreakpoint();
+        document.body.classList.add('js-ready-services'); // remove anti-flash styles
+      }
 
-    window.addEventListener('resize', applyBreakpoint);
-    window.addEventListener('orientationchange', applyBreakpoint);
+      window.addEventListener('resize', applyBreakpoint);
+      window.addEventListener('orientationchange', applyBreakpoint);
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', init);
-    } else {
-      init();
-    }
-  })();
-</script>
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
 
-<script>
-(function(){
-  /**
-   * Split the first sentence from the rest.
-   * Heuristic: first period/question/exclamation followed by a space and a capital letter.
-   * Keeps punctuation with the first sentence.
-   */
-  function splitFirstSentence(text) {
-    var t = text.trim();
-    var match = t.match(/(.+?[.!?])(\s+)([A-Z].*)$/);
-    if (!match) return { first: t, rest: "" }; // fallback: no split
-    return { first: match[1], rest: match[3] };
-  }
+  <script>
+    (function(){
+      /**
+       * Split the first sentence from the rest.
+       * Heuristic: first period/question/exclamation followed by a space and a capital letter.
+       * Keeps punctuation with the first sentence.
+       */
+      function splitFirstSentence(text) {
+        var t = text.trim();
+        var match = t.match(/(.+?[.!?])(\s+)([A-Z].*)$/);
+        if (!match) return { first: t, rest: "" }; // fallback: no split
+        return { first: match[1], rest: match[3] };
+      }
 
-  function enhanceCardsForMobile() {
-    var cards = document.querySelectorAll('.forms .card p');
-    cards.forEach(function(p){
-      // Avoid re-processing
-      if (p.dataset.enhanced === "1") return;
+      function enhanceCardsForMobile() {
+        var cards = document.querySelectorAll('.forms .card p');
+        cards.forEach(function(p){
+          // Avoid re-processing
+          if (p.dataset.enhanced === "1") return;
 
-      var raw = p.textContent || "";
-      var parts = splitFirstSentence(raw);
+          var raw = p.textContent || "";
+          var parts = splitFirstSentence(raw);
 
-      // Build new HTML: first sentence + hidden "more"
-      if (parts.rest.length > 0) {
-        p.innerHTML = '<span class="first">' + parts.first + '</span> ' +
-                      '<span class="more" aria-hidden="true">' + parts.rest + '</span>';
+          // Build new HTML: first sentence + hidden "more"
+          if (parts.rest.length > 0) {
+            p.innerHTML = '<span class="first">' + parts.first + '</span> ' +
+                          '<span class="more" aria-hidden="true">' + parts.rest + '</span>';
 
-        // Add a toggle button to the card (bottom-right corner)
-        var card = p.closest('.card');
-        if (card && !card.querySelector('.card-toggle')) {
-          var btn = document.createElement('button');
-          btn.className = 'card-toggle';
-          btn.type = 'button';
-          btn.setAttribute('aria-expanded', 'false');
-          btn.setAttribute('aria-label', 'Expand text');
-          btn.addEventListener('click', function(){
-            var expanded = card.classList.toggle('expanded');
-            btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-          });
-          card.appendChild(btn);
+            // Add a toggle button to the card (bottom-right corner)
+            var card = p.closest('.card');
+            if (card && !card.querySelector('.card-toggle')) {
+              var btn = document.createElement('button');
+              btn.className = 'card-toggle';
+              btn.type = 'button';
+              btn.setAttribute('aria-expanded', 'false');
+              btn.setAttribute('aria-label', 'Expand text');
+              btn.addEventListener('click', function(){
+                var expanded = card.classList.toggle('expanded');
+                btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+              });
+              card.appendChild(btn);
+            }
+
+            // Mark as enhanced
+            p.dataset.enhanced = "1";
+          } else {
+            p.dataset.enhanced = "1";
+          }
+        });
+      }
+
+      // Run once on load
+      function initTruncation() {
+        // Only bother on mobile widths; desktop shows everything
+        if (window.innerWidth <= 768) enhanceCardsForMobile();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTruncation);
+      } else {
+        initTruncation();
+      }
+
+      // Re-apply on orientation/resize (lightweight; won’t double-process)
+      window.addEventListener('orientationchange', initTruncation, { passive: true });
+      window.addEventListener('resize', initTruncation, { passive: true });
+    })();
+  </script>
+
+  <script>
+    (function(){
+      function setRails(){
+        if (window.innerWidth < 1025) return; // desktop only
+
+        var brand = document.querySelector('.site-header .brand');
+        var contact = document.querySelector('.site-header .main-nav a[href*="contact"]');
+
+        // fallback: also try button with "Contact" text if selector differs
+        if (!contact){
+          var links = document.querySelectorAll('.site-header .main-nav a');
+          contact = Array.from(links).find(function(a){ return /contact/i.test(a.textContent || ''); }) || null;
         }
 
-        // Mark as enhanced
-        p.dataset.enhanced = "1";
-      } else {
-        p.dataset.enhanced = "1";
+        if (!brand || !contact) return;
+
+        var vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        var left = Math.max(0, Math.round(brand.getBoundingClientRect().left));
+        var right = Math.min(vw, Math.round(contact.getBoundingClientRect().right));
+        var rightPad = Math.max(0, vw - right);
+
+        document.documentElement.style.setProperty('--rail-left', left + 'px');
+        document.documentElement.style.setProperty('--rail-right-pad', rightPad + 'px');
       }
-    });
-  }
 
-  // Run once on load
-  function initTruncation() {
-    // Only bother on mobile widths; desktop shows everything
-    if (window.innerWidth <= 768) enhanceCardsForMobile();
-  }
+      // run on load and on resize/orientation
+      function initRails(){
+        setRails();
+        // sometimes fonts/layout shift; run once more shortly after
+        setTimeout(setRails, 50);
+      }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initTruncation);
-  } else {
-    initTruncation();
-  }
-
-  // Re-apply on orientation/resize (lightweight; won’t double-process)
-  window.addEventListener('orientationchange', initTruncation, { passive: true });
-  window.addEventListener('resize', initTruncation, { passive: true });
-})();
-</script>
-
-
+      if (document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', initRails);
+      } else {
+        initRails();
+      }
+      window.addEventListener('resize', setRails, { passive: true });
+      window.addEventListener('orientationchange', setRails, { passive: true });
+    })();
+  </script>
 </body>
 </html>
