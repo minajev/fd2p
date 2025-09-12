@@ -113,17 +113,6 @@
     }
     .muted{ color:var(--muted); }
 
-    /* карта в третьей форме */
-    .map{
-      margin-top:12px;
-      border:1px solid var(--line);
-      border-radius:12px;
-      background:#fff;
-      padding:10px;
-    }
-    .map img{ display:block; width:100%; height:auto; border-radius:8px; }
-    .map figcaption{ margin-top:6px; font-size:.9rem; color:var(--muted); text-align:center; }
-
     /* ===== 2) Картинка поверх верхних 2/3 экрана (fixed) ===== */
 .cover{
   position: fixed;
@@ -156,9 +145,11 @@
   gap: clamp(8px, 1.2vw, 12px);
   padding: clamp(8px, 1.2vw, 12px);
   background: #fff;
+  border-top: 1px solid var(--line); /* <- line moves with mosaic */
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
 }
+
 @media (min-width:1025px){
   .mosaic{
     grid-template-columns: repeat(4, 1fr);
@@ -187,17 +178,6 @@
     @media (prefers-reduced-motion: reduce){
       .cover__img{ transform:none !important; opacity:1 !important; }
     }
-
-/* Смещение первой формы на высоту шапки */
-.forms .form:first-child {
-  margin-top: 64px;  /* если шапка 64px */
-}
-
-.forms .form:last-child{
-  justify-content: flex-start;  /* вместо центрирования */
-  width: 100%;
-}
-
 
 /* --- Disable hover/active/focus motion for the three forms on Services --- */
 
@@ -233,71 +213,10 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.map--bleed{
-  display: block;
-  position: relative;
-  width: 100vw;                 /* ширина ровно во всю видимую область */
-  left: 50%;
-  transform: translateX(-50%);  /* центрируем — без calc() */
-  margin: 10px 0 0;             /* только вертикальный отступ сверху */
-  padding: 0;
-  border: 0;
-  background: transparent;
-  border-radius: 0;
-  flex: 0 0 auto;
-}
-
-/* Там, где поддерживается dvw, используем его (не включает полосу прокрутки) */
-@supports (width: 100dvw) {
-  .map--bleed{ width: 100dvw; }
-}
-
-/* Картинка — зум по центру */
-.map--bleed img{
-  display: block;
-  width: 100%;
-  height: 28vh;                 /* подстрой по вкусу */
-  object-fit: cover;
-  object-position: 50% 50%;
-  border-radius: 0;
-}
-
-.map--bleed figcaption{
-  max-width: min(1100px, 92vw);
-  margin: 6px auto 0;
-  padding: 0 16px;
-  font-size: .9rem;
-  color: var(--muted);
-  text-align: center;
-}
-
-
-
 /* формам и обёртке разрешаем выходить по X — нужно для full-bleed карты */
 .forms,
 .form {
   overflow-x: visible;   /* было clip — из-за этого карту резало */
-}
-
-
-/* 1) У третьей формы убираем горизонтальные паддинги,
-      чтобы карта центрировалась относительно окна */
-.forms .form:last-child{
-  padding-left: 0;
-  padding-right: 0;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: flex-start;
-}
-
-/* Сохраняем привычные отступы для текста внутри формы */
-.forms .form:last-child .card{
-  margin: 0 16px 10px;
-}
-
-/* карта не должна пытаться «расти»/«сжиматься» внутри flex-колонки */
-.map--bleed{ 
-  flex: 0 0 auto;           /* фиксируем поведение в flex-контейнере */
 }
 
 /* Три формы в одном экране: по 33vh каждая */
@@ -338,12 +257,136 @@
   }
 }
 
-/* Полностью убираем любые остатки стилей карты, если вдруг остались */
-.map, .map--bleed{ display:none !important; }
-
 /* Без ховер-скачков для карточек в этих трёх формах */
 .forms .card, .forms .card *{ transition:none !important; }
 .forms .card:hover{ transform:none !important; box-shadow:0 6px 20px rgba(0,0,0,.06) !important; }
+
+/* Mobile-only: show first sentence and a corner toggle */
+@media (max-width: 768px) {
+  .forms .card {
+    position: relative;
+  }
+
+  /* hidden chunk (rest of the paragraph) */
+  .forms .card .more {
+    display: none;
+  }
+
+  /* expanded state reveals the rest */
+  .forms .card.expanded .more {
+    display: inline;
+  }
+
+  /* corner triangle button */
+  .forms .card .card-toggle {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    width: 28px;
+    height: 28px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    line-height: 0;
+  }
+
+  /* draw a triangle via CSS borders */
+  .forms .card .card-toggle::before {
+    content: "";
+    display: inline-block;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 12px solid #111; /* triangle color */
+    transform-origin: 50% 50%;
+    transition: transform 0.2s ease;
+  }
+
+  /* rotate when expanded */
+  .forms .card.expanded .card-toggle::before {
+    transform: rotate(180deg);
+  }
+}
+
+/* Desktop/tablet: show everything, hide toggle */
+@media (min-width: 769px) {
+  .forms .card .more { display: inline; }
+  .forms .card .card-toggle { display: none; }
+}
+
+/* On small screens give right padding so forms don't hit the scrollbar */
+@media (max-width: 768px) {
+  .forms {
+    padding-right: 12px; /* adjust as needed */
+    box-sizing: border-box;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 100%;
+    margin-right: 0;
+  }
+}
+
+/* Mobile rules to keep expanded cards centered and non-overlapping */
+@media (max-width: 768px) {
+  :root { --header-gap: 12px; } /* small space from header */
+
+  /* keep a tiny gutter so nothing touches the scrollbar/edges */
+  .forms {
+    padding-left: 12px;
+    padding-right: 12px;
+    box-sizing: border-box;
+  }
+
+  /* each form is 33vh; keep content centered vertically */
+  .forms .form {
+    align-items: center;          /* center card in the form */
+    justify-content: center;
+    overflow: hidden;             /* forms never bleed into each other */
+  }
+
+  /* first form: small top breathing room under the fixed header */
+  .forms .form:first-child {
+    padding-top: var(--header-gap);
+  }
+
+  /* the card itself stays centered and never exceeds its form’s height */
+  .forms .form .card {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    display: flex;                /* allow vertical centering of text */
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+
+    /* never grow beyond the form’s height; if needed, scroll inside the card */
+    max-height: calc(33vh - 2 * var(--header-gap));
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* base text size on phones */
+  .forms .form .card p {
+    font-size: clamp(0.96rem, 3.4vw, 1.05rem);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* when expanded (triangle pressed), slightly reduce size so both sentences fit more often */
+  .forms .form .card.expanded p {
+    font-size: clamp(0.92rem, 3.2vw, 1.02rem);
+  }
+
+  /* make sure corner toggle sits inside and does not cause overflow */
+  .forms .form .card .card-toggle {
+    right: 10px;
+    bottom: 10px;
+  }
+}
+
+
 
 
   </style>
@@ -522,6 +565,75 @@ if (!reduce){
       init();
     }
   })();
+</script>
+
+<script>
+(function(){
+  /**
+   * Split the first sentence from the rest.
+   * Heuristic: first period/question/exclamation followed by a space and a capital letter.
+   * Keeps punctuation with the first sentence.
+   */
+  function splitFirstSentence(text) {
+    var t = text.trim();
+    var match = t.match(/(.+?[.!?])(\s+)([A-Z].*)$/);
+    if (!match) return { first: t, rest: "" }; // fallback: no split
+    return { first: match[1], rest: match[3] };
+  }
+
+  function enhanceCardsForMobile() {
+    var cards = document.querySelectorAll('.forms .card p');
+    cards.forEach(function(p){
+      // Avoid re-processing
+      if (p.dataset.enhanced === "1") return;
+
+      var raw = p.textContent || "";
+      var parts = splitFirstSentence(raw);
+
+      // Build new HTML: first sentence + hidden "more"
+      if (parts.rest.length > 0) {
+        p.innerHTML = '<span class="first">' + parts.first + '</span> ' +
+                      '<span class="more" aria-hidden="true">' + parts.rest + '</span>';
+
+        // Add a toggle button to the card (bottom-right corner)
+        var card = p.closest('.card');
+        if (card && !card.querySelector('.card-toggle')) {
+          var btn = document.createElement('button');
+          btn.className = 'card-toggle';
+          btn.type = 'button';
+          btn.setAttribute('aria-expanded', 'false');
+          btn.setAttribute('aria-label', 'Expand text');
+          btn.addEventListener('click', function(){
+            var expanded = card.classList.toggle('expanded');
+            btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+          });
+          card.appendChild(btn);
+        }
+
+        // Mark as enhanced
+        p.dataset.enhanced = "1";
+      } else {
+        p.dataset.enhanced = "1";
+      }
+    });
+  }
+
+  // Run once on load
+  function initTruncation() {
+    // Only bother on mobile widths; desktop shows everything
+    if (window.innerWidth <= 768) enhanceCardsForMobile();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTruncation);
+  } else {
+    initTruncation();
+  }
+
+  // Re-apply on orientation/resize (lightweight; won’t double-process)
+  window.addEventListener('orientationchange', initTruncation, { passive: true });
+  window.addEventListener('resize', initTruncation, { passive: true });
+})();
 </script>
 
 
