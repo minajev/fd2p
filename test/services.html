@@ -87,7 +87,7 @@
       box-sizing: border-box;
     }
 
-    .card {
+.forms .card {
       width: 100%;
       max-width: 1100px;                 /* content won’t stretch too wide */
       margin: 0 auto;
@@ -101,7 +101,7 @@
 
     .form:nth-child(2) .card{ background:#f7f9fb; }
 
-    .card p{
+.forms .card p{
       margin:0;
       font-size: clamp(1.05rem, 1.35vw, 1.2rem);
       line-height:1.55;
@@ -227,7 +227,7 @@
       /* no horizontal padding so the “chessboard” touches the edges */
       padding: 0;
     }
-    .card{
+.forms .card {
       width: min(1100px, 92vw);
       background:#fff;
       border:1px solid var(--line);
@@ -308,7 +308,7 @@
         padding-right: 12px;
         box-sizing: border-box;
       }
-      .card {
+.forms .card {
         width: 100%;
         max-width: 100%;
         margin-right: 0;
@@ -550,6 +550,36 @@
     <!-- Empty pad for scrolling: the picture will "slide" down -->
     <div class="scrollpad" aria-hidden="true"></div>
   </section>
+
+<!-- WHAT WE DO (copied from index) -->
+<section class="section" id="what-we-do">
+  <div class="container">
+    <h2 class="section-title">What we do</h2>
+
+    <div class="cards">
+      <a class="card" href="services.html">
+        <h3>Design Development</h3>
+        <p>Structural & mechanical design, FEA, animation & rendering.</p>
+      </a>
+      <a class="card" href="services.html">
+        <h3>Technical Documentation</h3>
+        <p>Fabrication drawings, reports, procedures.</p>
+      </a>
+      <a class="card" href="services.html">
+        <h3>Manufacturing & Delivery</h3>
+        <p>Quotations, local fabrication (EE), on-site supervising.</p>
+      </a>
+    </div>
+
+    <!-- same inline CTA as on index -->
+    <p class="home-inline-cta">
+      If you need qualified support in design engineering,
+      <a href="contact.html" class="hero-link">contact us</a>
+      — we will be happy to discuss details with you.
+    </p>
+  </div>
+</section>
+
 
   <!-- FOOTER -->
   <footer class="site-footer">
