@@ -346,11 +346,6 @@
     overflow: hidden;             /* forms never bleed into each other */
   }
 
-  /* first form: small top breathing room under the fixed header */
-  .forms .form:first-child {
-    padding-top: var(--header-gap);
-  }
-
   /* the card itself stays centered and never exceeds its form’s height */
   .forms .form .card {
     width: 100%;
@@ -360,6 +355,7 @@
     align-items: center;
     justify-content: center;
     text-align: left;
+  box-shadow: none !important;
 
     /* never grow beyond the form’s height; if needed, scroll inside the card */
     max-height: calc(33vh - 2 * var(--header-gap));
@@ -386,7 +382,50 @@
   }
 }
 
+@media (max-width: 768px) {
+  /* make the 2nd form expand downward instead of both ways */
+  .forms .form:nth-child(2) {
+    align-items: flex-start; /* top-align inside its 33vh zone */
+  }
+  /* keep content contained; scrolling happens inside the card if needed */
+  .forms .form .card {
+    max-height: 33vh;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
 
+  /* first form: small top breathing room under the fixed header */
+.forms .form:first-child {
+  align-items: flex-start;    /* remove vertical centering */
+  padding-top: 100px;         /* distance from top of the page in px */
+}
+
+/* First form: fixed distance from top instead of vertical centering */
+.forms .form:last-child {
+  align-items: flex-start;    /* remove vertical centering */
+  padding-top: 0px;         /* distance from top of the page in px */
+}
+
+.forms .form:nth-child(2) {
+  align-items: flex-start;    /* remove vertical centering */
+  padding-top: 30px;         /* distance from top of the page in px */
+}
+
+/* Keep each row self-contained and clip content at the row boundary */
+.forms .form {
+  overflow: hidden; /* prevents a card from spilling into the next row */
+}
+
+/* Cards must fit inside their own row height (incl. the shorter first row) */
+.forms .form .card {
+  max-height: 100%; /* instead of 33vh */
+}
+
+/* If you previously set max-height:33vh on mobile, override it here too */
+@media (max-width: 768px) {
+  .forms .form .card { max-height: 100%; }
+}
 
 
   </style>
@@ -464,7 +503,7 @@
     <!-- 3. снова слева (карта удалена) -->
     <div class="form form--left">
       <div class="card">
-        <p>We work directly with industry partners across Scandinavia and Europe—companies we have collaborated with for many years. Long-term relationships only work if quality holds; that’s been our focus from the start.</p>
+        <p>We work directly with industry partners across Scandinavia and Europe — companies we have collaborated with for many years. Long-term relationships only work if quality holds; that’s been our focus from the start.</p>
       </div>
     </div>
   </div>
