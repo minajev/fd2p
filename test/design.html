@@ -37,13 +37,7 @@
       gap: 24px;
       align-items:center;
     }
-    .page-hero h1{
-      margin:0;
-      font-size:clamp(32px,4.8vw,48px);
-      line-height:1.02;
-      text-transform:uppercase;
-      text-align:left;
-    }
+    .page-hero h1{ margin:8px 0 0; font-size:clamp(28px,4.4vw,40px); line-height:1.08; text-transform:uppercase; text-align:left; }
     .page-hero p{ margin:0; color:var(--muted); }
     @media (max-width: 768px){
       .page-hero .hero-grid{ grid-template-columns: 1fr; }
@@ -89,35 +83,22 @@
       height:42px; padding:0 18px; border-radius:12px;
     }
 
-    /* Muted inline links consistent with About/Contact */
-    .design-page {
-      --link-muted: #2f6aa8;
-      --link-muted-hover: #245a90;
-      --link-muted-visited: #2a5f98;
-    }
-    .design-page a:not(.btn){
-      color: var(--link-muted);
-      text-decoration-color: currentColor;
-    }
-    .design-page a:hover:not(.btn),
-    .design-page a:focus-visible:not(.btn){
-      color: var(--link-muted-hover);
-      text-decoration-color: currentColor;
-      outline: none;
-    }
-    .design-page a:visited:not(.btn){
-      color: var(--link-muted-visited);
-    }
-
     /* Active page underline (Services) in header */
     .site-header .main-nav .btn.is-active { text-decoration: underline; text-underline-offset: 4px; }
 
     /* Keep footer spacing similar to Contact/About */
     .site-footer{ margin-top: 24px; }
+
+/* Mobile: make red buttons full-width and center text */
+@media (max-width: 600px){
+  .stack .actions .btn-accent{
+    width: 100%;
+  }
+}
   </style>
 </head>
 
-<body class="services-page is-collapsed" data-burger-bp="500">
+<body class="design-page is-collapsed" data-burger-bp="500">
   <!-- HEADER -->
   <header class="site-header" role="banner">
     <div class="container header-inner">
