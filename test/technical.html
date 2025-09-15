@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <title>FD2P — Technical Documentation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Technical documentation at FD2P: fabrication drawings, reports and procedures." />
+
+  <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="./css/swiper.min.css">
+  <link rel="preload" as="image" href="assets/logo2.jpg" />
+
+  <style>
+    .technical-page:not(.js-ready-technical) .site-header .main-nav{ opacity:0; visibility:hidden; pointer-events:none; position:absolute; right:0; top:0; height:var(--header-h); }
+    .technical-page:not(.js-ready-technical) .menu-toggle{ opacity:0; visibility:hidden; pointer-events:none; }
+
+    .technical-page .menu-toggle { display:none; }
+    .technical-page .main-nav { display:flex; }
+
+    .technical-page.is-mobile-technical .menu-toggle { display:block; }
+    .technical-page.is-mobile-technical .main-nav { display:none; }
+
+    .page-hero{ padding:48px 0 24px; border-bottom:0; }
+    .page-hero .hero-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:24px; align-items:center; }
+    .page-hero h1{ margin:8px 0 0; font-size:clamp(28px,4.4vw,40px); line-height:1.08; text-transform:uppercase; text-align:left; }
+    .page-hero p{ margin:0; color:var(--muted); }
+    @media (max-width: 768px){ .page-hero .hero-grid{ grid-template-columns: 1fr; } .page-hero h1{ text-align:left; margin-top:6px; } .page-hero p + p{ margin-top:8px; } }
+
+    .section{ padding:50px 0; }
+    .stack{ display:grid; grid-template-columns:1fr; gap:14px; padding:0 clamp(24px, 6vw, 26px); }
+    .stack .card{ border:1px solid var(--line); border-radius:14px; background:#fff; padding:clamp(16px, 2.2vw, 24px); box-shadow:none; transition:none !important; }
+.stack .card *:not(.swiper-wrapper):not(.swiper-slide){ transition:none !important; }
+    .stack .card:hover,.stack .card:focus,.stack .card:active{ transform:none !important; box-shadow:none !important; }
+
+    .stack h2{ margin:4px 0 8px; font-size:clamp(20px, 2.2vw, 24px); }
+    .stack p{ margin:0 0 12px; color:var(--muted); }
+    .stack ul{ margin:8px 0 16px; padding-left:18px; }
+    .stack li{ margin:6px 0; color:var(--muted); }
+.stack .btn{ height:42px; padding:0 18px; border-radius:12px; }
+.sheet-gallery{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:14px; margin-top:10px; }
+    .sheet{ aspect-ratio: 1 / 1.414; background:#fff; border:1px solid #dce3ea; border-radius:6px; box-shadow: 0 6px 18px rgba(0,0,0,.06), 0 1px 0 rgba(0,0,0,.04); padding:10px; overflow:hidden; }
+    .sheet img{ width:100%; height:100%; object-fit:cover; display:block; filter:contrast(0.98) saturate(0.96); }
+    @media (max-width: 900px){ .sheet-gallery{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+    @media (max-width: 520px){ .sheet-gallery{ grid-template-columns: 1fr; } }
+
+    @media (max-width: 600px){ .stack .actions .btn-accent{ width:100%; text-align:center; } }
+
+    .site-footer{ margin-top:24px; }
+
+#fabrication-drawings .swiper-slide > .card {
+  border-radius: 0 !important;
+}
+#fabrication-drawings .swiper-slide img {
+  border-radius: 0 !important;
+}
+
+  </style>
+</head>
+
+<body class="technical-page is-collapsed" data-burger-bp="500">
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="FD2P — Home">
+        <img src="assets/logo2.jpg" alt="FD2P small logo"
+             onerror="this.onerror=null;this.src='assets/logo1.jpg'"/>
+      </a>
+
+      <nav class="main-nav" aria-label="Primary" hidden>
+        <a href="index.html">Home</a>
+        <a href="services.html" aria-current="page">Services</a>
+        <a href="projects.html">Projects</a>
+        <a href="about.html">About</a>
+        <a class="btn btn-outline btn-outline-dark" href="contact.html">Contact</a>
+      </nav>
+
+      <button class="menu-toggle btn btn-outline-dark" type="button"
+              aria-label="Open menu" aria-expanded="false">☰ Menu</button>
+    </div>
+  </header>
+
+  <div class="offcanvas" aria-hidden="true">
+    <div class="offcanvas-backdrop"></div>
+    <aside class="offcanvas-panel" role="dialog" aria-modal="true" aria-label="Site menu">
+      <div class="offcanvas-head">
+        <a class="offcanvas-brand" href="index.html" aria-label="FD2P — Home">
+          <img src="assets/logo2.jpg" alt="FD2P small logo" />
+        </a>
+        <button class="offcanvas-close" type="button" aria-label="Close menu">✕</button>
+      </div>
+      <nav class="offcanvas-nav" aria-label="Mobile"></nav>
+    </aside>
+  </div>
+
+  <section class="page-hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-left">
+          <h1>Technical Documentation</h1>
+        </div>
+        <div class="hero-right">
+          <p>Technical documentation is the contract between design, fabrication and operations. It turns engineering intent into unambiguous instructions: drawings, notes, specifications and procedures that the shop and site can follow without guesswork. Clear documents reduce rework, raise quality, and speed up approvals.</p>
+          <p>At FD2P we focus on documentation that is production‑ready and traceable: fabrication drawings with bill of materials and welding notes, and concise reports and procedures that support audits and safe execution.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="stack">
+
+        <article class="card" id="fabrication-drawings">
+          <h2>Fabrication Drawings</h2>
+          <p>Good drawings are the backbone of a build. They translate 3D models into workshop reality with clear dimensions, tolerances, materials, welding, coatings and assembly references. Strong drawing practice removes ambiguity, prevents delays, and enables the supplier to quote and fabricate with confidence.</p>
+          <ul>
+            <li>Workshop‑ready details: BOM, sections, weld symbols, preparation and fit‑up notes.</li>
+            <li>Issued with revision control and manufacturing specifications for traceability.</li>
+            <li>Tools we use: <strong>SolidWorks</strong> and <strong>AutoCAD</strong>.</li>
+          </ul>
+
+<!--Carousel-->
+  <div class="swiper-container">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <div class="card">
+          <img src="./img/Chute model drawings.png" style="object-fit: contain; width:100%; height:100%;">
+        </div>
+      </div>
+
+      <div class="swiper-slide">
+        <div class="card">
+          <img src="./img/Platform drawings.png" style="object-fit: contain; width:100%; height:100%;">
+        </div>
+      </div>
+
+      <div class="swiper-slide">
+        <div class="card">
+          <img src="./img/Chute model drawings2.png" style="object-fit: contain; width:100%; height:100%;">
+        </div>
+      </div>
+
+    </div>
+  </div>
+<script src="./js/swiper.min.js"></script>
+
+<script>
+   var swiper = new Swiper('.swiper-container', {
+     effect: 'coverflow',
+     grabCursor: true,
+     loop: true,
+     centeredSlides: true,
+     slidesPerView: 'auto',
+  speed: 650,
+     coverflowEffect: {
+       rotate: 20,
+       stretch: 0,
+       depth: 200,
+       modifier: 1,
+       slideShadows : true,
+
+     },
+     pagination: {
+       el: '.swiper-pagination',
+     },
+   });
+
+ </script>
+
+          </article>
+
+        <article class="card" id="reports-procedures">
+          <h2>Reports &amp; Procedures</h2>
+          <p>Calculation reports and operating procedures document that a solution works as intended before you build or operate it. They provide the evidence for strength, stability and safety, and they describe <em>how</em> to execute a task on site—clearly and safely.</p>
+          <ul>
+            <li>Structural and lifting calculations with acceptance criteria and results summary.</li>
+            <li>Method statements, ITPs, inspection checklists, and handover documentation.</li>
+            <li>Clear revisioning and sign‑offs for client approval and audit readiness.</li>
+          </ul>
+          <p>Our reports are based on validated inputs (sketches, drawings, models) and demonstrate that equipment does not break, collapse or degrade prematurely under expected loads, while procedures ensure repeatable, safe operations.</p>
+          </article>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>FD<span style="color:#E30613;">2</span>P Technologies</h3>
+        </div>
+        <div class="footer-contacts">
+          <p>Email: <a href="mailto:info@fd2p.com">info@fd2p.com</a></p>
+          <p>Phone: <a href="tel:+37256279949">+372 56 279 949</a></p>
+          <p>Address: Kivimurru 34, Tallinn, Estonia</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    (function(){
+      var bp = parseInt(document.body.getAttribute('data-burger-bp') || '1024', 10);
+      function apply(){ document.body.classList.toggle('is-mobile-technical', window.innerWidth <= bp); }
+      function init(){ apply(); document.body.classList.add('js-ready-technical'); }
+      window.addEventListener('resize', apply, {passive:true});
+      window.addEventListener('orientationchange', apply, {passive:true});
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+      else init();
+    })();
+  </script>
+</body>
+</html>
