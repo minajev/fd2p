@@ -54,23 +54,13 @@
   border-radius: 0 !important;
 }
     
-/* Right offset only on wide screens (>=900px) */
-@media (min-width: 900px){
-  #fabrication-drawings,
-  #reports-procedures {
-    margin-right: clamp(14px, 5vw, 40px);
-  }
+#fabrication-drawings .swiper-wrapper{
+  width:100% !important;
+  box-sizing:border-box;
 }
-    /* Mobile: cards perfectly centered */
-@media (max-width: 899px){
-  #fabrication-drawings,
-  #reports-procedures {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-  .stack { padding-left: 24px; padding-right: 24px; }
+#fabrication-drawings .swiper-container{
+  overflow:hidden;
 }
-
     
   </style>
 </head>
