@@ -459,8 +459,8 @@ body:not(.js-ready) .menu-toggle{ visibility: visible; opacity:1; }
 }
 
 .slider-dot{
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   box-sizing: content-box;
   padding: 2px;               /* bigger hit area for touch */
   border-radius: 999px;
