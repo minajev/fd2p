@@ -53,6 +53,27 @@
 #fabrication-drawings .swiper-slide img {
   border-radius: 0 !important;
 }
+
+.technical-page .swiper-container,
+.technical-page .swiper-wrapper { box-sizing: border-box; }
+
+/* Styles for slide-card only inside technical page */
+.technical-page .slide-card {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+
+.technical-page .slide-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Make cards align with the same page margins as text */
+.technical-page .stack { padding-left: 0; padding-right: 0; }
+
 /* Pagination styling for Fabrication Drawings slider */
 #fabrication-drawings .swiper-pagination {
   position: static;          /* places dots below the slider */
@@ -138,19 +159,19 @@
   <div class="swiper-container">
     <div class="swiper-wrapper">
       <div class="swiper-slide">
-        <div class="card">
+        <div class="slide-card">
           <img src="./img/Chute model drawings.png" style="object-fit: contain; width:100%; height:100%;">
         </div>
       </div>
 
       <div class="swiper-slide">
-        <div class="card">
+        <div class="slide-card">
           <img src="./img/Platform drawings.png" style="object-fit: contain; width:100%; height:100%;">
         </div>
       </div>
 
       <div class="swiper-slide">
-        <div class="card">
+        <div class="slide-card">
           <img src="./img/Chute model drawings2.png" style="object-fit: contain; width:100%; height:100%;">
         </div>
       </div>
@@ -227,25 +248,5 @@
       else init();
     })();
   </script>
-var swiper = new Swiper('.swiper-container', {
-  effect: 'coverflow',
-  grabCursor: true,
-  loop: true,
-  centeredSlides: true,
-  slidesPerView: 'auto',
-  speed: 650,
-  coverflowEffect: {
-    rotate: 20,
-    stretch: 0,
-    depth: 200,
-    modifier: 1,
-    slideShadows: true
-  },
-  pagination: {
-    el: '.swiper-pagination',
-    clickable: true,        // makes dots clickable
-    dynamicBullets: false    // set true if you want animated short bullets
-  }
-});
 </body>
 </html>
