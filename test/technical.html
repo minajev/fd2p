@@ -74,23 +74,38 @@
 /* Make cards align with the same page margins as text */
 .technical-page .stack { padding-left: 0; padding-right: 0; }
 
-/* Pagination styling for Fabrication Drawings slider */
+/* Pagination styling for Fabrication Drawings slider (black, small, below) */
 #fabrication-drawings .swiper-pagination {
-  position: static;          /* places dots below the slider */
+  position: static;    /* keep dots below the slider */
   margin-top: 10px;
   text-align: center;
 }
 
+/* Fabrication: hollow inactive dots, solid active, 16px */
 #fabrication-drawings .swiper-pagination-bullet {
-  background: #222;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;     /* so border doesn't change outer size */
+  border: 2px solid #000;     /* black outline */
+  border-radius: 999px;
+  background: transparent;    /* transparent center for inactive */
+  margin: 0 6px;
   opacity: 0.4;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+
+  /* keep exact visual size (avoid any library scaling) */
+  -webkit-transform: none;
+  -ms-transform: none;
+  transform: none;
 }
 
 #fabrication-drawings .swiper-pagination-bullet-active {
-  opacity: 1;
-  background: #000;
+  background: #000;           /* solid black for active */
+  border-color: #000;         /* keep border same color/width to avoid size jump */
+  opacity: 0.8;
 }
+
+
   </style>
 </head>
 
@@ -197,9 +212,11 @@
        slideShadows : true,
 
      },
-     pagination: {
-       el: '.swiper-pagination',
-     },
+pagination: {
+  el: '.swiper-pagination',
+  clickable: true
+},
+
    });
 
  </script>
