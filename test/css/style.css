@@ -318,8 +318,32 @@ body.is-nav-hidden .site-header .brand{ opacity:1; visibility:visible }
   user-select: none;                   /* modern browsers */
   -webkit-touch-callout: none;         /* disable long-press menu on iOS */
 }
-/* (Optional) prevent accidental text cursor on double-click */
-.hero .hero-text{ cursor: default; }
+
+/* Hand (grab) cursor over the hero text overlay */
+.hero .hero-frame,
+.hero .hero-text,
+.hero .hero-text .line{
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+.hero .hero-frame:active,
+.hero .hero-text:active,
+.hero .hero-text .line:active{
+  cursor: -webkit-grabbing;
+  cursor: grabbing;
+}
+
+
+/* Hand (grab) cursor over the main hero slider */
+.hero .slider{
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+.hero .slider.is-grabbing,
+.hero .slider:active{
+  cursor: -webkit-grabbing;
+  cursor: grabbing;
+}
 
 /* Pre-collapsed look on small screens BEFORE JS runs (prevents flash on reload) */
 @media (max-width: 1024px){
@@ -1011,6 +1035,4 @@ body.is-fade-leave        .page-fade{ opacity: 1; pointer-events: auto; }
     margin: 4px 0;
   }
 }
-
-
 
