@@ -438,7 +438,7 @@ body:not(.js-ready) .menu-toggle{ visibility: visible; opacity:1; }
   width: 10px;
   height: 10px;
   box-sizing: content-box;
-  padding: 8px;               /* bigger hit area for touch */
+  padding: 2px;               /* bigger hit area for touch */
   border-radius: 999px;
   border: 2px solid rgba(255,255,255,.85);
   background: transparent;
@@ -1011,5 +1011,6 @@ body.is-fade-leave        .page-fade{ opacity: 1; pointer-events: auto; }
     margin: 4px 0;
   }
 }
+
 
 
