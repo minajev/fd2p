@@ -423,6 +423,41 @@ body:not(.js-ready) .menu-toggle{ visibility: visible; opacity:1; }
 .arrow:active{ transform:translateY(-50%) scale(.96) }
 .arrow-prev{ left:24px } .arrow-next{ right:24px }
 
+/* Dots (pager) */
+.slider-dots{
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 6; /* above overlay/panel */
+}
+
+.slider-dot{
+  width: 10px;
+  height: 10px;
+  box-sizing: content-box;
+  padding: 8px;               /* bigger hit area for touch */
+  border-radius: 999px;
+  border: 2px solid rgba(255,255,255,.85);
+  background: transparent;
+  opacity: .7;
+  cursor: pointer;
+  outline: none;
+}
+
+.slider-dot[aria-current="true"]{
+  background: rgba(255,255,255,.95);
+  opacity: 1;
+}
+
+@media (max-width: 1024px){
+  .slider-dots{ bottom: 14px; }
+  .slider-dot{ width: 9px; height: 9px; }
+}
+
+
 /* Arrows are always visible except on narrow screens */
 .slider .arrow{
   opacity: 1;
@@ -516,12 +551,13 @@ body.is-menu-open .menu-toggle::after{ transform:translateX(-50%) scaleX(1); }
    Off‑canvas menu
    ========================= */
 .offcanvas{
-  position:fixed; inset:0; z-index:120; pointer-events:none; opacity:0;
+  position:fixed; inset:0; z-index:3000; pointer-events:none; opacity:0;
   transition:opacity .2s ease;
 }
-.offcanvas-backdrop{ position:absolute; inset:0; background:transparent; opacity:0; }
+.offcanvas-backdrop{ position:absolute; inset:0; background:transparent; opacity:0; z-index: 0; }
 .offcanvas-panel{
   position:absolute; top:0; left:0; height:100%; width:min(360px, 90vw);
+z-index: 1;
   background:#fff; border-right:1px solid var(--line);
   box-shadow: 18px 0 40px rgba(0,0,0,.18);
   transform:translateX(-100%); transition:transform .28s ease;
@@ -975,6 +1011,5 @@ body.is-fade-leave        .page-fade{ opacity: 1; pointer-events: auto; }
     margin: 4px 0;
   }
 }
-
 
 
