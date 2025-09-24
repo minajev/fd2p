@@ -562,6 +562,45 @@ async function runPreloader() {
   const LAST_REAL  = slides.length - 2;
   let idx = FIRST_REAL;
 
+// Dots (pager) init
+const dotsHost = slider.querySelector('.slider-dots');
+
+function buildDots(){
+  if (!dotsHost) return;
+  dotsHost.innerHTML = '';
+  originals.forEach((_, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'slider-dot';
+    b.setAttribute('role', 'tab');
+    b.setAttribute('aria-label', `Go to slide ${i + 1}`);
+    if (i === 0) b.setAttribute('aria-current', 'true');
+    dotsHost.appendChild(b);
+  });
+
+  dotsHost.addEventListener('click', (e) => {
+    const btn = e.target.closest('.slider-dot');
+    if (!btn) return;
+    const i = Array.prototype.indexOf.call(dotsHost.children, btn);
+    stop();                                // behave like arrows (manual = pause)
+    goTo(FIRST_REAL + i, false);           // manual → no progress bar here
+  });
+}
+
+function updateDots(real){
+  if (!dotsHost) return;
+  const activeIndex = real - FIRST_REAL;
+  const dots = dotsHost.children;
+  for (let i = 0; i < dots.length; i++){
+    if (i === activeIndex) dots[i].setAttribute('aria-current', 'true');
+    else dots[i].removeAttribute('aria-current');
+  }
+}
+
+// Build dots once the real slides are known
+buildDots();
+
+
 // Lock initial background size so preload and actual backgrounds match
 LOCKED_BG_SIZE = IS_MOBILE ? 478 : pickSize();
 
@@ -632,6 +671,8 @@ if (PARALLAX_DISABLED){
 
     FrameSizer.resize();
     scheduleUpdateArrows();
+if (dotsHost) updateDots(real);
+
   }
 
   function goTo(i, withProgress = true) {
@@ -658,6 +699,8 @@ if (PARALLAX_DISABLED){
     else if (idx === 0)            { idx = LAST_REAL;  setTrackPosition(true); }
 
     isSliding = false;
+if (dotsHost) updateDots(realIndex(idx));
+
     // Short cooldown so the next drag can start almost immediately
     dragCooldownUntil = performance.now() + (dragType === 'mouse' ? 60 : 100);
 
