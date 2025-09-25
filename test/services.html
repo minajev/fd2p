@@ -61,7 +61,8 @@
     .stage{
       position: sticky;
       top: 0;
-      height: 100vh;
+  height: 100vh;          /* fallback */
+  height: 100svh;         /* stable on mobile */
       overflow: visible;  /* prevents full-bleed image from being clipped */
       background:#fff;
       z-index: 1;
@@ -114,7 +115,8 @@
       position: fixed;
       left: 0; right: 0;
       bottom: 0;                  /* aligns exactly with the bottom edge */
-      height: calc(66vh - 0.5px); /* tiny compensation for subpixel rounding */
+height: calc(66vh - 0.5px);      /* fallback */
+height: calc(66svh - 0.5px);     /* stable */
       overflow: hidden;
       z-index: 2;
       pointer-events: none;
@@ -167,7 +169,7 @@
     /* ===== 3) Scroll pad for the effect (empty space) =====
        Needed so there is room to scroll while the image moves.
        Height ~ 120vh = how far the image will move. */
-    .scrollpad{ height: 120vh; }
+.scrollpad{ height: 120vh; height: 120svh; }   /* fallback + stable */
 
     @media (prefers-reduced-motion: reduce){
       .cover__img{ transform:none !important; opacity:1 !important; }
@@ -213,14 +215,16 @@
       overflow-x: visible;   /* was clip — that caused the cover to be cut */
     }
 
-    /* Three forms on one screen: 33vh each */
-    .stage{ height: 100vh; }
-    .forms{
-      position: absolute; inset: 0;
-      display: grid;
-      grid-template-rows: 33vh 33vh 33vh;   /* exactly 33vh each */
-      width: 100%;
-    }
+/* Three forms on one screen: 33svh each */
+.stage{ height: 100vh; height: 100svh; }                     /* fallback + stable */
+.forms{
+  position: absolute; inset: 0;
+  display: grid;
+  grid-template-rows: 33vh 33vh 33vh;                         /* fallback */
+  grid-template-rows: 33svh 33svh 33svh;                      /* stable */
+  width: 100%;
+}
+
     .form{
       display: flex;
       align-items: center;
@@ -345,7 +349,8 @@
         box-shadow: none !important;
 
         /* if needed, scroll inside the card */
-        max-height: calc(33vh - 2 * var(--header-gap));
+  max-height: calc(33vh - 2 * var(--header-gap));   /* fallback */
+  max-height: calc(33svh - 2 * var(--header-gap));  /* stable */
         overflow: auto;
         -webkit-overflow-scrolling: touch;
       }
@@ -373,11 +378,13 @@
       /* make the 2nd form expand downward only */
       .forms .form:nth-child(2) { align-items: flex-start; }
       /* keep content contained; scrolling happens inside the card */
-      .forms .form .card {
-        max-height: 33vh;
-        overflow: auto;
-        -webkit-overflow-scrolling: touch;
-      }
+.forms .form .card {
+  max-height: 33vh;            /* fallback */
+  max-height: 33svh;           /* stable */
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
     }
 
     /* First form: fixed breathing space below the fixed header */
@@ -615,11 +622,14 @@
       var scene  = document.getElementById('scene');   // MAIN container
       var cover  = document.getElementById('cover');   // fixed block
       var mosaic = document.getElementById('mosaic');  // grid 3×3
+var stageEl = document.getElementById('stage');  // 100svh block (stable height)
+
+
 
       function clamp01(x){ return x<0?0:(x>1?1:x); }
 
       function update(){
-        var vh   = window.innerHeight || 1;
+var vh   = (stageEl && stageEl.getBoundingClientRect().height) || (window.innerHeight || 1);
         var top  = scene.offsetTop || 0;
         var h    = scene.offsetHeight || 1;           // height: stage(100vh) + scrollpad
         var y    = window.scrollY || window.pageYOffset || 0;
