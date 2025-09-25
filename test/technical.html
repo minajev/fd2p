@@ -57,6 +57,23 @@
 .technical-page .swiper-container,
 .technical-page .swiper-wrapper { box-sizing: border-box; }
 
+/* Hand on hover over the slider (slides + bullets) */
+#fabrication-drawings .swiper-container,
+#fabrication-drawings .swiper-wrapper,
+#fabrication-drawings .swiper-slide,
+#fabrication-drawings .swiper-pagination,
+#fabrication-drawings .swiper-pagination *{
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+
+/* While holding: force fist across page content */
+html.is-holding,
+html.is-holding *{
+  cursor: -webkit-grabbing !important;
+  cursor: grabbing !important;
+}
+
 /* Styles for slide-card only inside technical page */
 .technical-page .slide-card {
   padding: 0;
@@ -103,6 +120,40 @@
   background: #000;           /* solid black for active */
   border-color: #000;         /* keep border same color/width to avoid size jump */
   opacity: 0.8;
+}
+
+/* Keep a fist (grabbing) anywhere while LMB is held after pressing on the slider */
+html.is-holding,
+html.is-holding *{
+  cursor: -webkit-grabbing !important;
+  cursor: grabbing !important;
+}
+
+/* Optional: avoid accidental text selection while holding */
+html.is-holding{
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* While holding LMB anywhere after pressing on the slider: force "grabbing" globally */
+html.is-holding,
+html.is-holding *,
+html.is-holding a,
+html.is-holding button,
+html.is-holding input,
+html.is-holding textarea,
+html.is-holding select,
+html.is-holding label,
+html.is-holding .swiper-pagination,
+html.is-holding .swiper-pagination *{
+  cursor: -webkit-grabbing !important;
+  cursor: grabbing !important;
+}
+
+/* Optional: prevent accidental text selection while holding */
+html.is-holding{
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 
@@ -219,6 +270,48 @@ pagination: {
 },
 
    });
+
+// Match index UX: grab → grabbing on press, holds everywhere until release
+(function(){
+  var root      = document.documentElement;                         // <html>
+  var scope     = document.querySelector('#fabrication-drawings');   // slides + bullets
+  var container = scope && scope.querySelector('.swiper-container');
+  if (!scope || !container) return;
+
+  var activeId = null;
+
+  function release(){
+    if (activeId !== null) {
+      try { container.releasePointerCapture(activeId); } catch(e){}
+      activeId = null;
+    }
+    root.classList.remove('is-holding');
+  }
+
+  // Start when pressing on slides OR on bullets (capture phase to be first)
+  scope.addEventListener('pointerdown', function(e){
+    if (e.button !== 0) return; // left button only
+    if (!e.target.closest('.swiper-container, .swiper-pagination')) return;
+
+    root.classList.add('is-holding');
+
+    // Pointer capture keeps the "grabbing" state consistent while moving off the slider
+    try {
+      container.setPointerCapture(e.pointerId);
+      activeId = e.pointerId;
+    } catch(e) {
+      activeId = null;
+    }
+  }, true);
+
+  window.addEventListener('pointerup', release, { passive:true });
+  document.addEventListener('visibilitychange', function(){
+    if (document.visibilityState !== 'visible') release();
+  });
+})();
+
+
+
 
  </script>
 
