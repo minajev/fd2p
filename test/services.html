@@ -169,7 +169,7 @@ height: calc(66svh - 0.5px);     /* stable */
     /* ===== 3) Scroll pad for the effect (empty space) =====
        Needed so there is room to scroll while the image moves.
        Height ~ 120vh = how far the image will move. */
-.scrollpad{ height: 120vh; height: 120svh; }   /* fallback + stable */
+.scrollpad{ height: 66vh; height: 66svh; }   /* fallback + stable */
 
     @media (prefers-reduced-motion: reduce){
       .cover__img{ transform:none !important; opacity:1 !important; }
@@ -572,7 +572,7 @@ height: calc(66svh - 0.5px);     /* stable */
         <h3>Technical Documentation</h3>
         <p>Fabrication drawings, reports, procedures.</p>
       </a>
-      <a class="card" href="services.html">
+      <a class="card" href="manufacturing.html">
         <h3>Manufacturing & Delivery</h3>
         <p>Quotations, local fabrication (EE), on-site supervising.</p>
       </a>
@@ -638,7 +638,7 @@ var vh   = (stageEl && stageEl.getBoundingClientRect().height) || (window.innerH
         var t = clamp01((y - top) / Math.max(1, h - vh));
 
         if (!reduce){
-          var move = t * 1.2 * vh;  // 120% of height
+          var move = t * 0.66 * vh;  // 100% of height
           mosaic.style.transform = 'translate3d(0,'+ move.toFixed(2) +'px,0)';
           var fade = Math.min(1, Math.max(0, (t - 0.80) / 0.15));
           mosaic.style.opacity = (1 - fade).toFixed(3);
