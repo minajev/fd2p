@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <title>FD2P — About</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="About FD2P — Mechanical & Structural Engineering in marine, subsea, civil, and industrial projects." />
+
+  <!-- Global site styles -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preload" as="image" href="assets/logo2.jpg" />
+
+  <!-- Page-local styles (copy of Contact ethos, scoped to .about-page) -->
+  <style>
+    /* Anti-flash: hide header bits until JS applies the correct state */
+    .about-page:not(.js-ready-about) .site-header .main-nav{
+      position:absolute; right:0; top:0; height:var(--header-h);
+      opacity:0; visibility:hidden; pointer-events:none;
+    }
+    .about-page:not(.js-ready-about) .menu-toggle{
+      opacity:0; visibility:hidden; pointer-events:none;
+    }
+
+    /* Desktop defaults for About (switched by .is-mobile-about) */
+    .about-page .menu-toggle { display: none; }
+    .about-page .main-nav { display: flex; }
+
+    /* Mobile state toggled by JS based on data-burger-bp */
+    .about-page.is-mobile-about .menu-toggle { display: block; }
+    .about-page.is-mobile-about .main-nav { display: none; }
+
+    /* Page hero */
+    .page-hero{ padding:48px 0 24px; border-bottom:1px solid var(--line); }
+    .page-hero h1{ margin:8px 0 0; font-size:clamp(28px,4.4vw,40px); line-height:1.08; text-align:center; }
+    .page-hero p{ margin:10px auto 0; color:var(--muted); max-width:78ch; text-align:center; }
+    .page-hero .hero-kpis{
+      margin:18px auto 0;
+      display:flex; gap:12px; flex-wrap:wrap; justify-content:center;
+    }
+    .kpi{ display:inline-flex; gap:8px; align-items:center; border:1px solid var(--line); border-radius:12px; padding:8px 12px; background:#fff; font-weight:700; }
+    .kpi small{ font-weight:600; color:var(--muted); }
+
+    /* Content blocks */
+    .about-content{ padding: 50px 0; }
+    .about-grid{ display:grid; grid-template-columns:1.1fr .9fr; gap:28px; }
+    @media (max-width: 980px){ .about-grid{ grid-template-columns:1fr; } }
+
+    .about-card{
+      border:1px solid var(--line); border-radius:14px; background:#fff; padding:18px;
+    }
+    .about-card h2{ margin:0 0 10px; font-size:20px; }
+    .about-card p{ margin:0 0 10px; color:var(--muted); }
+    .about-list{ margin:10px 0 0; padding-left:18px; }
+    .about-list li{ margin:6px 0; }
+
+    /* Team strip (5 cards) */
+.team-strip { padding: 40px clamp(24px, 6vw, 26px); }
+    .team-title{ margin:0 0 14px; font-size:20px; }
+    .team{ display:grid; grid-template-columns: repeat(5, 1fr); gap:12px; }
+    @media (max-width: 1100px){ .team{ grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 720px){ .team{ grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 420px){ .team{ grid-template-columns: 1fr; } }
+
+    .person{
+      border:1px solid var(--line); border-radius:14px; background:#fff; padding:12px;
+      display:grid; grid-template-columns:auto 1fr; gap:10px 12px; align-items:center;
+    }
+    .person img{
+      width:64px; height:64px; border-radius:12px; object-fit:cover; border:1px solid var(--line);
+      background:#f6f7f9;
+    }
+    .person h3{ margin:0; font-size:16px; line-height:1.2; }
+    .person .role{ margin:2px 0 0; color:var(--muted); font-size:13px; }
+    .person a{ display:inline-block; text-decoration:none; font-weight:700; }
+    .person .meta{ grid-column: 1 / -1; display:flex; gap:10px; flex-wrap:wrap; }
+    .person .meta a{ border:1px solid var(--line); border-radius:10px; padding:6px 10px; }
+
+.person .meta a {
+  color: var(--link-muted);
+  text-decoration: none;
+}
+
+.person .meta a:hover,
+.person .meta a:focus {
+  color: var(--link-muted-hover);
+}
+
+.person .meta a:visited {
+  color: var(--link-muted-visited);
+}
+
+    /* Link colors scoped to About content */
+    .about-page {
+      --link-muted: #2f6aa8;
+      --link-muted-hover: #245a90;
+      --link-muted-visited: #2a5f98;
+    }
+    .about-page .page-hero a:not(.btn),
+    .about-page .about-content a:not(.btn){ color:var(--link-muted); text-decoration-color:currentColor; }
+    .about-page .page-hero a:hover:not(.btn),
+    .about-page .about-content a:hover:not(.btn),
+    .about-page .page-hero a:focus-visible:not(.btn),
+    .about-page .about-content a:focus-visible:not(.btn){
+      color:var(--link-muted-hover); text-decoration-color:currentColor; outline:none;
+    }
+    .about-page .page-hero a:visited:not(.btn),
+    .about-page .about-content a:visited:not(.btn){ color:var(--link-muted-visited); }
+
+.page-hero h1 {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.page-hero p,
+.page-hero ul {
+  text-align: justify;
+  margin-left: 0;
+  margin-right: 0;
+  max-width: 100%;
+}
+
+.page-hero ul,
+.page-hero li {
+  color: var(--muted);
+}
+
+/* Team cards: photo on top, text below */
+.team .person{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  padding: 12px;
+  height: 100%;
+}
+
+.team .person img{
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 1px;
+  border: none;
+  display: block; 
+  max-width: 100%;
+  background: #f6f7f9;
+}
+
+.team .person h3{
+  margin: 2px 0 0;
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.team .person .role{
+  margin: 4px 0 8px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* Email/Phone block */
+.team .person .meta{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+
+.team .person .meta .line{
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+  margin-top: 2px;
+}
+
+/* Make labels visible and bold */
+.team .person .meta .label {
+  font-weight: 600;            /* bold text */
+  color: #000;                 /* black text */
+  min-width: 60px;             /* keeps some spacing */
+  display: inline-block;
+}
+
+.team .person .meta a{
+  border: none;
+  padding: 0;
+  font-weight: 700;
+  color: var(--link-muted);
+  text-decoration: none;
+}
+.team .person .meta a:hover,
+.team .person .meta a:focus-visible{
+  color: var(--link-muted-hover);
+  outline: none;
+}
+.team .person .meta a:visited{
+  color: var(--link-muted-visited);
+}
+
+.team{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+/* Keep all text inside the card */
+.team .person { overflow: hidden; }
+
+/* Allow wrapping on label+value rows */
+.team .person .meta .line {
+  flex-wrap: wrap;
+}
+
+/* Make long links wrap inside the card instead of overflowing */
+.team .person .meta a {
+  display: inline-block;
+  max-width: 100%;
+  overflow-wrap: anywhere;   /* modern, safest */
+  word-break: break-word;    /* fallback */
+  white-space: normal;
+}
+
+/* Also allow names/roles to wrap safely if needed */
+.team .person h3,
+.team .person .role {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+  </style>
+</head>
+
+<body class="about-page is-collapsed" data-burger-bp="500">
+  <!-- HEADER: same compact header and menu as Contact -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="FD2P — Home">
+        <img src="assets/logo2.jpg" alt="FD2P small logo"
+             onerror="this.onerror=null;this.src='assets/logo1.jpg'"/>
+      </a>
+
+      <nav class="main-nav" aria-label="Primary" hidden>
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="projects.html">Projects</a>
+        <a href="about.html" aria-current="page">About</a>
+        <a class="btn btn-outline btn-outline-dark" href="contact.html">Contact</a>
+      </nav>
+
+      <button class="menu-toggle btn btn-outline-dark" type="button"
+              aria-label="Open menu" aria-expanded="false">☰ Menu</button>
+    </div>
+  </header>
+
+  <!-- OFFCANVAS -->
+  <div class="offcanvas" aria-hidden="true">
+    <div class="offcanvas-backdrop"></div>
+    <aside class="offcanvas-panel" role="dialog" aria-modal="true" aria-label="Site menu">
+      <div class="offcanvas-head">
+        <a class="offcanvas-brand" href="index.html" aria-label="FD2P — Home">
+          <img src="assets/logo2.jpg" alt="FD2P small logo" />
+        </a>
+        <button class="offcanvas-close" type="button" aria-label="Close menu">✕</button>
+      </div>
+      <nav class="offcanvas-nav" aria-label="Mobile"></nav>
+    </aside>
+  </div>
+
+  <!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="container">
+    <h1>ABOUT US</h1>
+    <p>
+      FD2P is a team of experienced and passionate mechanical and structural engineers driven by a love for design, innovation, and problem-solving. Our story began with a simple idea: to create a place where good engineers enjoy their work, grow their expertise, and deliver results they are proud of.
+    </p>
+    <p>
+      We believe engineering is not only about calculations and drawings but also about responsibility and commitment. For us, delivering on time and at the highest quality is a matter of professional pride. We listen to our clients, understand their needs, and always strive to exceed expectations.
+    </p>
+    <p>
+      Our expertise covers marine, subsea, civil, and industrial engineering, with a special focus on steel, aluminum, and composite structures. From initial concepts and feasibility studies to detailed design, documentation, manufacturing, and on-site support, we manage the entire project lifecycle.
+    </p>
+    <p>
+      At FD2P, we value:
+    </p>
+    <ul>
+      <li><strong>Technical excellence</strong> — combining proven engineering principles with modern tools like 3D modeling, FEA, and digital project control.</li>
+      <li><strong>Collaboration and transparency</strong> — keeping clients fully informed at every stage.</li>
+      <li><strong>Innovation and adaptability</strong> — applying cross-industry experience to find better, safer, and more efficient solutions.</li>
+      <li><strong>Professional ethics</strong> — ensuring fairness, respect, and accountability in everything we do.</li>
+    </ul>
+    <p>
+      We see every project as an opportunity to learn, improve, and deliver engineering solutions that stand the test of time — whether it’s for offshore structures, civil facilities, or industrial equipment.
+    </p>
+  </div>
+</section>
+
+<!-- TEAM (5 people) -->
+<div class="container team-strip">
+  <h2 class="team-title">Team & Direct Contacts</h2>
+  <div class="team" role="list">
+    <!-- 1 -->
+    <div class="person" role="listitem">
+      <img src="assets/Engineer1.jpg" alt="Engineer 1" />
+      <h3>Maksim Minajev</h3>
+      <div class="role">Project Engineer</div>
+      <div class="meta">
+        <div class="line">
+          <span class="label">Phone:</span>
+          <a href="tel:+37256279949">+372 56 279 949</a>
+        </div>
+        <div class="line">
+          <span class="label">Email:</span>
+          <a href="mailto:maksim.minajev@fd2p.com">maksim.minajev@fd2p.com</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="person" role="listitem">
+      <img src="assets/Engineer2.jpg" alt="Engineer 2" />
+      <h3>Maxim Zuev</h3>
+      <div class="role">Project Engineer</div>
+      <div class="meta">
+        <div class="line">
+          <span class="label">Phone:</span>
+          <a href="tel:+37256279949">+372 56 279 949</a>
+        </div>
+        <div class="line">
+          <span class="label">Email:</span>
+          <a href="mailto:maxim.zuev@fd2p.com">maxim.zuev@fd2p.com</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="person" role="listitem">
+      <img src="assets/Engineer3.jpg" alt="Engineer 3" />
+      <h3>Sergei Oksanen</h3>
+      <div class="role">Project Engineer</div>
+      <div class="meta">
+        <div class="line">
+          <span class="label">Phone:</span>
+          <a href="tel:+37256279949">+372 56 279 949</a>
+        </div>
+        <div class="line">
+          <span class="label">Email:</span>
+          <a href="mailto:sergei.oksanen@fd2p.com">sergei.oksanen@fd2p.com</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="person" role="listitem">
+      <img src="assets/Engineer4.jpg" alt="Engineer 4" />
+      <h3>Maksim Rozinfeld</h3>
+      <div class="role">Project Engineer</div>
+      <div class="meta">
+        <div class="line">
+          <span class="label">Phone:</span>
+          <a href="tel:+37256279949">+372 56 279 949</a>
+        </div>
+        <div class="line">
+          <span class="label">Email:</span>
+          <a href="mailto:maksim.rozinfeld@fd2p.com">maksim.rozinfeld@fd2p.com</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="person" role="listitem">
+      <img src="assets/Engineer5.jpg" alt="Engineer 5" />
+      <h3>Timur Klepikovski</h3>
+      <div class="role">Project Engineer</div>
+      <div class="meta">
+        <div class="line">
+          <span class="label">Phone:</span>
+          <a href="tel:+37256279949">+372 56 279 949</a>
+        </div>
+        <div class="line">
+          <span class="label">Email:</span>
+          <a href="mailto:timur.klepikovski@fd2p.com">timur.klepikovski@fd2p.com</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>FD<span style="color:#E30613;">2</span>P Technologies</h3>
+      </div>
+      <div class="footer-contacts">
+        <p>Email: <a href="mailto:info@fd2p.com">info@fd2p.com</a></p>
+        <p>Phone: <a href="tel:+37256279949">+372 56 279 949</a></p>
+        <p>Address: Kivimurru 34, Tallinn, Estonia</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  <!-- Global scripts -->
+  <script src="js/main.js"></script>
+
+  <!-- Mail fade, burger breakpoint controller (mirrors Contact) -->
+  <script>
+    (function(){
+      var bp = parseInt(document.body.getAttribute('data-burger-bp') || '1024', 10);
+      function applyBreakpoint(){ document.body.classList.toggle('is-mobile-about', window.innerWidth <= bp); }
+      function init(){ applyBreakpoint(); document.body.classList.add('js-ready-about'); }
+      window.addEventListener('resize', applyBreakpoint, {passive:true});
+      window.addEventListener('orientationchange', applyBreakpoint, {passive:true});
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+      else init();
+    })();
+  </script>
+</body>
+</html>

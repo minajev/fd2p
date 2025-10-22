@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <title>FD2P — Manufacturing & Delivery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Manufacturing & Delivery at FD2P: quotations, local fabrication in Estonia, and on-site supervision led by technically competent engineers." />
+
+  <!-- Global site styles -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preload" as="image" href="assets/logo2.jpg" />
+
+  <!-- Page-local styles (mirrors Design page structure) -->
+  <style>
+    /* Hide full nav until JS sets the correct state */
+    .manufacturing-page:not(.js-ready-manufacturing) .site-header .main-nav{
+      position:absolute; right:0; top:0; height:var(--header-h);
+      opacity:0; visibility:hidden; pointer-events:none;
+    }
+    .manufacturing-page:not(.js-ready-manufacturing) .menu-toggle{
+      opacity:0; visibility:hidden; pointer-events:none;
+    }
+
+    /* Desktop defaults for this page (switched by .is-mobile-manufacturing) */
+    .manufacturing-page .menu-toggle { display: none; }
+    .manufacturing-page .main-nav { display: flex; }
+
+    /* Mobile state toggled by JS based on data-burger-bp */
+    .manufacturing-page.is-mobile-manufacturing .menu-toggle { display: block; }
+    .manufacturing-page.is-mobile-manufacturing .main-nav { display: none; }
+
+    /* Hero */
+    .page-hero{ padding:48px 0 24px; border-bottom:0; }
+    .page-hero .hero-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items:center;
+    }
+    .page-hero h1{ margin:8px 0 0; font-size:clamp(28px,4.4vw,40px); line-height:1.08; text-transform:uppercase; text-align:left; }
+    .page-hero p{ margin:0; color:var(--muted); }
+    @media (max-width: 768px){
+      .page-hero .hero-grid{ grid-template-columns: 1fr; }
+      .page-hero h1{ text-align:left; margin-top:6px; }
+      .page-hero p + p{ margin-top:8px; }
+    }
+
+    /* Section shell */
+    .section{ padding: 50px 0; }
+
+    /* Big stacked cards (clean like Design) */
+    .stack{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      padding: 0 clamp(24px, 6vw, 26px);
+    }
+    .stack .card{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      padding: clamp(16px, 2.2vw, 24px);
+      box-shadow: none;
+      transition: none !important;
+    }
+    .stack .card *{ transition: none !important; }
+    .stack .card:hover,
+    .stack .card:focus,
+    .stack .card:active{ transform:none !important; box-shadow:none !important; }
+
+    .stack h2{ margin:4px 0 8px; font-size: clamp(20px, 2.2vw, 24px); }
+    .stack p{ margin:0 0 12px; color: var(--muted); }
+    .stack ul{ margin:8px 0 16px; padding-left: 18px; }
+    .stack li{ margin:6px 0; color: var(--muted); }
+
+    /* CTA row in card */
+    .stack .actions{
+      margin-top: 12px;
+      display:flex; gap:10px; flex-wrap:wrap;
+    }
+    .stack .btn{ height:42px; padding:0 18px; border-radius:12px; }
+
+    /* Keep footer spacing similar to other internal pages */
+    .site-footer{ margin-top: 24px; }
+
+    /* Mobile: make red buttons full-width */
+    @media (max-width: 600px){ .stack .actions .btn-accent{ width:100%; } }
+
+    /* Align cards with page margins */
+    .manufacturing-page .stack { padding-left: 0; padding-right: 0; }
+  </style>
+</head>
+
+<body class="manufacturing-page is-collapsed" data-burger-bp="500">
+  <!-- HEADER (copied exactly like Design) -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="FD2P — Home">
+        <img src="assets/logo2.jpg" alt="FD2P small logo"
+             onerror="this.onerror=null;this.src='assets/logo1.jpg'"/>
+      </a>
+
+      <nav class="main-nav" aria-label="Primary" hidden>
+        <a href="index.html">Home</a>
+        <a href="services.html" aria-current="page">Services</a>
+        <a href="projects.html">Projects</a>
+        <a href="about.html">About</a>
+        <a class="btn btn-outline btn-outline-dark" href="contact.html">Contact</a>
+      </nav>
+
+      <button class="menu-toggle btn btn-outline-dark" type="button"
+              aria-label="Open menu" aria-expanded="false">☰ Menu</button>
+    </div>
+  </header>
+
+  <!-- OFFCANVAS (copied) -->
+  <div class="offcanvas" aria-hidden="true">
+    <div class="offcanvas-backdrop"></div>
+    <aside class="offcanvas-panel" role="dialog" aria-modal="true" aria-label="Site menu">
+      <div class="offcanvas-head">
+        <a class="offcanvas-brand" href="index.html" aria-label="FD2P — Home">
+          <img src="assets/logo2.jpg" alt="FD2P small logo" />
+        </a>
+        <button class="offcanvas-close" type="button" aria-label="Close menu">✕</button>
+      </div>
+      <nav class="offcanvas-nav" aria-label="Mobile"></nav>
+    </aside>
+  </div>
+
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-left">
+          <h1>Manufacturing &amp; Delivery</h1>
+        </div>
+        <div class="hero-right">
+          <p>
+            Projects move faster and fail less when technically competent engineers stay with them through manufacturing. Our team bridges design intent and the shop floor — turning tolerances into fixtures, aligning WPS with real weld sequences, and keeping documentation traceable as parts become assemblies. We speak both languages: engineering and production. We coordinate with fabricators, de‑risk critical operations, and keep the schedule honest. When issues appear (they always do), we propose practical fixes that protect function, fit and certification — while the work continues.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STACKED SERVICE CARDS -->
+  <section class="section">
+    <div class="container">
+      <div class="stack">
+
+        <!-- Quotations -->
+        <article class="card" id="quotations">
+          <h2>Quotations</h2>
+          <p>
+            We source the <em>right</em> manufacturer for your job. Whether it’s repeatable series production, complex CNC components, code‑compliant pressure vessels, or offshore/heavy steel structures, we map requirements to capabilities and shortlist partners who have actually delivered similar work. That saves calendar time and removes costly trial‑and‑error.
+          </p>
+ <p>
+For production, we can prepare the complete documentation package, including fabrication drawings with routing maps for every component of the structure.
+ </p>
+        </article>
+
+        <!-- Local fabrication (EE) -->
+        <article class="card" id="local-ee">
+          <h2>Local fabrication (EE)</h2>
+          <p>
+            Estonia sits in a practical spot: Baltic seaports, short sea routes to Scandinavia, and fast road connections across the EU. That geography means a finished skid, frame or module can leave the shop and arrive on site in Northern Europe without drama. We work with reliable partners in Estonia covering cutting, welding, machining and coatings, and we coordinate logistics to match your installation window.
+          </p>
+          <p>
+            During production, we stay present — technically and operationally. Our engineers follow up fabrication, review fit‑ups and first‑offs, help with fixtures and sequencing, and keep the dossier current (ITP checkpoints, materials, weld maps, DFT). If something drifts, we catch it early and agree a correction that preserves function, safety and certification. Communication is direct: we talk to the people who actually cut, weld and paint your parts.
+          </p>
+          <p class="muted">Result: the right build quality, documented properly, delivered on time to Scandinavia and the EU.</p>
+        </article>
+
+        <!-- On-site supervision -->
+        <article class="card" id="onsite">
+          <h2>On‑site supervision</h2>
+          <p>
+            When the project reaches the field, our engineers can be on site to keep assembly and installation aligned with the design basis. We verify interfaces, tolerances and lifting plans, help solve clashes with the real environment, and make sure preservation and coatings survive handling. If a locator or dimension must shift, we document the change, protect function, and update drawings so as‑built matches reality.
+          </p>
+          <p>
+            We also streamline handover: checklists closed, punch‑items resolved, final documentation compiled and signed — so your operations team receives a package they can trust. That’s delivery in our terms: not just getting steel to the site, but getting it into service fast and correctly.
+          </p>
+          <p class="muted">If you need us for a critical lift, a shutdown window or a first‑of‑kind install, we will be there.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER (exact copy used across internal pages) -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>FD<span style="color:#E30613;">2</span>P Technologies</h3>
+        </div>
+        <div class="footer-contacts">
+          <p>Email: <a href="mailto:info@fd2p.com">info@fd2p.com</a></p>
+          <p>Phone: <a href="tel:+37256279949">+372 56 279 949</a></p>
+          <p>Address: Kivimurru 34, Tallinn, Estonia</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Global scripts -->
+  <script src="js/main.js"></script>
+
+  <!-- Burger breakpoint + page-ready flag -->
+  <script>
+    (function(){
+      var bp = parseInt(document.body.getAttribute('data-burger-bp') || '500', 10);
+      function apply(){ document.body.classList.toggle('is-mobile-manufacturing', window.innerWidth <= bp); }
+      function init(){ apply(); document.body.classList.add('js-ready-manufacturing'); }
+      window.addEventListener('resize', apply, {passive:true});
+      window.addEventListener('orientationchange', apply, {passive:true});
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+      else init();
+    })();
+  </script>
+</body>
+</html>
