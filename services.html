@@ -473,6 +473,18 @@ height: calc(66svh - 0.5px);     /* stable */
     .forms .form:nth-child(2) .card:focus-within{
       background: #f7f9fb !important;
     }
+
+/* Mobile: let the first form expand a few pixels more when expanded */
+@media (max-width: 769px) {
+  .forms .form:first-child { 
+    overflow: visible;                 /* allow a tiny growth beyond the row */
+  }
+  .forms .form:first-child .card.expanded {
+    max-height: calc(100% + 8px);      /* grow a bit more than the row */
+    overflow: visible;                  /* no inner scrollbar */
+  }
+}
+
   </style>
 </head>
 
