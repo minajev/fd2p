@@ -10,9 +10,9 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="preload" as="image" href="assets/logo2.jpg" />
 
-  <!-- Page-local styles (mirrors Manufacturing page structure) -->
+  <!-- Page-local styles -->
   <style>
-    /* Hide full nav until JS sets the correct state */
+    /* Anti-flash: hide nav until JS applies the correct state */
     .projects-page:not(.js-ready-projects) .site-header .main-nav{
       position:absolute; right:0; top:0; height:var(--header-h);
       opacity:0; visibility:hidden; pointer-events:none;
@@ -21,7 +21,7 @@
       opacity:0; visibility:hidden; pointer-events:none;
     }
 
-    /* Desktop defaults for this page (switched by .is-mobile-projects) */
+    /* Desktop defaults (switched by .is-mobile-projects) */
     .projects-page .menu-toggle { display: none; }
     .projects-page .main-nav { display: flex; }
 
@@ -29,59 +29,63 @@
     .projects-page.is-mobile-projects .menu-toggle { display: block; }
     .projects-page.is-mobile-projects .main-nav { display: none; }
 
-    /* Hero */
-    .page-hero{ padding:48px 0 24px; border-bottom:0; }
-    .page-hero .hero-grid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      align-items:center;
-    }
-    .page-hero h1{ margin:8px 0 0; font-size:clamp(28px,4.4vw,40px); line-height:1.08; text-transform:uppercase; text-align:left; }
-    .page-hero p{ margin:0; color:var(--muted); }
-    @media (max-width: 768px){
-      .page-hero .hero-grid{ grid-template-columns: 1fr; }
-      .page-hero h1{ text-align:left; margin-top:6px; }
-      .page-hero p + p{ margin-top:8px; }
+    /* Base page spacing (unused here but kept for consistency) */
+    .section{ padding:50px 0; }
+
+    /* --- Reliable layout: header | centered content | footer (mobile-safe) --- */
+    html, body{
+      min-height: 100vh;  /* fallback */
+      min-height: 100svh; /* stable on mobile */
+      min-height: 100dvh; /* dynamic on modern browsers */
     }
 
-    /* Section shell */
-    .section{ padding: 50px 0; }
+    body.projects-page{
+      display: grid;
+      grid-template-rows: var(--header-h) 1fr auto; /* header | content | footer */
+    }
 
-/* Keep footer at bottom even with little content */
-html, body { height: 100%; }
-body.projects-page {
-  display: flex;
-  flex-direction: column;
-}
-.site-footer {
-  margin-top: auto;
-}
-
-    /* Align cards with page margins (kept for parity; not used here) */
-    .projects-page .stack { padding-left: 0; padding-right: 0; }
-
-/* Center construction content evenly between header and footer */
+    /* Center the hero block exactly between header and footer with equal gaps */
 .page-hero {
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  min-height: calc(100vh - 64px - 220px); /* высота окна минус header и footer */
-  box-sizing: border-box;
+  padding: 0;
+  border-bottom: 0;
+}
+.page-hero .container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.page-hero h1 {
-  margin-top: 0 !important;
-  margin-bottom: 40px !important;
-}
+    /* Image above the heading */
+    .page-hero img{
+      display: inline-block;
+      max-width: 1000px;
+      width: 100%;
+      height: auto;
+      margin: 0 0 40px 0; /* gap between image and text */
+    }
 
+    .page-hero h1{
+      margin: 0;
+      font-size: clamp(32px, 5vw, 48px);
+      text-transform: uppercase;
+    }
+
+    /* Footer always visible and safe on mobile */
+    .site-footer{
+      margin-top: 0; /* grid places it at the bottom already */
+      padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px));
+    }
   </style>
 </head>
 
 <body class="projects-page is-collapsed" data-burger-bp="500">
-  <!-- HEADER (exactly like Manufacturing) -->
+  <!-- HEADER (exact copy used across internal pages) -->
   <header class="site-header" role="banner">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="FD2P — Home">
@@ -102,7 +106,7 @@ body.projects-page {
     </div>
   </header>
 
-  <!-- OFFCANVAS (copied) -->
+  <!-- OFFCANVAS -->
   <div class="offcanvas" aria-hidden="true">
     <div class="offcanvas-backdrop"></div>
     <aside class="offcanvas-panel" role="dialog" aria-modal="true" aria-label="Site menu">
@@ -116,28 +120,15 @@ body.projects-page {
     </aside>
   </div>
 
-<!-- HERO -->
-<section class="page-hero">
-  <div class="container" style="text-align:center;">
-    <img src="assets/construction.jpg"
-         alt="Robot under construction"
-         style="
-           max-width:1000px;
-           width:100%;
-           height:auto;
-           display:inline-block;
-           margin-bottom:40px;
-         ">
-    <h1 style="
-      text-align:center;
-      font-size:clamp(32px,5vw,48px);
-      text-transform:uppercase;
-      margin:0;
-    ">
-      This page is under construction
-    </h1>
-  </div>
-</section>
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <img
+        src="assets/construction.jpg"
+        alt="Robot under construction">
+      <h1>This page is under construction</h1>
+    </div>
+  </section>
 
   <!-- FOOTER (exact copy used across internal pages) -->
   <footer class="site-footer">
