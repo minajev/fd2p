@@ -60,6 +60,23 @@ body.projects-page {
 
     /* Align cards with page margins (kept for parity; not used here) */
     .projects-page .stack { padding-left: 0; padding-right: 0; }
+
+/* Center construction content evenly between header and footer */
+.page-hero {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: calc(100vh - 64px - 220px); /* высота окна минус header и footer */
+  box-sizing: border-box;
+}
+
+.page-hero h1 {
+  margin-top: 0 !important;
+  margin-bottom: 40px !important;
+}
+    
   </style>
 </head>
 
