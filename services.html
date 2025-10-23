@@ -379,8 +379,8 @@ height: calc(66svh - 0.5px);     /* stable */
       .forms .form:nth-child(2) { align-items: flex-start; }
       /* keep content contained; scrolling happens inside the card */
 .forms .form .card {
-  max-height: 33vh;            /* fallback */
-  max-height: 33svh;           /* stable */
+    max-height: calc(33vh + 4px);   /* fallback */
+    max-height: calc(33svh + 4px);  /* stable */
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
