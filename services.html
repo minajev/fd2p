@@ -19,7 +19,6 @@
 
     /* Header (same look as other pages) */
     .site-header{ border-bottom:1px solid var(--line); position:relative; z-index:5; }
-
     .site-header{
       position: fixed; top:0; left:0; right:0;
       z-index:1000; background:#fff; border-bottom:1px solid var(--line);
@@ -29,7 +28,7 @@
       display:flex; align-items:center; justify-content:space-between;
     }
     .brand img{ max-height: 40px; height:auto; }
-    .page-offset{ margin-top: 64px; } /* ensures content isn't hidden under fixed header */
+    .page-offset{ margin-top: 64px; } /* ensure content isn’t hidden under fixed header */
 
     /* Anti-flash before JS initializes the menu */
     .services-page:not(.js-ready-services) .site-header .main-nav{
@@ -53,154 +52,113 @@
     .offcanvas-backdrop { position:absolute; inset:0; z-index:0; }
     .offcanvas-panel    { position:absolute; z-index:1; }
 
+    /* --- Intro section --- */
+    .intro {
+      padding: 72px 0 40px;
+      background: #fff;
+      border-top: 1px solid var(--line);
+    }
+    .intro .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 28px; /* tighter gaps between cards */
+    }
+    .intro .card {
+      padding: 18px 18px; /* lower height via smaller inner padding */
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: none; /* per your last change: no shadows on top cards */
+      transition: none !important;
+      transform: none !important;
+    }
+    .intro .card--muted { background: #f7f9fb; }
+    .intro .card p{
+      margin:0;
+      color: var(--muted);       /* match OUR SERVICES small text tone */
+      font-family: inherit;
+      font-weight: 400;
+      font-size: clamp(0.96rem, 1.1vw, 1.05rem);
+      line-height: 1.55;
+    }
 
-/* --- Intro section: compact height and chess layout --- */
-.intro {
-  padding: 72px 0 40px; /* smaller top/bottom space */
-  background: #fff;
-  border-top: 1px solid var(--line);
-}
+    /* OUR SERVICES tweaks */
+    .section--no-border { border-top: none !important; }
+    #what-we-do { padding-top: 0 !important; }
 
-.intro .stack {
-  display: flex;
-  flex-direction: column;
-  gap: 28px; /* smaller gap between cards */
-}
+    /* Mobile-only full-width images between intro cards */
+    .between-mobile { display: none; }
 
-.intro .card {
-  padding: 18px 18px; /* lower height (less inner space) */
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0,0,0,.06);
-  transition: none !important;
-  transform: none !important;
-}
+    @media (max-width: 860px) {
+      .only-mobile { display: block; }
 
-.intro .card--muted {
-  background: #f7f9fb;
-}
+      .between-mobile {
+        width: 100vw;
+        position: relative;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+        display: block;
+        overflow: hidden;
+        margin-top: 16px;
+        margin-bottom: 16px;
+      }
+      .between-mobile img {
+        width: 100%;
+        height: auto;
+        display: block;
+        object-fit: cover;
+        border-radius: 0;
+      }
+    }
 
-.intro .card p {
-  margin: 0;
-  color: var(--muted);
-  font-family: inherit;         /* same as the service cards */
-  font-weight: 400;
-  font-size: clamp(0.96rem, 1.1vw, 1.05rem);
-  line-height: 1.55;
-}
+    /* Desktop full-bleed banner below the cards (pic5) */
+    @media (min-width: 861px) {
+      .between-mobile2 {
+        display: block;
+        width: 100vw;
+        position: relative;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+        overflow: hidden;
+        margin-top: 40px;
+        margin-bottom: 16px;
+      }
+      .between-mobile2 img {
+        width: 100%;
+        height: auto;
+        display: block;
+        object-fit: cover;
+        border-radius: 0;
+      }
+    }
 
-/* Desktop: true chess layout regardless of extra elements between cards */
-@media (min-width: 860px) {
-  .intro .stack > .card {         /* only the actual cards */
-    width: 60%;
-    margin: 0;
-  }
+    /* Mobile: stack cards full width — align breakpoint to avoid overlap with desktop rules */
+    @media (max-width: 859.98px) {
+      .intro .card { width: 100%; margin: 0; }
+    }
 
-  /* 1st and 3rd cards align left */
-  .intro .stack > .card:nth-of-type(1),
-  .intro .stack > .card:nth-of-type(3) {
-    margin-right: auto;
-  }
+    /* Desktop chess layout — placed last to win cascade */
+    @media (min-width: 860px) {
+      .intro .stack > .card {
+        width: 60%;
+        margin: 0;
+      }
+      /* 1st and 3rd cards left */
+      .intro .stack > .card:nth-of-type(1),
+      .intro .stack > .card:nth-of-type(3) { margin-right: auto; }
+      /* 2nd card right */
+      .intro .stack > .card:nth-of-type(2) { margin-left:  auto; }
+    }
 
-  /* 2nd card aligns right */
-  .intro .stack > .card:nth-of-type(2) {
-    margin-left: auto;
-  }
-}
-
-/* --- Mobile: stacked vertically full width --- */
-@media (max-width: 1023.98px) {
-  .intro .card {
-    width: 100%;
-    margin: 0;
-  }
-}
-
-.between-sections {
-  width: 100%;
-  display: block;
-  margin: clamp(24px, 5vw, 40px) 0;
-}
-
-.between-img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 0;
-  object-fit: cover;
-}
-
-/* Remove top border before the OUR SERVICES section */
-.section--no-border {
-  border-top: none !important;
-}
-
-/* Reduce top spacing above the OUR SERVICES title */
-#what-we-do {
-  padding-top: 0px !important; /* was likely around 80px */
-}
-
-/* Mobile-only full-width images between intro cards */
-.between-mobile {
-  display: none;
-}
-
+/* Hide desktop banner pic5 on mobile */
 @media (max-width: 860px) {
-  .only-mobile {
-    display: block;
-  }
-
-  .between-mobile {
-    width: 100vw;
-    position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
-    display: block;
-    overflow: hidden;
-    margin-top: 16px;
-    margin-bottom: 16px;
-  }
-
-  .between-mobile img {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: cover;
-    border-radius: 0;
-  }
-
-.between-mobile2 {
-  display: none;
-}
-
-}
-
-/* Show between-mobile section on desktop as well */
-@media (min-width: 861px) {
   .between-mobile2 {
-    display: block;
-    width: 100vw;
-    position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
-    overflow: hidden;
-    margin-top: 40px;
-    margin-bottom: 16px;
-  }
-
-  .between-mobile2 img {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: cover;
-    border-radius: 0;
+    display: none !important;
   }
 }
-
 
   </style>
 </head>
@@ -227,7 +185,7 @@
     </div>
   </header>
 
-  <!-- Offcanvas menu (structure kept the same) -->
+  <!-- Offcanvas menu -->
   <div class="offcanvas" aria-hidden="true">
     <div class="offcanvas-backdrop"></div>
     <aside class="offcanvas-panel" role="dialog" aria-modal="true" aria-label="Site menu">
@@ -243,57 +201,60 @@
 
   <!-- Main content starts below the fixed header -->
   <main class="page-offset">
-    <!-- Static intro cards (the same texts from the previous forms) -->
-<section class="intro" id="intro">
-  <div class="container">
-<div class="stack">
-  <div class="card">
-    <p>At FD2P, we bring together experienced engineers, and 3D specialists to deliver practical and high-quality solutions. Our independence from specific industries allows us to adapt quickly, focus on client needs, and provide the right expertise for every challenge.</p>
-  </div>
+    <!-- Intro cards -->
+    <section class="intro" id="intro">
+      <div class="container">
+        <div class="stack">
+          <div class="card">
+            <p>At FD2P, we bring together experienced engineers, and 3D specialists to deliver practical and high-quality solutions. Our independence from specific industries allows us to adapt quickly, focus on client needs, and provide the right expertise for every challenge.</p>
+          </div>
 
-  <section class="between-mobile only-mobile">
-    <picture>
-      <source srcset="assets/pic6-1920.avif" media="(max-width: 860px)">
-      <img src="assets/pic6-1920.avif" alt="" class="between-img" loading="lazy">
-    </picture>
-  </section>
+          <!-- Mobile-only full-bleed image between card 1 and 2 -->
+          <section class="between-mobile only-mobile">
+            <picture>
+              <source srcset="assets/pic6-1920.avif" media="(max-width: 860px)">
+              <img src="assets/pic6-1920.avif" alt="" class="between-img" loading="lazy">
+            </picture>
+          </section>
 
-  <div class="card card--muted">
-    <p class="muted">With a deep understanding of every stage in the project lifecycle, we provide qualified support wherever it is needed — from initial concept and engineering calculations to fabrication oversight and final installation. Our team’s experience across design, production, and mobilization keeps decisions practical and builds predictable outcomes.</p>
-  </div>
+          <div class="card card--muted">
+            <p class="muted">With a deep understanding of every stage in the project lifecycle, we provide qualified support wherever it is needed — from initial concept and engineering calculations to fabrication oversight and final installation. Our team’s experience across design, production, and mobilization keeps decisions practical and builds predictable outcomes.</p>
+          </div>
 
-  <section class="between-mobile only-mobile">
-    <picture>
-      <source srcset="assets/pic7-1920.avif" media="(max-width: 860px)">
-      <img src="assets/pic7-1920.avif" alt="" class="between-img" loading="lazy">
-    </picture>
-  </section>
+          <!-- Mobile-only full-bleed image between card 2 and 3 -->
+          <section class="between-mobile only-mobile">
+            <picture>
+              <source srcset="assets/pic7-1920.avif" media="(max-width: 860px)">
+              <img src="assets/pic7-1920.avif" alt="" class="between-img" loading="lazy">
+            </picture>
+          </section>
 
-  <div class="card">
-    <p>We work directly with industry partners across Scandinavia and Europe — companies we have collaborated with for many years. Long-term relationships only work if quality holds; that’s been our focus and priority.</p>
-  </div>
+          <div class="card">
+            <p>We work directly with industry partners across Scandinavia and Europe — companies we have collaborated with for many years. Long-term relationships only work if quality holds; that’s been our focus and priority.</p>
+          </div>
 
-  <section class="between-mobile only-mobile">
-    <picture>
-      <source srcset="assets/pic8-1920.avif" media="(max-width: 860px)">
-      <img src="assets/pic8-1920.avif" alt="" class="between-img" loading="lazy">
-    </picture>
-  </section>
+          <!-- Mobile-only full-bleed image under the third card -->
+          <section class="between-mobile only-mobile">
+            <picture>
+              <source srcset="assets/pic8-1920.avif" media="(max-width: 860px)">
+              <img src="assets/pic8-1920.avif" alt="" class="between-img" loading="lazy">
+            </picture>
+          </section>
 
-<section class="between-mobile2">
-  <picture>
-    <!-- Desktop version -->
-    <source srcset="assets/pic5-1920.avif" media="(min-width: 861px)">
-    <img src="assets/pic5-1920.avif" alt="FD2P engineering illustration" class="between-img" loading="lazy">
-  </picture>
-</section>
+          <!-- Desktop full-bleed banner (pic5) -->
+          <section class="between-mobile2">
+            <picture>
+              <source srcset="assets/pic5-1920.avif" media="(min-width: 861px)">
+              <img src="assets/pic5-1920.avif" alt="FD2P engineering illustration" class="between-img" loading="lazy">
+            </picture>
+          </section>
 
-</div>
-  </div>
+        </div>
+      </div>
     </section>
 
-    <!-- OUR SERVICES (copied from index) -->
-<section class="section section--no-border" id="what-we-do">
+    <!-- OUR SERVICES -->
+    <section class="section section--no-border" id="what-we-do">
       <div class="container">
         <h2 class="section-title">OUR SERVICES</h2>
 
@@ -340,24 +301,20 @@
 
   <script src="js/main.js"></script>
 
-  <!-- Burger breakpoint controller (like on Contact, scoped to Services) -->
+  <!-- Burger breakpoint controller (scoped to Services) -->
   <script>
     (function(){
       var bp = parseInt(document.body.getAttribute('data-burger-bp') || '1024', 10);
-
       function applyBreakpoint() {
         var isMobile = window.innerWidth <= bp;
         document.body.classList.toggle('is-mobile-services', isMobile);
       }
-
       function init(){
         applyBreakpoint();
         document.body.classList.add('js-ready-services'); // remove anti-flash styles
       }
-
       window.addEventListener('resize', applyBreakpoint);
       window.addEventListener('orientationchange', applyBreakpoint);
-
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
       } else {
