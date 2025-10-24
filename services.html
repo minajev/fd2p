@@ -89,24 +89,21 @@
   line-height: 1.55;
 }
 
-/* --- Desktop: chess layout, wider cards aligned with container edges --- */
-@media (min-width: 1024px) {
-  :root {
-    --intro-card-width: 60%; /* adjust for desired width (e.g., 58–65%) */
-  }
-
-  .intro .card {
-    width: var(--intro-card-width);
+/* Desktop: true chess layout regardless of extra elements between cards */
+@media (min-width: 860px) {
+  .intro .stack > .card {         /* only the actual cards */
+    width: 60%;
     margin: 0;
   }
 
-  /* 1st and 3rd cards align left, 2nd aligns right */
-  .intro .card:nth-child(1),
-  .intro .card:nth-child(3) {
+  /* 1st and 3rd cards align left */
+  .intro .stack > .card:nth-of-type(1),
+  .intro .stack > .card:nth-of-type(3) {
     margin-right: auto;
   }
 
-  .intro .card:nth-child(2) {
+  /* 2nd card aligns right */
+  .intro .stack > .card:nth-of-type(2) {
     margin-left: auto;
   }
 }
@@ -119,13 +116,10 @@
   }
 }
 
-    /* Optional: a bit more air above OUR SERVICES after intro */
-    #what-we-do { scroll-margin-top: 80px; }
-
 .between-sections {
   width: 100%;
   display: block;
-  margin: clamp(24px, 5vw, 48px) 0;
+  margin: clamp(24px, 5vw, 40px) 0;
 }
 
 .between-img {
@@ -143,8 +137,70 @@
 
 /* Reduce top spacing above the OUR SERVICES title */
 #what-we-do {
-  padding-top: 32px !important; /* was likely around 80px */
+  padding-top: 0px !important; /* was likely around 80px */
 }
+
+/* Mobile-only full-width images between intro cards */
+.between-mobile {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  .only-mobile {
+    display: block;
+  }
+
+  .between-mobile {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    display: block;
+    overflow: hidden;
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+
+  .between-mobile img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    border-radius: 0;
+  }
+
+.between-mobile2 {
+  display: none;
+}
+
+}
+
+/* Show between-mobile section on desktop as well */
+@media (min-width: 861px) {
+  .between-mobile2 {
+    display: block;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    overflow: hidden;
+    margin-top: 40px;
+    margin-bottom: 16px;
+  }
+
+  .between-mobile2 img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    border-radius: 0;
+  }
+}
+
 
   </style>
 </head>
@@ -190,31 +246,51 @@
     <!-- Static intro cards (the same texts from the previous forms) -->
 <section class="intro" id="intro">
   <div class="container">
-    <div class="stack">
-        <div class="card">
-          <p>At FD2P, we bring together experienced engineers, and 3D specialists to deliver practical and high-quality solutions. Our independence from specific industries allows us to adapt quickly, focus on client needs, and provide the right expertise for every challenge.</p>
-        </div>
-
-        <div class="card card--muted">
-          <p class="muted">With a deep understanding of every stage in the project lifecycle, we provide qualified support wherever it is needed — from initial concept and engineering calculations to fabrication oversight and final installation. Our team’s experience across design, production, and mobilization keeps decisions practical and builds predictable outcomes.</p>
-        </div>
-
-        <div class="card">
-          <p>We work directly with industry partners across Scandinavia and Europe — companies we have collaborated with for many years. Long-term relationships only work if quality holds; that’s been our focus and priority.</p>
-        </div>
-      </div>
+<div class="stack">
+  <div class="card">
+    <p>At FD2P, we bring together experienced engineers, and 3D specialists to deliver practical and high-quality solutions. Our independence from specific industries allows us to adapt quickly, focus on client needs, and provide the right expertise for every challenge.</p>
   </div>
-    </section>
 
-<!-- Responsive illustration between intro and services -->
-<section class="between-sections">
+  <section class="between-mobile only-mobile">
+    <picture>
+      <source srcset="assets/pic6-1920.avif" media="(max-width: 860px)">
+      <img src="assets/pic6-1920.avif" alt="" class="between-img" loading="lazy">
+    </picture>
+  </section>
+
+  <div class="card card--muted">
+    <p class="muted">With a deep understanding of every stage in the project lifecycle, we provide qualified support wherever it is needed — from initial concept and engineering calculations to fabrication oversight and final installation. Our team’s experience across design, production, and mobilization keeps decisions practical and builds predictable outcomes.</p>
+  </div>
+
+  <section class="between-mobile only-mobile">
+    <picture>
+      <source srcset="assets/pic7-1920.avif" media="(max-width: 860px)">
+      <img src="assets/pic7-1920.avif" alt="" class="between-img" loading="lazy">
+    </picture>
+  </section>
+
+  <div class="card">
+    <p>We work directly with industry partners across Scandinavia and Europe — companies we have collaborated with for many years. Long-term relationships only work if quality holds; that’s been our focus and priority.</p>
+  </div>
+
+  <section class="between-mobile only-mobile">
+    <picture>
+      <source srcset="assets/pic8-1920.avif" media="(max-width: 860px)">
+      <img src="assets/pic8-1920.avif" alt="" class="between-img" loading="lazy">
+    </picture>
+  </section>
+
+<section class="between-mobile2">
   <picture>
-    <!-- Mobile portrait -->
-    <source srcset="assets/pic6-1920.avif" media="(max-width: 768px)">
-    <!-- Desktop / wide screen -->
+    <!-- Desktop version -->
+    <source srcset="assets/pic5-1920.avif" media="(min-width: 861px)">
     <img src="assets/pic5-1920.avif" alt="FD2P engineering illustration" class="between-img" loading="lazy">
   </picture>
 </section>
+
+</div>
+  </div>
+    </section>
 
     <!-- OUR SERVICES (copied from index) -->
 <section class="section section--no-border" id="what-we-do">
