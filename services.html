@@ -158,6 +158,13 @@
   }
 }
 
+/* On mobile: reduce offset under fixed header to 16px */
+@media (max-width: 860px) {
+  body.services-page {
+    padding-top: 40px !important; /* override the global header offset */
+  }
+}
+
   </style>
 </head>
 
