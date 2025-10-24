@@ -39,10 +39,14 @@
       min-height: 100dvh; /* dynamic on modern browsers */
     }
 
-    body.projects-page{
-      display: grid;
-      grid-template-rows: var(--header-h) 1fr auto; /* header | content | footer */
-    }
+body.projects-page{
+  display: grid;
+  grid-template-rows: 1fr auto; /* header | content | footer */
+}
+
+.projects-page .site-footer{
+  margin-top: auto;
+}
 
     /* Center the hero block exactly between header and footer with equal gaps */
 .page-hero {

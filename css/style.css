@@ -57,11 +57,19 @@ img{ display:block; max-width:100%; height:auto }
    Header shell
    ========================= */
 .site-header{
-  position:sticky; top:0; z-index:100;
-  height:var(--header-h);
-  background:#fff;
-  border-bottom:1px solid var(--line);
-  overflow:visible;
+  position: fixed;      /* was sticky */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;        /* above all content */
+  height: var(--header-h);
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+  overflow: visible;
+}
+
+body {
+  padding-top: var(--header-h);
 }
 
 /* Left beveled panel */
