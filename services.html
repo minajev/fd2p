@@ -10,6 +10,10 @@
   <link rel="preload" as="image" href="assets/logo2.jpg" />
   <link rel="preload" as="image" href="assets/services-hero.jpg" />
   <link rel="preload" as="image" href="assets/map-partners.jpg" />
+<link rel="preload" as="image"
+      href="assets/pic5-1920.avif"
+      imagesrcset="assets/pic5-1280.avif 1280w, assets/pic5-1920.avif 1920w, assets/pic5-2560.avif 2560w"
+      imagesizes="100vw">
 
   <style>
     :root{
@@ -217,8 +221,8 @@
           <!-- Mobile-only full-bleed image between card 1 and 2 -->
           <section class="between-mobile only-mobile">
             <picture>
-              <source srcset="assets/pic6-1920.avif" media="(max-width: 860px)">
-              <img src="assets/pic6-1920.avif" alt="" class="between-img" loading="lazy">
+              <source srcset="assets/pic6-478.avif" media="(max-width: 860px)">
+              <img src="assets/pic6-478.avif" alt="" class="between-img" loading="lazy">
             </picture>
           </section>
 
@@ -229,8 +233,8 @@
           <!-- Mobile-only full-bleed image between card 2 and 3 -->
           <section class="between-mobile only-mobile">
             <picture>
-              <source srcset="assets/pic7-1920.avif" media="(max-width: 860px)">
-              <img src="assets/pic7-1920.avif" alt="" class="between-img" loading="lazy">
+              <source srcset="assets/pic7-478.avif" media="(max-width: 860px)">
+              <img src="assets/pic7-478.avif" alt="" class="between-img" loading="lazy">
             </picture>
           </section>
 
@@ -241,18 +245,25 @@
           <!-- Mobile-only full-bleed image under the third card -->
           <section class="between-mobile only-mobile">
             <picture>
-              <source srcset="assets/pic8-1920.avif" media="(max-width: 860px)">
-              <img src="assets/pic8-1920.avif" alt="" class="between-img" loading="lazy">
+              <source srcset="assets/pic8-478.avif" media="(max-width: 860px)">
+              <img src="assets/pic8-478.avif" alt="" class="between-img" loading="lazy">
             </picture>
           </section>
 
           <!-- Desktop full-bleed banner (pic5) -->
-          <section class="between-mobile2">
-            <picture>
-              <source srcset="assets/pic5-1920.avif" media="(min-width: 861px)">
-              <img src="assets/pic5-1920.avif" alt="FD2P engineering illustration" class="between-img" loading="lazy">
-            </picture>
-          </section>
+<section class="between-mobile2">
+  <picture>
+    <source srcset="assets/pic5-2560.avif" media="(min-width: 1921px)">
+    <source srcset="assets/pic5-1920.avif" media="(min-width: 1281px)">
+    <source srcset="assets/pic5-1280.avif" media="(min-width: 861px)">
+    <img src="assets/pic5-1920.avif"
+         alt="FD2P engineering illustration"
+         class="between-img"
+         loading="lazy"
+         decoding="async">
+  </picture>
+</section>
+
 
         </div>
       </div>
