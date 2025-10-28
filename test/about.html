@@ -238,6 +238,25 @@
   opacity: 1;
 }
 
+/* Maksim: default + hover */
+#maksim img {
+  transition: opacity .4s ease-in-out;
+  content: url("assets/max1.jpg");
+}
+#maksim:hover img {
+  content: url("assets/max2.jpg");
+}
+
+/* Навёл на Maksim → у Sergei показываем sergei3.jpg */
+body:has(#maksim:hover) #sergei img {
+  content: url("assets/serega3.jpg");
+}
+
+/* Навёл на Sergei → у Maksim показываем max3.jpg */
+body:has(#sergei:hover) #maksim img {
+  content: url("assets/max3.jpg");
+}
+
   </style>
 </head>
 
@@ -360,9 +379,9 @@
   </div>
 </div>
     <!-- 4 -->
-    <div class="person" role="listitem">
-      <img src="assets/Engineer4.jpg" alt="Engineer 4" />
-      <h3>Maksim Rozinfeld</h3>
+<div class="person" id="maksim" role="listitem">
+  <img src="assets/max1.jpg" alt="Maksim Rozinfeld" />
+  <h3>Maksim Rozinfeld</h3>
       <div class="role">Project Engineer</div>
       <div class="meta">
         <div class="line">
