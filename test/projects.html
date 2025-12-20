@@ -4,88 +4,472 @@
   <meta charset="utf-8" />
   <title>FD2P — Projects</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="FD2P engineering projects — page under construction." />
+  <meta name="description" content="FD2P project areas: marine & subsea, civil / architectural, industrial & process.">
 
-  <!-- Global site styles -->
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/swiper.min.css" />
+
   <link rel="preload" as="image" href="assets/logo2.jpg" />
+  <link rel="preload" as="image" href="assets/marine1.jpg" />
+  <link rel="preload" as="image" href="assets/civil1.jpg" />
+  <link rel="preload" as="image" href="assets/industrial1.jpg" />
 
-  <!-- Page-local styles -->
+<link rel="preload" as="image" href="assets/marine1-860.jpg" media="(max-width: 860px)" fetchpriority="high">
+<link rel="preload" as="image" href="assets/civil1-860.jpg" media="(max-width: 860px)" fetchpriority="high">
+<link rel="preload" as="image" href="assets/industrial1-860.jpg" media="(max-width: 860px)" fetchpriority="high">
+
+
   <style>
-    /* Anti-flash: hide nav until JS applies the correct state */
-    .projects-page:not(.js-ready-projects) .site-header .main-nav{
-      position:absolute; right:0; top:0; height:var(--header-h);
-      opacity:0; visibility:hidden; pointer-events:none;
-    }
-    .projects-page:not(.js-ready-projects) .menu-toggle{
-      opacity:0; visibility:hidden; pointer-events:none;
-    }
+    :root{
+      --line:#e5e7eb;
+      --ink:#111827;
+      --muted:#606973;
+      --accent:#E30613;
+      --linkBlue:#2f6aa8;
 
-    /* Desktop defaults (switched by .is-mobile-projects) */
-    .projects-page .menu-toggle { display: none; }
-    .projects-page .main-nav { display: flex; }
-
-    /* Mobile state toggled by JS based on data-burger-bp */
-    .projects-page.is-mobile-projects .menu-toggle { display: block; }
-    .projects-page.is-mobile-projects .main-nav { display: none; }
-
-    /* Base page spacing (unused here but kept for consistency) */
-    .section{ padding:50px 0; }
-
-    /* --- Reliable layout: header | centered content | footer (mobile-safe) --- */
-    html, body{
-      min-height: 100vh;  /* fallback */
-      min-height: 100svh; /* stable on mobile */
-      min-height: 100dvh; /* dynamic on modern browsers */
+      /* Debug colors */
+      --dbgA: #2b6cff;    /* blue dashed */
+      --dbgB: #ff7a00;    /* orange */
+      --dbgSlider: #ff0000; /* red */
     }
 
     body.projects-page{
-      display: grid;
-      grid-template-rows: var(--header-h) 1fr auto; /* header | content | footer */
+      color:var(--ink);
+      background:#fff;
+
+      display:grid;
+      grid-template-rows:1fr auto;
+      min-height:100vh;
     }
 
-    /* Center the hero block exactly between header and footer with equal gaps */
-.page-hero {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 0;
-  border-bottom: 0;
-}
-.page-hero .container {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+    /* ---------------- HEADER ---------------- */
+    .site-header{
+      position: fixed;
+      top:0;
+      left:0;
+      right:0;
+      z-index:1000;
+      background:#fff;
+      border-bottom:1px solid var(--line);
+    }
+    .header-inner{
+      height:64px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .brand img{ max-height:40px; height:auto; }
 
-    /* Image above the heading */
-    .page-hero img{
-      display: inline-block;
-      max-width: 1000px;
+    .page-offset{ margin-top:48px; }
+
+    .projects-page:not(.js-ready-projects) .site-header .main-nav{
+      position:absolute;
+      right:0; top:0;
+      height:var(--header-h,64px);
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+    }
+    .projects-page:not(.js-ready-projects) .menu-toggle{
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+    }
+
+    .projects-page .menu-toggle { display:none; }
+    .projects-page .main-nav   { display:flex; }
+
+    .projects-page.is-mobile-projects .menu-toggle { display:block; }
+    .projects-page.is-mobile-projects .main-nav   { display:none; }
+
+    .offcanvas{ position:fixed; inset:0; z-index:3000; }
+    .offcanvas-backdrop{ position:absolute; inset:0; z-index:0; }
+    .offcanvas-panel{ position:absolute; z-index:1; }
+
+    /* ---------------- INTRO ---------------- */
+    .intro-block{
+      padding: 8px 0 18px;
+      background:#fff;
+    }
+    .intro-inner p{
+      margin:0 0 16px;
+      color:var(--muted);
+      font-weight:400;
+    }
+
+    .inline-link{
+      font-weight:600;
+      font-size: 1.08em;
+      color:var(--linkBlue);
+      text-decoration:none;
+      border-bottom:2px solid var(--accent);
+      padding-bottom:1px;
+      cursor:pointer;
+      transition:border-bottom-width .18s ease;
+    }
+    .inline-link:hover,
+    .inline-link:focus-visible{
+      border-bottom-width:3px;
+      outline:none;
+    }
+
+    .full-divider{
+      width:100vw;
+      position:relative;
+      left:50%;
+      right:50%;
+      margin-left:-50vw;
+      margin-right:-50vw;
+      border-top:1px solid var(--line);
+    }
+
+    /* ---------------- SECTIONS / CARDS ---------------- */
+    .proj-section{ padding: 42px 0; background:#fff; }
+    @media (max-width: 860px){ .proj-section{ padding: 28px 0; } }
+
+    /* FULL width inside .container (no chess) */
+    .proj-card{
       width: 100%;
-      height: auto;
-      margin: 0 0 40px 0; /* gap between image and text */
-    }
-
-    .page-hero h1{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      box-shadow:none;
+      padding: clamp(16px, 2.2vw, 22px);
       margin: 0;
-      font-size: clamp(32px, 5vw, 48px);
-      text-transform: uppercase;
+    }
+    .proj-card.is-right,
+    .proj-card.is-left{
+      margin:0;
     }
 
-    /* Footer always visible and safe on mobile */
-    .site-footer{
-      margin-top: 0; /* grid places it at the bottom already */
-      padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px));
+    .proj-head h2{
+      margin: 2px 0 10px;
+      font-size: clamp(20px, 2.2vw, 24px);
+      line-height:1.25;
     }
+    .proj-head p{
+      margin:0 0 12px;
+      color:var(--muted);
+      font-size: clamp(.96rem, 1.1vw, 1.05rem);
+      line-height:1.55;
+    }
+
+    /* 60/40 layout */
+    .proj-body{
+      display:grid;
+      grid-template-columns: 60% 40%;
+      gap: 18px;
+      align-items: stretch;
+      margin-top: 10px;
+    }
+
+    /* LEFT COLUMN WRAP (A) */
+    .proj-media-wrap{
+      position: relative;
+      min-width: 0; /* important for grid overflow issues */
+padding: 0;
+    }
+
+ /* SLIDER BOX (red) */
+.proj-media{
+  --pager-h: 54px;
+
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+
+  /* desktop: stable height so small texts won't collapse slider */
+  min-height: 380px;
+
+  /* reserve bottom zone INSIDE the red frame for bullets */
+  padding-bottom: var(--pager-h);
+  box-sizing: border-box;
+}
+
+    /* ORANGE: the actual swiper viewport (B) */
+    .proj-media .swiper-container{
+      position:absolute;
+      left:0; right:0;
+      top:0;
+      bottom:54px; /* exactly matches padding-bottom zone */
+      overflow:hidden;
+    }
+
+    /* --- CRITICAL SWIPER FIXES (1 slide = 100% width) --- */
+    .proj-media .swiper-wrapper{
+      display:flex;
+      height:100%;
+      align-items: stretch;
+    }
+    .proj-media .swiper-slide{
+      height:100%;
+
+      /* one slide occupies full viewport width */
+      width:100% !important;
+      flex: 0 0 100% !important;
+      max-width:100% !important;
+
+      display:flex;
+      align-items:center;      /* vertical centering */
+      justify-content:center;  /* horizontal centering */
+    }
+
+    /* Image always fully visible, centered */
+    .proj-media .swiper-slide img{
+      display:block;
+      max-width:100%;
+      max-height:100%;
+      width:auto;
+      height:auto;
+      object-fit: contain;
+      object-position: center;
+      margin:0 auto;
+    }
+
+    /* Pagination INSIDE red frame in bottom zone */
+    .proj-media .swiper-pagination{
+      position:absolute;
+      left:0; right:0;
+      bottom: 16px;
+      z-index: 10;
+      text-align:center;
+    }
+
+    /* Dots like Technical.html (black hollow, 16px) */
+    .proj-media .swiper-pagination-bullet{
+      width:16px;
+      height:16px;
+      box-sizing:border-box;
+      border:2px solid #000;
+      border-radius:999px;
+      background:transparent;
+      margin:0 6px;
+      opacity:0.4;
+      transition: opacity 0.2s ease, background-color 0.2s ease;
+      transform:none;
+    }
+    .proj-media .swiper-pagination-bullet-active{
+      background:#000;
+      border-color:#000;
+      opacity:0.8;
+    }
+
+    /* 4-side fade (desktop too) */
+    .proj-media::before,
+    .proj-media::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      z-index: 6; /* above image, below dots (dots z=10) */
+    }
+    .proj-media::before{
+      background:
+        linear-gradient(to right,
+          #fff 0%,
+          rgba(255,255,255,0) 16%,
+          rgba(255,255,255,0) 84%,
+          #fff 100%
+        );
+      mix-blend-mode: normal;
+    }
+    .proj-media::after{
+      background:
+        linear-gradient(to bottom,
+          #fff 0%,
+          rgba(255,255,255,0) 16%,
+          rgba(255,255,255,0) 84%,
+          #fff 100%
+        );
+      mix-blend-mode: normal;
+    }
+
+    /* Grab cursor (slides + bullets) */
+    .proj-media .swiper-container,
+    .proj-media .swiper-wrapper,
+    .proj-media .swiper-slide,
+    .proj-media .swiper-pagination,
+    .proj-media .swiper-pagination *{
+      cursor: -webkit-grab;
+      cursor: grab;
+    }
+    html.is-holding,
+    html.is-holding *{
+      cursor: -webkit-grabbing !important;
+      cursor: grabbing !important;
+    }
+    html.is-holding{ -webkit-user-select:none; user-select:none; }
+
+    /* Right column text */
+    .proj-text p{
+      margin:0 0 12px;
+      color:var(--muted);
+      font-size: clamp(.96rem, 1.1vw, 1.05rem);
+      line-height:1.55;
+    }
+    .proj-text ul{
+      margin: 10px 0 16px;
+      padding-left: 18px;
+    }
+    .proj-text li{
+      margin: 6px 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .proj-actions{
+      margin-top: 12px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .proj-actions .btn{
+      height:42px;
+      border-radius:12px;
+      padding:0 18px;
+    }
+
+    /* Mobile stack */
+    @media (max-width: 860px){
+      .proj-body{
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+  /* blue container should shrink with the slider */
+  .proj-media-wrap{
+    align-self: stretch;
+  }
+
+  /* mobile: let the box become shorter (no forced 380px) */
+  .proj-media{
+    height: auto;
+    min-height: 0;
+  }
+    }
+
+@media (max-width: 860px){
+
+  /* RED BOX */
+  .proj-media{
+    min-height: 0;
+    height: auto;
+    padding-bottom: 54px; /* зона под точки */
+  }
+
+  /* Swiper container занимает всю ширину */
+  .proj-media .swiper-container{
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Каждый слайд = вся ширина */
+  .proj-media .swiper-slide{
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* КАРТИНКА — ГЛАВНЫЙ РАЗМЕР */
+  .proj-media img{
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    object-fit: contain;
+    display: block;
+  }
+}
+
+
+    /* ---------------- FINAL CONTACT ---------------- */
+    .final-contact{
+      background:#fff;
+      padding: 44px 0 54px;
+    }
+    .final-contact p{
+      margin:0;
+      color:var(--muted);
+      font-weight:500;
+      font-size:18px;
+      line-height:1.35;
+      text-align:center;
+    }
+    .final-contact a.hero-link{
+      font-weight:500;
+      font-size:1.08em;
+      text-decoration:none;
+      color:var(--linkBlue);
+      border-bottom:2px solid var(--accent);
+      padding-bottom:1px;
+      transition: color .18s ease, border-bottom-width .18s ease;
+    }
+    .final-contact a.hero-link:hover,
+    .final-contact a.hero-link:focus-visible{
+      color:var(--linkBlue);
+      border-bottom-width:3px;
+      outline:none;
+    }
+
+    .site-footer{ margin-top:auto; }
+
+/* ===== SWIPER HARD FIX: wrapper must be full width ===== */
+.proj-media .swiper-container{
+  margin: 0 !important; /* cancel any auto-centering */
+}
+
+.proj-media .swiper-wrapper{
+  width: 100% !important;     /* overrides swiper.min.css width:90% */
+  margin: 0 !important;       /* no auto margins */
+  box-sizing: border-box;
+}
+
+.proj-media .swiper-slide{
+  width: 100% !important;
+  max-width: 100% !important; /* overrides swiper.min.css max-width:600px */
+  flex: 0 0 100% !important;
+}
+
+/* See example project — dark red outline like Design page */
+.proj-actions .btn.btn-accent{
+  border: 1px solid #9b0f15;
+}
+
+/* =========================================
+   Reverse columns ONLY for Civil section
+   ========================================= */
+
+.proj-card.is-reversed .proj-body {
+  grid-template-columns: 40% 60%;
+}
+
+/* swap visual order */
+.proj-card.is-reversed .proj-media-wrap {
+  order: 2; /* slider to the right */
+}
+
+.proj-card.is-reversed .proj-text {
+  order: 1; /* text to the left */
+}
+
+/* Mobile: keep normal stacking */
+@media (max-width: 860px) {
+  .proj-card.is-reversed .proj-body {
+    grid-template-columns: 1fr;
+  }
+
+  .proj-card.is-reversed .proj-media-wrap,
+  .proj-card.is-reversed .proj-text {
+    order: initial;
+  }
+}
+
+
   </style>
 </head>
 
 <body class="projects-page is-collapsed" data-burger-bp="500">
-  <!-- HEADER (exact copy used across internal pages) -->
+  <!-- HEADER -->
   <header class="site-header" role="banner">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="FD2P — Home">
@@ -120,17 +504,303 @@
     </aside>
   </div>
 
-  <!-- HERO -->
-  <section class="page-hero">
-    <div class="container">
-      <img
-        src="assets/construction.jpg"
-        alt="Robot under construction">
-      <h1>This page is under construction</h1>
-    </div>
-  </section>
+  <!-- MAIN -->
+  <main class="page-offset">
 
-  <!-- FOOTER (exact copy used across internal pages) -->
+    <!-- INTRO -->
+    <section class="intro-block">
+      <div class="container intro-inner">
+        <p>
+          We design and develop working solutions for places where failure is expensive — offshore structures, subsea systems, lifting operations, façade maintenance equipment and industrial pipe-repair solutions.
+        </p>
+        <p>
+          We support the full path from first idea to installation: concept development, engineering calculations, operational and fabrication documentation, quotation support, production follow-up in Estonia and on-site supervision when required.
+        </p>
+        <p>
+          More information of what we do on our
+          <a href="services.html" class="inline-link">Services</a>
+          page.
+        </p>
+        <p>
+          We are based in Tallinn, Estonia, and work with clients across Norway, Sweden, Finland and Germany.
+        </p>
+        <p>
+          All design work follows DNV, NORSOK and Eurocode standards.
+        </p>
+      </div>
+    </section>
+
+    <div class="full-divider" aria-hidden="true"></div>
+
+    <!-- CARD 1 -->
+    <section class="proj-section" id="marine">
+      <div class="container">
+        <article class="proj-card">
+          <header class="proj-head">
+            <h2>Renewable Energy / Marine Engineering</h2>
+            <p>
+              We develop equipment for offshore cable-installation campaigns, perform marine and subsea design work to DNV and NORSOK standards, and prepare procedures for lifting and installation operations.
+            </p>
+          </header>
+
+          <div class="proj-body">
+            <!-- Left (60%) -->
+            <div class="proj-media-wrap">
+              <div class="proj-media">
+                <div class="swiper-container js-proj-swiper" data-swiper="marine">
+                  <div class="swiper-wrapper">
+<div class="swiper-slide">
+  <img
+    src="assets/marine1.jpg"
+    data-desktop="assets/marine1.jpg"
+    data-mobile="assets/marine1-860.jpg"
+    alt=""
+    loading="lazy"
+  >
+</div>
+<div class="swiper-slide">
+  <img
+    src="assets/marine2.jpg"
+    data-desktop="assets/marine2.jpg"
+    data-mobile="assets/marine2-860.jpg"
+    alt=""
+    loading="lazy"
+  >
+</div>
+<div class="swiper-slide">
+  <img
+    src="assets/marine3.jpg"
+    data-desktop="assets/marine3.jpg"
+    data-mobile="assets/marine3-860.jpg"
+    alt=""
+    loading="lazy"
+  >
+</div>
+<div class="swiper-slide">
+  <img
+    src="assets/marine4.jpg"
+    data-desktop="assets/marine4.jpg"
+    data-mobile="assets/marine4-860.jpg"
+    alt=""
+    loading="lazy"
+  >
+</div>
+<div class="swiper-slide">
+  <img
+    src="assets/marine5.jpg"
+    data-desktop="assets/marine5.jpg"
+    data-mobile="assets/marine5-860.jpg"
+    alt=""
+    loading="lazy"
+  >
+</div>
+                  </div>
+                </div>
+                <div class="swiper-pagination"></div>
+              </div>
+            </div>
+
+            <!-- Right (40%) -->
+            <div class="proj-text">
+              <p><strong>Our experience includes projects:</strong></p>
+              <ul>
+                <li><strong>Nexans (Norway)</strong> — cable-laying systems such as chutes, quadrants, roller tracks, trolleys and tensioner frames; vessel deck modification, design reports, production drawings, fabrication and follow-up in Estonia.</li>
+                <li><strong>Fred. Olsen Windcarrier (Norway)</strong> — vessel modifications for wind-turbine installation, collision checks, lifting procedures, 3D visualisation and animation.</li>
+                <li><strong>NKT (Sweden)</strong> — cable-storage and handling systems including roller tracks, trolleys and tensioner frames; design documentation and fabrication supervision.</li>
+                <li><strong>Flocean (Norway)</strong> — subsea frames and mud mats, design reports, subsea operation documentation and installation procedures.</li>
+                <li><strong>Layback (Norway)</strong> — tensioner and cable-drum design, analysis, fabrication drawings and production follow-up.</li>
+              </ul>
+
+              <div class="proj-actions">
+                <a class="btn btn-accent" href="marine.html">See example project</a>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <div class="full-divider" aria-hidden="true"></div>
+
+    <!-- CARD 2 -->
+    <section class="proj-section" id="civil">
+      <div class="container">
+<article class="proj-card is-reversed">
+          <header class="proj-head">
+            <h2>Civil / Architectural</h2>
+            <p>
+              We design steel structures for public and built environments where access, safety and maintainability matter. Typical work includes façade maintenance equipment, platforms and service bridges, strengthening of existing steelwork, and installation logic that contractors can execute on site.
+            </p>
+          </header>
+
+          <div class="proj-body">
+            <div class="proj-media-wrap">
+              <div class="proj-media">
+                <div class="swiper-container js-proj-swiper" data-swiper="civil">
+                  <div class="swiper-wrapper">
+<div class="swiper-slide">
+  <img
+    src="assets/civil1.jpg"
+    data-desktop="assets/civil1.jpg"
+    data-mobile="assets/civil1-860.jpg"
+    alt=""
+    loading="lazy"
+  >
+</div>
+<div class="swiper-slide">
+  <img
+    src="assets/civil2.jpg"
+    data-desktop="assets/civil2.jpg"
+    data-mobile="assets/civil2-860.jpg"
+    alt=""
+    loading="lazy"
+  >
+</div>
+<div class="swiper-slide">
+  <img
+    src="assets/civil3.jpg"
+    data-desktop="assets/civil3.jpg"
+    data-mobile="assets/civil3-860.jpg"
+    alt=""
+    loading="lazy"
+  >
+</div>
+<div class="swiper-slide">
+  <img
+    src="assets/civil4.jpg"
+    data-desktop="assets/civil4.jpg"
+    data-mobile="assets/civil4-860.jpg"
+    alt=""
+    loading="lazy"
+  >
+</div>
+<div class="swiper-slide">
+  <img
+    src="assets/civil5.jpg"
+    data-desktop="assets/civil5.jpg"
+    data-mobile="assets/civil5-860.jpg"
+    alt=""
+    loading="lazy"
+  >
+</div>
+                  </div>
+                </div>
+                <div class="swiper-pagination"></div>
+              </div>
+            </div>
+
+            <div class="proj-text">
+              <p>
+                We deliver calculation packages and fabrication-ready drawings, coordinate interfaces with architects and site teams, and keep details practical for installation and inspection.
+              </p>
+
+              <div class="proj-actions">
+                <a class="btn btn-accent" href="civil.html">See example project</a>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <div class="full-divider" aria-hidden="true"></div>
+
+    <!-- CARD 3 -->
+    <section class="proj-section" id="industrial">
+      <div class="container">
+        <article class="proj-card">
+          <header class="proj-head">
+            <h2>Industrial &amp; Process</h2>
+            <p>
+              We support industrial facilities with structural and mechanical engineering for upgrades, repairs and new installations. Typical scope includes support steel, access solutions, equipment frames, and practical repair concepts that can be fabricated locally and installed with minimal downtime.
+            </p>
+          </header>
+
+          <div class="proj-body">
+            <div class="proj-media-wrap">
+              <div class="proj-media">
+                <div class="swiper-container js-proj-swiper" data-swiper="industrial">
+                  <div class="swiper-wrapper">
+<div class="swiper-slide">
+  <img
+    src="assets/industrial1.jpg"
+    data-desktop="assets/industrial1.jpg"
+    data-mobile="assets/industrial1-860.jpg"
+    alt=""
+    loading="lazy"
+  >
+</div>
+<div class="swiper-slide">
+  <img
+    src="assets/industrial2.jpg"
+    data-desktop="assets/industrial2.jpg"
+    data-mobile="assets/industrial2-860.jpg"
+    alt=""
+    loading="lazy"
+  >
+</div>
+<div class="swiper-slide">
+  <img
+    src="assets/industrial3.jpg"
+    data-desktop="assets/industrial3.jpg"
+    data-mobile="assets/industrial3-860.jpg"
+    alt=""
+    loading="lazy"
+  >
+</div>
+<div class="swiper-slide">
+  <img
+    src="assets/industrial4.jpg"
+    data-desktop="assets/industrial4.jpg"
+    data-mobile="assets/industrial4-860.jpg"
+    alt=""
+    loading="lazy"
+  >
+</div>
+<div class="swiper-slide">
+  <img
+    src="assets/industrial5.jpg"
+    data-desktop="assets/industrial5.jpg"
+    data-mobile="assets/industrial5-860.jpg"
+    alt=""
+    loading="lazy"
+  >
+</div>
+                  </div>
+                </div>
+                <div class="swiper-pagination"></div>
+              </div>
+            </div>
+
+            <div class="proj-text">
+              <p>
+                Our deliverables are built around execution: clear load cases, calculation notes, production drawings, and step-by-step procedures aligned with site constraints and safety requirements.
+              </p>
+
+              <div class="proj-actions">
+                <a class="btn btn-accent" href="industrial.html">See example project</a>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <div class="full-divider" aria-hidden="true"></div>
+
+    <!-- FINAL CONTACT -->
+    <section class="final-contact">
+      <div class="container">
+        <p>
+          If you need qualified support in design engineering,
+          <a href="contact.html" class="hero-link">contact us</a>
+          — we will be happy to discuss details with you.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-content">
@@ -140,26 +810,228 @@
         <div class="footer-contacts">
           <p>Email: <a href="mailto:info@fd2p.com">info@fd2p.com</a></p>
           <p>Phone: <a href="tel:+37256279949">+372 56 279 949</a></p>
-          <p>Address: Kivimurru 34, Tallinn, Estonia</p>
+          <p>
+            Address:
+            <a href="https://www.google.com/maps?q=Kivimurru+34,+Tallinn,+Estonia"
+               target="_blank" rel="noopener noreferrer">
+              Kivimurru 34, Tallinn, Estonia
+            </a>
+          </p>
         </div>
       </div>
     </div>
   </footer>
 
-  <!-- Global scripts -->
   <script src="js/main.js"></script>
+  <script src="js/swiper.min.js"></script>
 
-  <!-- Burger breakpoint + page-ready flag -->
+  <!-- burger breakpoint + page-ready flag -->
   <script>
     (function(){
-      var bp = parseInt(document.body.getAttribute('data-burger-bp') || '500', 10);
-      function apply(){ document.body.classList.toggle('is-mobile-projects', window.innerWidth <= bp); }
-      function init(){ apply(); document.body.classList.add('js-ready-projects'); }
-      window.addEventListener('resize', apply, {passive:true});
-      window.addEventListener('orientationchange', apply, {passive:true});
-      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-      else init();
+      var bp = parseInt(document.body.getAttribute('data-burger-bp') || '1024', 10);
+
+      function applyBreakpoint() {
+        var isMobile = window.innerWidth <= bp;
+        document.body.classList.toggle('is-mobile-projects', isMobile);
+      }
+
+      function init(){
+        applyBreakpoint();
+        document.body.classList.add('js-ready-projects');
+      }
+
+      window.addEventListener('resize', applyBreakpoint, {passive:true});
+      window.addEventListener('orientationchange', applyBreakpoint, {passive:true});
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
     })();
   </script>
+
+  <!-- Swipers + holding cursor behavior -->
+  <script>
+    (function(){
+      function initOne(el){
+        var media = el.closest('.proj-media');
+        var pag = media ? media.querySelector('.swiper-pagination') : null;
+
+return new Swiper(el, {
+  loop: true,
+  speed: 450,
+  slidesPerView: 1,
+  spaceBetween: 0,
+  watchOverflow: true,
+  observer: true,
+  observeParents: true,
+  pagination: {
+    el: pag,
+    clickable: true
+  }
+});
+      }
+
+window.__projSwipers = window.__projSwipers || [];
+
+document.querySelectorAll('.js-proj-swiper').forEach(function(el){
+  window.__projSwipers.push(initOne(el));
+});
+
+      // grab -> grabbing
+      (function(){
+        var root = document.documentElement;
+        var scopes = document.querySelectorAll('.proj-media');
+
+        function wire(scope){
+          var container = scope.querySelector('.swiper-container');
+          if (!container) return;
+
+          var activeId = null;
+
+          function release(){
+            if (activeId !== null) {
+              try { container.releasePointerCapture(activeId); } catch(e){}
+              activeId = null;
+            }
+            root.classList.remove('is-holding');
+          }
+
+          scope.addEventListener('pointerdown', function(e){
+            if (e.button !== 0) return;
+            if (!e.target.closest('.swiper-container, .swiper-pagination')) return;
+
+            root.classList.add('is-holding');
+
+            try {
+              container.setPointerCapture(e.pointerId);
+              activeId = e.pointerId;
+            } catch(err) {
+              activeId = null;
+            }
+          }, true);
+
+          window.addEventListener('pointerup', release, {passive:true});
+          window.addEventListener('pointercancel', release, {passive:true});
+          window.addEventListener('blur', release, {passive:true});
+          document.addEventListener('visibilitychange', function(){
+            if (document.visibilityState !== 'visible') release();
+          });
+        }
+
+        scopes.forEach(wire);
+      })();
+    })();
+  </script>
+
+<script>
+(function () {
+  var mq = window.matchMedia("(max-width: 860px)");
+
+  function getWantedSrc(img, isMobile) {
+    return isMobile ? img.getAttribute("data-mobile") : img.getAttribute("data-desktop");
+  }
+
+  function setSourcesForMode(isMobile) {
+    // swap src for all slider images
+    var imgs = document.querySelectorAll(".js-proj-swiper .swiper-slide img");
+    imgs.forEach(function (img) {
+      var next = getWantedSrc(img, isMobile);
+      if (!next) return;
+      if (img.getAttribute("src") !== next) img.setAttribute("src", next);
+    });
+  }
+
+  function warmOne(url) {
+    if (!url) return;
+    var pre = new Image();
+    pre.decoding = "async";
+    pre.src = url;
+  }
+
+  function warmSmart(sw, isMobile) {
+    // Works in loop mode using realIndex (0..N-1)
+    var total = sw.slides && sw.slides.length ? sw.slides.length : 0;
+    var realCount = sw.slides && sw.params && sw.params.loop
+      ? (sw.slides.length - (sw.loopedSlides * 2 || 0))
+      : (sw.slides ? sw.slides.length : 0);
+
+    // If Swiper hasn't built looped slides info, fallback
+    var n = sw.slides && sw.slides.length ? sw.slides.length : 0;
+    var realIndex = (typeof sw.realIndex === "number") ? sw.realIndex : 0;
+
+    // Next real slide in current mode
+    var nextReal = realCount > 0 ? (realIndex + 1) % realCount : realIndex;
+
+    // Helper: find an <img> for a given real slide index.
+    // In loop mode, Swiper duplicates slides; easiest is to query by data-swiper-slide-index.
+    function findImgByReal(i) {
+      var selector = '.swiper-slide[data-swiper-slide-index="' + i + '"] img';
+      // Prefer a non-duplicate (but any match is fine for src reading)
+      var el = sw.el.querySelector(selector);
+      return el || null;
+    }
+
+    // 1) Warm NEXT slide of CURRENT mode
+    var imgNext = findImgByReal(nextReal);
+    if (imgNext) warmOne(getWantedSrc(imgNext, isMobile));
+
+    // 2) Warm CURRENT slide of OTHER mode
+    var imgCurr = findImgByReal(realIndex);
+    if (imgCurr) warmOne(getWantedSrc(imgCurr, !isMobile));
+  }
+
+  function apply() {
+    var isMobile = mq.matches;
+
+    // Remember current realIndex per swiper BEFORE we update anything
+    var states = [];
+    if (window.__projSwipers && window.__projSwipers.length) {
+      window.__projSwipers.forEach(function (sw) {
+        if (!sw) return;
+        states.push({ sw: sw, realIndex: (typeof sw.realIndex === "number" ? sw.realIndex : 0) });
+      });
+    }
+
+    // Swap sources for current mode
+    setSourcesForMode(isMobile);
+
+    // Update swipers and keep the SAME real slide (not reset to first)
+    states.forEach(function (st) {
+      var sw = st.sw;
+      if (!sw) return;
+
+      if (typeof sw.update === "function") sw.update();
+
+      // Keep same slide number after mode swap (critical with loop)
+      if (typeof sw.slideToLoop === "function") {
+        sw.slideToLoop(st.realIndex, 0, false);
+      }
+
+      // Smart warm: next(current mode) + current(other mode)
+      warmSmart(sw, isMobile);
+    });
+  }
+
+  // Run once
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", apply);
+  } else {
+    apply();
+  }
+
+  // React only when crossing breakpoint
+  if (typeof mq.addEventListener === "function") {
+    mq.addEventListener("change", apply);
+  } else if (typeof mq.addListener === "function") {
+    mq.addListener(apply);
+  }
+
+  window.addEventListener("orientationchange", apply, { passive: true });
+})();
+</script>
+
+
 </body>
 </html>
