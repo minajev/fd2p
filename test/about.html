@@ -227,6 +227,36 @@
   word-break: break-word;
 }
 
+/* --- Hover fade effect for Sergei Oksanen --- */
+#sergei img {
+  transition: opacity 0.4s ease-in-out;
+  content: url("assets/serega1.jpg");
+}
+
+#sergei:hover img {
+  content: url("assets/serega2.jpg");
+  opacity: 1;
+}
+
+/* Maksim: default + hover */
+#maksim img {
+  transition: opacity .4s ease-in-out;
+  content: url("assets/max1.jpg");
+}
+#maksim:hover img {
+  content: url("assets/max2.jpg");
+}
+
+/* Навёл на Maksim → у Sergei показываем sergei3.jpg */
+body:has(#maksim:hover) #sergei img {
+  content: url("assets/serega3.jpg");
+}
+
+/* Навёл на Sergei → у Maksim показываем max3.jpg */
+body:has(#sergei:hover) #maksim img {
+  content: url("assets/max3.jpg");
+}
+
   </style>
 </head>
 
@@ -333,26 +363,25 @@
     </div>
 
     <!-- 3 -->
-    <div class="person" role="listitem">
-      <img src="assets/Engineer3.jpg" alt="Engineer 3" />
-      <h3>Sergei Oksanen</h3>
-      <div class="role">Project Engineer</div>
-      <div class="meta">
-        <div class="line">
-          <span class="label">Phone:</span>
-          <a href="tel:+37256279949">+372 56 279 949</a>
-        </div>
-        <div class="line">
-          <span class="label">Email:</span>
-          <a href="mailto:sergei.oksanen@fd2p.com">sergei.oksanen@fd2p.com</a>
-        </div>
-      </div>
+<div class="person" role="listitem" id="sergei">
+  <img src="assets/serega1.jpg" alt="Sergei Oksanen" />
+  <h3>Sergei Oksanen</h3>
+  <div class="role">Project Engineer</div>
+  <div class="meta">
+    <div class="line">
+      <span class="label">Phone:</span>
+      <a href="tel:+37256279949">+372 56 279 949</a>
     </div>
-
+    <div class="line">
+      <span class="label">Email:</span>
+      <a href="mailto:sergei.oksanen@fd2p.com">sergei.oksanen@fd2p.com</a>
+    </div>
+  </div>
+</div>
     <!-- 4 -->
-    <div class="person" role="listitem">
-      <img src="assets/Engineer4.jpg" alt="Engineer 4" />
-      <h3>Maksim Rozinfeld</h3>
+<div class="person" id="maksim" role="listitem">
+  <img src="assets/max1.jpg" alt="Maksim Rozinfeld" />
+  <h3>Maksim Rozinfeld</h3>
       <div class="role">Project Engineer</div>
       <div class="meta">
         <div class="line">
