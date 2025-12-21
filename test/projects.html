@@ -254,35 +254,36 @@ padding: 0;
       opacity:0.8;
     }
 
-    /* 4-side fade (desktop too) */
-    .proj-media::before,
-    .proj-media::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-      z-index: 6; /* above image, below dots (dots z=10) */
-    }
-    .proj-media::before{
-      background:
-        linear-gradient(to right,
-          #fff 0%,
-          rgba(255,255,255,0) 16%,
-          rgba(255,255,255,0) 84%,
-          #fff 100%
-        );
-      mix-blend-mode: normal;
-    }
-    .proj-media::after{
-      background:
-        linear-gradient(to bottom,
-          #fff 0%,
-          rgba(255,255,255,0) 16%,
-          rgba(255,255,255,0) 84%,
-          #fff 100%
-        );
-      mix-blend-mode: normal;
-    }
+/* LEFT / RIGHT fade ONLY */
+.proj-media::before,
+.proj-media::after{
+  content:"";
+  position:absolute;
+  top:0;
+  height:100%;
+  width:80px;
+  pointer-events:none;
+  z-index:6; /* above image, below dots */
+}
+
+.proj-media::before{
+  left:0;
+  background: linear-gradient(
+    to right,
+    #fff 0%,
+    rgba(255,255,255,0) 100%
+  );
+}
+
+.proj-media::after{
+  right:0;
+  background: linear-gradient(
+    to left,
+    #fff 0%,
+    rgba(255,255,255,0) 100%
+  );
+}
+
 
     /* Grab cursor (slides + bullets) */
     .proj-media .swiper-container,
@@ -515,7 +516,7 @@ padding: 0;
     <section class="intro-block">
       <div class="container intro-inner">
         <p>
-          2We design and develop working solutions for places where failure is expensive — offshore structures, subsea systems, lifting operations, façade maintenance equipment and industrial pipe-repair solutions.
+          We design and develop working solutions for places where failure is expensive — offshore structures, subsea systems, lifting operations, façade maintenance equipment and industrial pipe-repair solutions.
         </p>
         <p>
           We support the full path from first idea to installation: concept development, engineering calculations, operational and fabrication documentation, quotation support, production follow-up in Estonia and on-site supervision when required.
@@ -541,7 +542,7 @@ padding: 0;
       <div class="container">
         <article class="proj-card">
           <header class="proj-head">
-            <h2>Renewable Energy / Marine Engineering</h2>
+            <h2>Marine &amp; Subsea Engineering</h2>
             <p>
               We develop equipment for offshore cable-installation campaigns, perform marine and subsea design work to DNV and NORSOK standards, and prepare procedures for lifting and installation operations.
             </p>
@@ -631,9 +632,9 @@ padding: 0;
       <div class="container">
 <article class="proj-card is-reversed">
           <header class="proj-head">
-            <h2>Civil / Architectural</h2>
+            <h2>Civil Engineering</h2>
             <p>
-              We design steel structures for public and built environments where access, safety and maintainability matter. Typical work includes façade maintenance equipment, platforms and service bridges, strengthening of existing steelwork, and installation logic that contractors can execute on site.
+In civil engineering projects, our expertise covers service platforms, façade access and maintenance systems. We also develop custom exhibition and stage-decoration structures. All designs are developed in accordance with Eurocode requirements.
             </p>
           </header>
 
@@ -669,24 +670,7 @@ padding: 0;
     loading="lazy"
   >
 </div>
-<div class="swiper-slide">
-  <img
-    src="assets/civil4.jpg"
-    data-desktop="assets/civil4.jpg"
-    data-mobile="assets/civil4-860.jpg"
-    alt=""
-    loading="lazy"
-  >
-</div>
-<div class="swiper-slide">
-  <img
-    src="assets/civil5.jpg"
-    data-desktop="assets/civil5.jpg"
-    data-mobile="assets/civil5-860.jpg"
-    alt=""
-    loading="lazy"
-  >
-</div>
+
                   </div>
                 </div>
                 <div class="swiper-pagination"></div>
@@ -694,9 +678,12 @@ padding: 0;
             </div>
 
             <div class="proj-text">
-              <p>
-                We deliver calculation packages and fabrication-ready drawings, coordinate interfaces with architects and site teams, and keep details practical for installation and inspection.
-              </p>
+              <p><strong>Our experience includes projects:</strong></p>
+              <ul>
+                <li><strong>Rostek (Finland)</strong> — façade access solutions design, lifting gantries, track lines, davit cranes, production drawings.</li>
+                <li><strong>Oslo Nationalmuseet (Norway)</strong> — exhibition equipment and decoration design, wooden and steel structures, analysis, production drawings.</li>
+                <li><strong>Oslo Nationalteatre (Norway)</strong> — stage equipment and decoration design, wooden and steel  structures, analysis, production drawings.</li>
+              </ul>
 
               <div class="proj-actions">
                 <a class="btn btn-accent" href="civil.html">See example project</a>
@@ -714,9 +701,9 @@ padding: 0;
       <div class="container">
         <article class="proj-card">
           <header class="proj-head">
-            <h2>Industrial &amp; Process</h2>
+            <h2>Industrial Engineering</h2>
             <p>
-              We support industrial facilities with structural and mechanical engineering for upgrades, repairs and new installations. Typical scope includes support steel, access solutions, equipment frames, and practical repair concepts that can be fabricated locally and installed with minimal downtime.
+We provide structural and mechanical engineering support for industrial sites during upgrades, repairs and new installations. We design steel platforms and stairways for production workshops, and GRP-profiles structures for facilities operating in harsh environments.
             </p>
           </header>
 
@@ -752,24 +739,6 @@ padding: 0;
     loading="lazy"
   >
 </div>
-<div class="swiper-slide">
-  <img
-    src="assets/industrial4.jpg"
-    data-desktop="assets/industrial4.jpg"
-    data-mobile="assets/industrial4-860.jpg"
-    alt=""
-    loading="lazy"
-  >
-</div>
-<div class="swiper-slide">
-  <img
-    src="assets/industrial5.jpg"
-    data-desktop="assets/industrial5.jpg"
-    data-mobile="assets/industrial5-860.jpg"
-    alt=""
-    loading="lazy"
-  >
-</div>
                   </div>
                 </div>
                 <div class="swiper-pagination"></div>
@@ -777,9 +746,14 @@ padding: 0;
             </div>
 
             <div class="proj-text">
-              <p>
-                Our deliverables are built around execution: clear load cases, calculation notes, production drawings, and step-by-step procedures aligned with site constraints and safety requirements.
-              </p>
+              <p><strong>Our experience includes projects:</strong></p>
+              <ul>
+                <li><strong>Glassfiber Produkter (Norway)</strong> — GRP structures design, production drawings.</li>
+                <li><strong>Lango (Sweden)</strong> — electrical platforms for buss maintenance, retractable bridges, gangways, 
+staircases, analysis, design reports, production drawings.</li>
+                <li><strong>Fralex (Germany)</strong> — steam pipeline repair solutions, clamps design, design reports, 
+production drawings.</li>
+              </ul>
 
               <div class="proj-actions">
                 <a class="btn btn-accent" href="industrial.html">See example project</a>
@@ -870,6 +844,7 @@ return new Swiper(el, {
   watchOverflow: true,
   observer: true,
   observeParents: true,
+  initialSlide: 0,
 
   // make touch swipes easier + more consistent
   threshold: 8,
