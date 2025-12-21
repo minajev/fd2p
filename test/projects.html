@@ -866,11 +866,18 @@ return new Swiper(el, {
   watchOverflow: true,
   observer: true,
   observeParents: true,
+
+  // make swipe easier on real phones
+  threshold: 5,          // smaller distance to trigger slide change
+  longSwipesRatio: 0.15, // easier to complete a slow swipe
+  longSwipesMs: 200,
+
   pagination: {
     el: pag,
     clickable: true
   }
 });
+
       }
 
 window.__projSwipers = window.__projSwipers || [];
@@ -879,49 +886,39 @@ document.querySelectorAll('.js-proj-swiper').forEach(function(el){
   window.__projSwipers.push(initOne(el));
 });
 
-      // grab -> grabbing
-      (function(){
-        var root = document.documentElement;
-        var scopes = document.querySelectorAll('.proj-media');
+// grab -> grabbing (MOUSE ONLY; do not interfere with touch swipe)
+(function(){
+  var root = document.documentElement;
+  var scopes = document.querySelectorAll('.proj-media');
 
-        function wire(scope){
-          var container = scope.querySelector('.swiper-container');
-          if (!container) return;
+  function wire(scope){
+    var container = scope.querySelector('.swiper-container');
+    if (!container) return;
 
-          var activeId = null;
+    function release(){
+      root.classList.remove('is-holding');
+    }
 
-          function release(){
-            if (activeId !== null) {
-              try { container.releasePointerCapture(activeId); } catch(e){}
-              activeId = null;
-            }
-            root.classList.remove('is-holding');
-          }
+    scope.addEventListener('pointerdown', function(e){
+      // IMPORTANT: only mouse
+      if (e.pointerType !== 'mouse') return;
+      if (e.button !== 0) return;
+      if (!e.target.closest('.swiper-container, .swiper-pagination')) return;
 
-          scope.addEventListener('pointerdown', function(e){
-            if (e.button !== 0) return;
-            if (!e.target.closest('.swiper-container, .swiper-pagination')) return;
+      root.classList.add('is-holding');
+    }, true);
 
-            root.classList.add('is-holding');
+    window.addEventListener('pointerup', release, {passive:true});
+    window.addEventListener('pointercancel', release, {passive:true});
+    window.addEventListener('blur', release, {passive:true});
+    document.addEventListener('visibilitychange', function(){
+      if (document.visibilityState !== 'visible') release();
+    });
+  }
 
-            try {
-              container.setPointerCapture(e.pointerId);
-              activeId = e.pointerId;
-            } catch(err) {
-              activeId = null;
-            }
-          }, true);
+  scopes.forEach(wire);
+})();
 
-          window.addEventListener('pointerup', release, {passive:true});
-          window.addEventListener('pointercancel', release, {passive:true});
-          window.addEventListener('blur', release, {passive:true});
-          document.addEventListener('visibilitychange', function(){
-            if (document.visibilityState !== 'visible') release();
-          });
-        }
-
-        scopes.forEach(wire);
-      })();
     })();
   </script>
 
