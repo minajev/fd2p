@@ -464,6 +464,10 @@ padding: 0;
   }
 }
 
+/* allow vertical scroll, but keep horizontal swipe for Swiper */
+.proj-media .swiper-container{
+  touch-action: pan-y;
+}
 
   </style>
 </head>
@@ -511,7 +515,7 @@ padding: 0;
     <section class="intro-block">
       <div class="container intro-inner">
         <p>
-          NEW We design and develop working solutions for places where failure is expensive — offshore structures, subsea systems, lifting operations, façade maintenance equipment and industrial pipe-repair solutions.
+          2We design and develop working solutions for places where failure is expensive — offshore structures, subsea systems, lifting operations, façade maintenance equipment and industrial pipe-repair solutions.
         </p>
         <p>
           We support the full path from first idea to installation: concept development, engineering calculations, operational and fabrication documentation, quotation support, production follow-up in Estonia and on-site supervision when required.
@@ -867,16 +871,22 @@ return new Swiper(el, {
   observer: true,
   observeParents: true,
 
-  // make swipe easier on real phones
-  threshold: 5,          // smaller distance to trigger slide change
-  longSwipesRatio: 0.15, // easier to complete a slow swipe
-  longSwipesMs: 200,
+  // make touch swipes easier + more consistent
+  threshold: 8,
+  longSwipes: true,
+  longSwipesRatio: 0.18,
+  longSwipesMs: 180,
+  shortSwipes: true,
+  followFinger: true,
+  resistance: true,
+  resistanceRatio: 0.6,
 
   pagination: {
     el: pag,
     clickable: true
   }
 });
+
 
       }
 
@@ -886,33 +896,47 @@ document.querySelectorAll('.js-proj-swiper').forEach(function(el){
   window.__projSwipers.push(initOne(el));
 });
 
-// grab -> grabbing (MOUSE ONLY; do not interfere with touch swipe)
-(function(){
-  var root = document.documentElement;
-  var scopes = document.querySelectorAll('.proj-media');
+// grab -> grabbing (DESKTOP ONLY; do not use pointer capture on touch devices)
+(function () {
+  var canUseMouseUX = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (!canUseMouseUX) return;
 
-  function wire(scope){
-    var container = scope.querySelector('.swiper-container');
+  var root = document.documentElement;
+  var scopes = document.querySelectorAll(".proj-media");
+
+  function wire(scope) {
+    var container = scope.querySelector(".swiper-container");
     if (!container) return;
 
-    function release(){
-      root.classList.remove('is-holding');
+    var activeId = null;
+
+    function release() {
+      if (activeId !== null) {
+        try { container.releasePointerCapture(activeId); } catch (e) {}
+        activeId = null;
+      }
+      root.classList.remove("is-holding");
     }
 
-    scope.addEventListener('pointerdown', function(e){
-      // IMPORTANT: only mouse
-      if (e.pointerType !== 'mouse') return;
+    scope.addEventListener("pointerdown", function (e) {
       if (e.button !== 0) return;
-      if (!e.target.closest('.swiper-container, .swiper-pagination')) return;
+      if (!e.target.closest(".swiper-container, .swiper-pagination")) return;
 
-      root.classList.add('is-holding');
+      root.classList.add("is-holding");
+
+      try {
+        container.setPointerCapture(e.pointerId);
+        activeId = e.pointerId;
+      } catch (err) {
+        activeId = null;
+      }
     }, true);
 
-    window.addEventListener('pointerup', release, {passive:true});
-    window.addEventListener('pointercancel', release, {passive:true});
-    window.addEventListener('blur', release, {passive:true});
-    document.addEventListener('visibilitychange', function(){
-      if (document.visibilityState !== 'visible') release();
+    window.addEventListener("pointerup", release, { passive: true });
+    window.addEventListener("pointercancel", release, { passive: true });
+    window.addEventListener("blur", release, { passive: true });
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState !== "visible") release();
     });
   }
 
