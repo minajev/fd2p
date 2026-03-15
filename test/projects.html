@@ -18,7 +18,6 @@
 <link rel="preload" as="image" href="assets/civil1-860.jpg" media="(max-width: 860px)" fetchpriority="high">
 <link rel="preload" as="image" href="assets/industrial1-860.jpg" media="(max-width: 860px)" fetchpriority="high">
 
-
   <style>
     :root{
       --line:#e5e7eb;
@@ -308,10 +307,10 @@ padding: 0;
       font-size: clamp(.96rem, 1.1vw, 1.05rem);
       line-height:1.55;
     }
-    .proj-text ul{
-      margin: 10px 0 16px;
-      padding-left: 18px;
-    }
+.proj-text ul{
+  margin: 10px 0 16px;
+  padding-left: 18px;
+}
     .proj-text li{
       margin: 6px 0;
       color: var(--muted);
@@ -475,6 +474,27 @@ padding: 0;
   .proj-actions .btn-accent{
     width: 100%;
   }
+}
+
+@media (min-width: 860px) {
+.proj-text{
+    margin-right: 18px;
+  }
+}
+
+@media (max-width: 860px) {
+
+.proj-media-wrap{
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+background: #fff;
+    padding-top: 20px;
+box-shadow:
+  0 10px 10px rgba(0,0,0,0.15),
+  0 -10px 10px rgba(0,0,0,0.15);
+  }
+
 }
 
   </style>
