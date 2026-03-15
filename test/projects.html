@@ -18,485 +18,472 @@
 <link rel="preload" as="image" href="assets/civil1-860.jpg" media="(max-width: 860px)" fetchpriority="high">
 <link rel="preload" as="image" href="assets/industrial1-860.jpg" media="(max-width: 860px)" fetchpriority="high">
 
+
   <style>
     :root{
-      --line:#e5e7eb;
-      --ink:#111827;
-      --muted:#606973;
-      --accent:#E30613;
-      --linkBlue:#2f6aa8;
-
-      /* Debug colors */
-      --dbgA: #2b6cff;    /* blue dashed */
-      --dbgB: #ff7a00;    /* orange */
-      --dbgSlider: #ff0000; /* red */
+      --line: #e5e7eb;
+      --ink: #111827;
+      --muted: #606973;
+      --accent: #E30613;
+      --link-blue: #2f6aa8;
+      --proj-pager-height: 54px;
+      --proj-fade-width-desktop: 80px;
+      --proj-fade-width-mobile: 20px;
     }
 
     body.projects-page{
-      color:var(--ink);
-      background:#fff;
-
-      display:grid;
-      grid-template-rows:1fr auto;
-      min-height:100vh;
+      color: var(--ink);
+      background: #fff;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      min-height: 100vh;
     }
 
-    /* ---------------- HEADER ---------------- */
+    /* Header */
     .site-header{
       position: fixed;
-      top:0;
-      left:0;
-      right:0;
-      z-index:1000;
-      background:#fff;
-      border-bottom:1px solid var(--line);
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
     }
-    .header-inner{
-      height:64px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-    }
-    .brand img{ max-height:40px; height:auto; }
 
-    .page-offset{ margin-top:48px; }
+    .header-inner{
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand img{
+      max-height: 40px;
+      height: auto;
+    }
+
+    .page-offset{
+      margin-top: 48px;
+    }
 
     .projects-page:not(.js-ready-projects) .site-header .main-nav{
-      position:absolute;
-      right:0; top:0;
-      height:var(--header-h,64px);
-      opacity:0;
-      visibility:hidden;
-      pointer-events:none;
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: var(--header-h, 64px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
     }
+
     .projects-page:not(.js-ready-projects) .menu-toggle{
-      opacity:0;
-      visibility:hidden;
-      pointer-events:none;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
     }
 
-    .projects-page .menu-toggle { display:none; }
-    .projects-page .main-nav   { display:flex; }
+    .projects-page .menu-toggle{
+      display: none;
+    }
 
-    .projects-page.is-mobile-projects .menu-toggle { display:block; }
-    .projects-page.is-mobile-projects .main-nav   { display:none; }
+    .projects-page .main-nav{
+      display: flex;
+    }
 
-    .offcanvas{ position:fixed; inset:0; z-index:3000; }
-    .offcanvas-backdrop{ position:absolute; inset:0; z-index:0; }
-    .offcanvas-panel{ position:absolute; z-index:1; }
+    .projects-page.is-mobile-projects .menu-toggle{
+      display: block;
+    }
 
-    /* ---------------- INTRO ---------------- */
+    .projects-page.is-mobile-projects .main-nav{
+      display: none;
+    }
+
+    .offcanvas{
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+    }
+
+    .offcanvas-backdrop{
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .offcanvas-panel{
+      position: absolute;
+      z-index: 1;
+    }
+
+    /* Intro */
     .intro-block{
       padding: 8px 0 18px;
-      background:#fff;
+      background: #fff;
     }
+
     .intro-inner p{
-      margin:0 0 16px;
-      color:var(--muted);
-      font-weight:400;
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-weight: 400;
     }
 
     .inline-link{
-      font-weight:600;
+      font-weight: 600;
       font-size: 1.08em;
-      color:var(--linkBlue);
-      text-decoration:none;
-      border-bottom:2px solid var(--accent);
-      padding-bottom:1px;
-      cursor:pointer;
-      transition:border-bottom-width .18s ease;
+      color: var(--link-blue);
+      text-decoration: none;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 1px;
+      cursor: pointer;
+      transition: border-bottom-width .18s ease;
     }
+
     .inline-link:hover,
     .inline-link:focus-visible{
-      border-bottom-width:3px;
-      outline:none;
+      border-bottom-width: 3px;
+      outline: none;
     }
 
     .full-divider{
-      width:100vw;
-      position:relative;
-      left:50%;
-      right:50%;
-      margin-left:-50vw;
-      margin-right:-50vw;
-      border-top:1px solid var(--line);
+      position: relative;
+      left: 50%;
+      right: 50%;
+      width: 100vw;
+      margin-left: -50vw;
+      margin-right: -50vw;
+      border-top: 1px solid var(--line);
     }
 
-    /* ---------------- SECTIONS / CARDS ---------------- */
-    .proj-section{ padding: 42px 0; background:#fff; }
-    @media (max-width: 860px){ .proj-section{ padding: 28px 0; } }
+    /* Project sections and cards */
+    .proj-section{
+      padding: 42px 0;
+      background: #fff;
+    }
 
-    /* FULL width inside .container (no chess) */
     .proj-card{
       width: 100%;
-      border:1px solid var(--line);
-      border-radius:14px;
-      background:#fff;
-      box-shadow:none;
-      padding: clamp(16px, 2.2vw, 22px);
       margin: 0;
+      padding: clamp(16px, 2.2vw, 22px);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: none;
     }
+
     .proj-card.is-right,
     .proj-card.is-left{
-      margin:0;
+      margin: 0;
     }
 
     .proj-head h2{
       margin: 2px 0 10px;
       font-size: clamp(20px, 2.2vw, 24px);
-      line-height:1.25;
-    }
-    .proj-head p{
-      margin:0 0 12px;
-      color:var(--muted);
-      font-size: clamp(.96rem, 1.1vw, 1.05rem);
-      line-height:1.55;
+      line-height: 1.25;
     }
 
-    /* 60/40 layout */
+    .proj-head p{
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: clamp(.96rem, 1.1vw, 1.05rem);
+      line-height: 1.55;
+    }
+
     .proj-body{
-      display:grid;
+      display: grid;
       grid-template-columns: 60% 40%;
       gap: 18px;
       align-items: stretch;
       margin-top: 10px;
     }
 
-    /* LEFT COLUMN WRAP (A) */
     .proj-media-wrap{
       position: relative;
-      min-width: 0; /* important for grid overflow issues */
-padding: 0;
+      min-width: 0;
+      padding: 0;
     }
 
- /* SLIDER BOX (red) */
-.proj-media{
-  --pager-h: 54px;
+    .proj-media{
+      position: relative;
+      height: 100%;
+      min-height: 380px;
+      overflow: hidden;
+      padding-bottom: var(--proj-pager-height);
+      box-sizing: border-box;
+    }
 
-  position: relative;
-  height: 100%;
-  overflow: hidden;
-
-  /* desktop: stable height so small texts won't collapse slider */
-  min-height: 380px;
-
-  /* reserve bottom zone INSIDE the red frame for bullets */
-  padding-bottom: var(--pager-h);
-  box-sizing: border-box;
-}
-
-    /* ORANGE: the actual swiper viewport (B) */
     .proj-media .swiper-container{
-      position:absolute;
-      left:0; right:0;
-      top:0;
-      bottom:54px; /* exactly matches padding-bottom zone */
-      overflow:hidden;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: var(--proj-pager-height);
+      overflow: hidden;
+      margin: 0 !important;
+      touch-action: pan-y;
     }
 
-    /* --- CRITICAL SWIPER FIXES (1 slide = 100% width) --- */
     .proj-media .swiper-wrapper{
-      display:flex;
-      height:100%;
+      display: flex;
+      width: 100% !important;
+      height: 100%;
+      margin: 0 !important;
+      box-sizing: border-box;
       align-items: stretch;
     }
+
     .proj-media .swiper-slide{
-      height:100%;
-
-      /* one slide occupies full viewport width */
-      width:100% !important;
+      display: flex;
+      width: 100% !important;
+      max-width: 100% !important;
+      height: 100%;
       flex: 0 0 100% !important;
-      max-width:100% !important;
-
-      display:flex;
-      align-items:center;      /* vertical centering */
-      justify-content:center;  /* horizontal centering */
+      align-items: center;
+      justify-content: center;
     }
 
-    /* Image always fully visible, centered */
     .proj-media .swiper-slide img{
-      display:block;
-      max-width:100%;
-      max-height:100%;
-      width:auto;
-      height:auto;
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      margin: 0 auto;
       object-fit: contain;
       object-position: center;
-      margin:0 auto;
     }
 
-    /* Pagination INSIDE red frame in bottom zone */
     .proj-media .swiper-pagination{
-      position:absolute;
-      left:0; right:0;
+      position: absolute;
+      left: 0;
+      right: 0;
       bottom: 16px;
       z-index: 10;
-      text-align:center;
+      text-align: center;
     }
 
-    /* Dots like Technical.html (black hollow, 16px) */
     .proj-media .swiper-pagination-bullet{
-      width:16px;
-      height:16px;
-      box-sizing:border-box;
-      border:2px solid #000;
-      border-radius:999px;
-      background:transparent;
-      margin:0 6px;
-      opacity:0.4;
+      width: 16px;
+      height: 16px;
+      margin: 0 6px;
+      box-sizing: border-box;
+      border: 2px solid #000;
+      border-radius: 999px;
+      background: transparent;
+      opacity: 0.4;
+      transform: none;
       transition: opacity 0.2s ease, background-color 0.2s ease;
-      transform:none;
     }
+
     .proj-media .swiper-pagination-bullet-active{
-      background:#000;
-      border-color:#000;
-      opacity:0.8;
+      background: #000;
+      border-color: #000;
+      opacity: 0.8;
     }
 
-/* LEFT / RIGHT fade ONLY */
-.proj-media::before,
-.proj-media::after{
-  content:"";
-  position:absolute;
-  top:0;
-  height:100%;
-  width:80px;
-  pointer-events:none;
-  z-index:6; /* above image, below dots */
-}
+    .proj-media::before,
+    .proj-media::after{
+      content: "";
+      position: absolute;
+      top: 0;
+      width: var(--proj-fade-width-desktop);
+      height: 100%;
+      pointer-events: none;
+      z-index: 6;
+    }
 
-.proj-media::before{
-  left:0;
-  background: linear-gradient(
-    to right,
-    #fff 0%,
-    rgba(255,255,255,0) 100%
-  );
-}
+    .proj-media::before{
+      left: 0;
+      background: linear-gradient(to right, #fff 0%, rgba(255,255,255,0) 100%);
+    }
 
-.proj-media::after{
-  right:0;
-  background: linear-gradient(
-    to left,
-    #fff 0%,
-    rgba(255,255,255,0) 100%
-  );
-}
+    .proj-media::after{
+      right: 0;
+      background: linear-gradient(to left, #fff 0%, rgba(255,255,255,0) 100%);
+    }
 
-
-    /* Grab cursor (slides + bullets) */
     .proj-media .swiper-container,
     .proj-media .swiper-wrapper,
-    .proj-media .swiper-slide,
-    .proj-media .swiper-pagination,
-    .proj-media .swiper-pagination *{
+    .proj-media .swiper-slide{
       cursor: -webkit-grab;
       cursor: grab;
     }
+
+    .proj-media .swiper-pagination,
+    .proj-media .swiper-pagination *{
+      cursor: pointer;
+    }
+
     html.is-holding,
     html.is-holding *{
       cursor: -webkit-grabbing !important;
       cursor: grabbing !important;
     }
-    html.is-holding{ -webkit-user-select:none; user-select:none; }
 
-    /* Right column text */
-    .proj-text p{
-      margin:0 0 12px;
-      color:var(--muted);
-      font-size: clamp(.96rem, 1.1vw, 1.05rem);
-      line-height:1.55;
+    html.is-holding{
+      -webkit-user-select: none;
+      user-select: none;
     }
-.proj-text ul{
-  margin: 10px 0 16px;
-  padding-left: 18px;
-}
+
+    .proj-text p{
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: clamp(.96rem, 1.1vw, 1.05rem);
+      line-height: 1.55;
+    }
+
+    .proj-text ul{
+      margin: 10px 0 16px;
+      padding-left: 18px;
+    }
+
     .proj-text li{
       margin: 6px 0;
       color: var(--muted);
       line-height: 1.5;
     }
+
     .proj-actions{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
       margin-top: 12px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .proj-actions .btn{
-      height:42px;
-      border-radius:12px;
-      padding:0 18px;
     }
 
-    /* Mobile stack */
+    .proj-actions .btn{
+      height: 42px;
+      padding: 0 18px;
+      border-radius: 12px;
+    }
+
+    .proj-actions .btn.btn-accent{
+      border: 1px solid #9b0f15;
+    }
+
+    /* Reversed card layout for Civil section only */
+    .proj-card.is-reversed .proj-body{
+      grid-template-columns: 40% 60%;
+    }
+
+    .proj-card.is-reversed .proj-media-wrap{
+      order: 2;
+    }
+
+    .proj-card.is-reversed .proj-text{
+      order: 1;
+    }
+
+    /* Final contact */
+    .final-contact{
+      padding: 44px 0 54px;
+      background: #fff;
+    }
+
+    .final-contact p{
+      margin: 0;
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 1.35;
+      text-align: center;
+    }
+
+    .final-contact a.hero-link{
+      font-weight: 500;
+      font-size: 1.08em;
+      color: var(--link-blue);
+      text-decoration: none;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 1px;
+      transition: color .18s ease, border-bottom-width .18s ease;
+    }
+
+    .final-contact a.hero-link:hover,
+    .final-contact a.hero-link:focus-visible{
+      color: var(--link-blue);
+      border-bottom-width: 3px;
+      outline: none;
+    }
+
+    .site-footer{
+      margin-top: auto;
+    }
+
+    /* Desktop-only alignment */
+    @media (min-width: 860px){
+      .proj-text{
+        margin-right: 18px;
+      }
+    }
+
+    /* Mobile layout */
     @media (max-width: 860px){
+      .proj-section{
+        padding: 28px 0;
+      }
+
       .proj-body{
         grid-template-columns: 1fr;
         gap: 14px;
       }
-  /* blue container should shrink with the slider */
-  .proj-media-wrap{
-    align-self: stretch;
-  }
 
-  /* mobile: let the box become shorter (no forced 380px) */
-  .proj-media{
-    height: auto;
-    min-height: 0;
-  }
+      .proj-media-wrap{
+        align-self: stretch;
+        width: 100vw;
+        margin-left: calc(50% - 50vw);
+        margin-right: calc(50% - 50vw);
+        background: #fff;
+        padding-top: 20px;
+        box-shadow:
+          0 5px 10px rgba(0,0,0,0.2),
+          0 -5px 10px rgba(0,0,0,0.2);
+      }
+
+      .proj-media{
+        height: auto;
+        min-height: 0;
+        padding-bottom: var(--proj-pager-height);
+      }
+
+      .proj-media .swiper-container{
+        position: relative;
+        inset: auto;
+        width: 100%;
+        height: auto;
+      }
+
+      .proj-media .swiper-slide{
+        display: flex;
+        width: 100% !important;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .proj-media img{
+        display: block;
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+        object-fit: contain;
+      }
+
+      .proj-media::before,
+      .proj-media::after{
+        width: var(--proj-fade-width-mobile);
+      }
+
+      .proj-card.is-reversed .proj-body{
+        grid-template-columns: 1fr;
+      }
+
+      .proj-card.is-reversed .proj-media-wrap,
+      .proj-card.is-reversed .proj-text{
+        order: initial;
+      }
+
+      .proj-actions .btn-accent{
+        width: 100%;
+      }
     }
-
-@media (max-width: 860px){
-
-  /* RED BOX */
-  .proj-media{
-    min-height: 0;
-    height: auto;
-    padding-bottom: 54px; /* зона под точки */
-  }
-
-  /* Swiper container занимает всю ширину */
-  .proj-media .swiper-container{
-    position: relative;
-    inset: auto;
-    width: 100%;
-    height: auto;
-  }
-
-  /* Каждый слайд = вся ширина */
-  .proj-media .swiper-slide{
-    width: 100% !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  /* КАРТИНКА — ГЛАВНЫЙ РАЗМЕР */
-  .proj-media img{
-    width: 100%;
-    height: auto;
-    max-width: 100%;
-    object-fit: contain;
-    display: block;
-  }
-}
-
-
-    /* ---------------- FINAL CONTACT ---------------- */
-    .final-contact{
-      background:#fff;
-      padding: 44px 0 54px;
-    }
-    .final-contact p{
-      margin:0;
-      color:var(--muted);
-      font-weight:500;
-      font-size:18px;
-      line-height:1.35;
-      text-align:center;
-    }
-    .final-contact a.hero-link{
-      font-weight:500;
-      font-size:1.08em;
-      text-decoration:none;
-      color:var(--linkBlue);
-      border-bottom:2px solid var(--accent);
-      padding-bottom:1px;
-      transition: color .18s ease, border-bottom-width .18s ease;
-    }
-    .final-contact a.hero-link:hover,
-    .final-contact a.hero-link:focus-visible{
-      color:var(--linkBlue);
-      border-bottom-width:3px;
-      outline:none;
-    }
-
-    .site-footer{ margin-top:auto; }
-
-/* ===== SWIPER HARD FIX: wrapper must be full width ===== */
-.proj-media .swiper-container{
-  margin: 0 !important; /* cancel any auto-centering */
-}
-
-.proj-media .swiper-wrapper{
-  width: 100% !important;     /* overrides swiper.min.css width:90% */
-  margin: 0 !important;       /* no auto margins */
-  box-sizing: border-box;
-}
-
-.proj-media .swiper-slide{
-  width: 100% !important;
-  max-width: 100% !important; /* overrides swiper.min.css max-width:600px */
-  flex: 0 0 100% !important;
-}
-
-/* See example project — dark red outline like Design page */
-.proj-actions .btn.btn-accent{
-  border: 1px solid #9b0f15;
-}
-
-/* =========================================
-   Reverse columns ONLY for Civil section
-   ========================================= */
-
-.proj-card.is-reversed .proj-body {
-  grid-template-columns: 40% 60%;
-}
-
-/* swap visual order */
-.proj-card.is-reversed .proj-media-wrap {
-  order: 2; /* slider to the right */
-}
-
-.proj-card.is-reversed .proj-text {
-  order: 1; /* text to the left */
-}
-
-/* Mobile: keep normal stacking */
-@media (max-width: 860px) {
-  .proj-card.is-reversed .proj-body {
-    grid-template-columns: 1fr;
-  }
-
-  .proj-card.is-reversed .proj-media-wrap,
-  .proj-card.is-reversed .proj-text {
-    order: initial;
-  }
-}
-
-/* allow vertical scroll, but keep horizontal swipe for Swiper */
-.proj-media .swiper-container{
-  touch-action: pan-y;
-}
-
-/* Mobile: make red buttons full width like on Design page */
-@media (max-width: 860px){
-  .proj-actions .btn-accent{
-    width: 100%;
-  }
-}
-
-@media (min-width: 860px) {
-.proj-text{
-    margin-right: 18px;
-  }
-}
-
-@media (max-width: 860px) {
-
-.proj-media-wrap{
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
-background: #fff;
-    padding-top: 20px;
-box-shadow:
-  0 10px 10px rgba(0,0,0,0.15),
-  0 -10px 10px rgba(0,0,0,0.15);
-  }
-
-}
-
   </style>
 </head>
 
@@ -860,228 +847,218 @@ production drawings.</li>
   <script src="js/main.js"></script>
   <script src="js/swiper.min.js"></script>
 
-  <!-- burger breakpoint + page-ready flag -->
+  <!-- Menu breakpoint and page-ready state -->
   <script>
     (function(){
-      var bp = parseInt(document.body.getAttribute('data-burger-bp') || '1024', 10);
+      var breakpoint = parseInt(document.body.getAttribute("data-burger-bp") || "1024", 10);
 
-      function applyBreakpoint() {
-        var isMobile = window.innerWidth <= bp;
-        document.body.classList.toggle('is-mobile-projects', isMobile);
+      function applyBreakpoint(){
+        var isMobile = window.innerWidth <= breakpoint;
+        document.body.classList.toggle("is-mobile-projects", isMobile);
       }
 
       function init(){
         applyBreakpoint();
-        document.body.classList.add('js-ready-projects');
+        document.body.classList.add("js-ready-projects");
       }
 
-      window.addEventListener('resize', applyBreakpoint, {passive:true});
-      window.addEventListener('orientationchange', applyBreakpoint, {passive:true});
+      window.addEventListener("resize", applyBreakpoint, { passive: true });
+      window.addEventListener("orientationchange", applyBreakpoint, { passive: true });
 
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
       } else {
         init();
       }
     })();
   </script>
 
-  <!-- Swipers + holding cursor behavior -->
+  <!-- Swiper initialization and desktop drag cursor -->
   <script>
     (function(){
-      function initOne(el){
-        var media = el.closest('.proj-media');
-        var pag = media ? media.querySelector('.swiper-pagination') : null;
+      function createProjectSwiper(element){
+        var media = element.closest(".proj-media");
+        var pagination = media ? media.querySelector(".swiper-pagination") : null;
 
-return new Swiper(el, {
-  loop: true,
-  speed: 450,
-  slidesPerView: 1,
-  spaceBetween: 0,
-  watchOverflow: true,
-  observer: true,
-  observeParents: true,
-  initialSlide: 0,
-
-  // make touch swipes easier + more consistent
-  threshold: 8,
-  longSwipes: true,
-  longSwipesRatio: 0.18,
-  longSwipesMs: 180,
-  shortSwipes: true,
-  followFinger: true,
-  resistance: true,
-  resistanceRatio: 0.6,
-
-  pagination: {
-    el: pag,
-    clickable: true
-  }
-});
-
-
+        return new Swiper(element, {
+          loop: true,
+          speed: 450,
+          slidesPerView: 1,
+          spaceBetween: 0,
+          watchOverflow: true,
+          observer: true,
+          observeParents: true,
+          initialSlide: 0,
+          threshold: 8,
+          longSwipes: true,
+          longSwipesRatio: 0.18,
+          longSwipesMs: 180,
+          shortSwipes: true,
+          followFinger: true,
+          resistance: true,
+          resistanceRatio: 0.6,
+          pagination: {
+            el: pagination,
+            clickable: true
+          }
+        });
       }
 
-window.__projSwipers = window.__projSwipers || [];
+      window.__projSwipers = window.__projSwipers || [];
 
-document.querySelectorAll('.js-proj-swiper').forEach(function(el){
-  window.__projSwipers.push(initOne(el));
-});
+      document.querySelectorAll(".js-proj-swiper").forEach(function(element){
+        window.__projSwipers.push(createProjectSwiper(element));
+      });
 
-// grab -> grabbing (DESKTOP ONLY; do not use pointer capture on touch devices)
-(function () {
-  var canUseMouseUX = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-  if (!canUseMouseUX) return;
+      (function(){
+        var canUseMouseUX = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+        if (!canUseMouseUX) return;
 
-  var root = document.documentElement;
-  var scopes = document.querySelectorAll(".proj-media");
+        var root = document.documentElement;
+        var mediaScopes = document.querySelectorAll(".proj-media");
 
-  function wire(scope) {
-    var container = scope.querySelector(".swiper-container");
-    if (!container) return;
+        function wireDesktopDragState(scope){
+          var container = scope.querySelector(".swiper-container");
+          if (!container) return;
 
-    var activeId = null;
+          var activePointerId = null;
 
-    function release() {
-      if (activeId !== null) {
-        try { container.releasePointerCapture(activeId); } catch (e) {}
-        activeId = null;
-      }
-      root.classList.remove("is-holding");
-    }
+          function release(){
+            if (activePointerId !== null) {
+              try {
+                container.releasePointerCapture(activePointerId);
+              } catch (error) {}
+              activePointerId = null;
+            }
+            root.classList.remove("is-holding");
+          }
 
-    scope.addEventListener("pointerdown", function (e) {
-      if (e.button !== 0) return;
-      if (!e.target.closest(".swiper-container, .swiper-pagination")) return;
+          scope.addEventListener("pointerdown", function(event){
+            if (event.button !== 0) return;
+            if (!event.target.closest(".swiper-container")) return;
+            if (event.target.closest(".swiper-pagination")) return;
 
-      root.classList.add("is-holding");
+            root.classList.add("is-holding");
 
-      try {
-        container.setPointerCapture(e.pointerId);
-        activeId = e.pointerId;
-      } catch (err) {
-        activeId = null;
-      }
-    }, true);
+            try {
+              container.setPointerCapture(event.pointerId);
+              activePointerId = event.pointerId;
+            } catch (error) {
+              activePointerId = null;
+            }
+          }, true);
 
-    window.addEventListener("pointerup", release, { passive: true });
-    window.addEventListener("pointercancel", release, { passive: true });
-    window.addEventListener("blur", release, { passive: true });
-    document.addEventListener("visibilitychange", function () {
-      if (document.visibilityState !== "visible") release();
-    });
-  }
+          window.addEventListener("pointerup", release, { passive: true });
+          window.addEventListener("pointercancel", release, { passive: true });
+          window.addEventListener("blur", release, { passive: true });
+          document.addEventListener("visibilitychange", function(){
+            if (document.visibilityState !== "visible") {
+              release();
+            }
+          });
+        }
 
-  scopes.forEach(wire);
-})();
-
+        mediaScopes.forEach(wireDesktopDragState);
+      })();
     })();
   </script>
 
 <script>
-(function () {
-  var mq = window.matchMedia("(max-width: 860px)");
+(function(){
+  var mobileQuery = window.matchMedia("(max-width: 860px)");
 
-  function getWantedSrc(img, isMobile) {
-    return isMobile ? img.getAttribute("data-mobile") : img.getAttribute("data-desktop");
+  function getPreferredSource(image, isMobile){
+    return isMobile ? image.getAttribute("data-mobile") : image.getAttribute("data-desktop");
   }
 
-  function setSourcesForMode(isMobile) {
-    // swap src for all slider images
-    var imgs = document.querySelectorAll(".js-proj-swiper .swiper-slide img");
-    imgs.forEach(function (img) {
-      var next = getWantedSrc(img, isMobile);
-      if (!next) return;
-      if (img.getAttribute("src") !== next) img.setAttribute("src", next);
+  function applyImageSources(isMobile){
+    var images = document.querySelectorAll(".js-proj-swiper .swiper-slide img");
+
+    images.forEach(function(image){
+      var nextSource = getPreferredSource(image, isMobile);
+      if (!nextSource) return;
+      if (image.getAttribute("src") !== nextSource) {
+        image.setAttribute("src", nextSource);
+      }
     });
   }
 
-  function warmOne(url) {
+  function preloadImage(url){
     if (!url) return;
-    var pre = new Image();
-    pre.decoding = "async";
-    pre.src = url;
+    var image = new Image();
+    image.decoding = "async";
+    image.src = url;
   }
 
-  function warmSmart(sw, isMobile) {
-    // Works in loop mode using realIndex (0..N-1)
-    var total = sw.slides && sw.slides.length ? sw.slides.length : 0;
-    var realCount = sw.slides && sw.params && sw.params.loop
-      ? (sw.slides.length - (sw.loopedSlides * 2 || 0))
-      : (sw.slides ? sw.slides.length : 0);
+  function findImageByRealIndex(swiper, realIndex){
+    var selector = '.swiper-slide[data-swiper-slide-index="' + realIndex + '"] img';
+    return swiper.el.querySelector(selector) || null;
+  }
 
-    // If Swiper hasn't built looped slides info, fallback
-    var n = sw.slides && sw.slides.length ? sw.slides.length : 0;
-    var realIndex = (typeof sw.realIndex === "number") ? sw.realIndex : 0;
+  function warmAdjacentImages(swiper, isMobile){
+    var realIndex = typeof swiper.realIndex === "number" ? swiper.realIndex : 0;
+    var realCount = swiper.slides && swiper.params && swiper.params.loop
+      ? (swiper.slides.length - (swiper.loopedSlides * 2 || 0))
+      : (swiper.slides ? swiper.slides.length : 0);
 
-    // Next real slide in current mode
-    var nextReal = realCount > 0 ? (realIndex + 1) % realCount : realIndex;
+    var nextRealIndex = realCount > 0 ? (realIndex + 1) % realCount : realIndex;
 
-    // Helper: find an <img> for a given real slide index.
-    // In loop mode, Swiper duplicates slides; easiest is to query by data-swiper-slide-index.
-    function findImgByReal(i) {
-      var selector = '.swiper-slide[data-swiper-slide-index="' + i + '"] img';
-      // Prefer a non-duplicate (but any match is fine for src reading)
-      var el = sw.el.querySelector(selector);
-      return el || null;
+    var nextImage = findImageByRealIndex(swiper, nextRealIndex);
+    if (nextImage) {
+      preloadImage(getPreferredSource(nextImage, isMobile));
     }
 
-    // 1) Warm NEXT slide of CURRENT mode
-    var imgNext = findImgByReal(nextReal);
-    if (imgNext) warmOne(getWantedSrc(imgNext, isMobile));
-
-    // 2) Warm CURRENT slide of OTHER mode
-    var imgCurr = findImgByReal(realIndex);
-    if (imgCurr) warmOne(getWantedSrc(imgCurr, !isMobile));
+    var currentImage = findImageByRealIndex(swiper, realIndex);
+    if (currentImage) {
+      preloadImage(getPreferredSource(currentImage, !isMobile));
+    }
   }
 
-  function apply() {
-    var isMobile = mq.matches;
-
-    // Remember current realIndex per swiper BEFORE we update anything
+  function applyResponsiveSources(){
+    var isMobile = mobileQuery.matches;
     var states = [];
+
     if (window.__projSwipers && window.__projSwipers.length) {
-      window.__projSwipers.forEach(function (sw) {
-        if (!sw) return;
-        states.push({ sw: sw, realIndex: (typeof sw.realIndex === "number" ? sw.realIndex : 0) });
+      window.__projSwipers.forEach(function(swiper){
+        if (!swiper) return;
+        states.push({
+          swiper: swiper,
+          realIndex: typeof swiper.realIndex === "number" ? swiper.realIndex : 0
+        });
       });
     }
 
-    // Swap sources for current mode
-    setSourcesForMode(isMobile);
+    applyImageSources(isMobile);
 
-    // Update swipers and keep the SAME real slide (not reset to first)
-    states.forEach(function (st) {
-      var sw = st.sw;
-      if (!sw) return;
+    states.forEach(function(state){
+      var swiper = state.swiper;
+      if (!swiper) return;
 
-      if (typeof sw.update === "function") sw.update();
-
-      // Keep same slide number after mode swap (critical with loop)
-      if (typeof sw.slideToLoop === "function") {
-        sw.slideToLoop(st.realIndex, 0, false);
+      if (typeof swiper.update === "function") {
+        swiper.update();
       }
 
-      // Smart warm: next(current mode) + current(other mode)
-      warmSmart(sw, isMobile);
+      if (typeof swiper.slideToLoop === "function") {
+        swiper.slideToLoop(state.realIndex, 0, false);
+      }
+
+      warmAdjacentImages(swiper, isMobile);
     });
   }
 
-  // Run once
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", apply);
+    document.addEventListener("DOMContentLoaded", applyResponsiveSources);
   } else {
-    apply();
+    applyResponsiveSources();
   }
 
-  // React only when crossing breakpoint
-  if (typeof mq.addEventListener === "function") {
-    mq.addEventListener("change", apply);
-  } else if (typeof mq.addListener === "function") {
-    mq.addListener(apply);
+  if (typeof mobileQuery.addEventListener === "function") {
+    mobileQuery.addEventListener("change", applyResponsiveSources);
+  } else if (typeof mobileQuery.addListener === "function") {
+    mobileQuery.addListener(applyResponsiveSources);
   }
 
-  window.addEventListener("orientationchange", apply, { passive: true });
+  window.addEventListener("orientationchange", applyResponsiveSources, { passive: true });
 })();
 </script>
 
