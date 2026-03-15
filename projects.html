@@ -4,92 +4,491 @@
   <meta charset="utf-8" />
   <title>FD2P — Projects</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="FD2P engineering projects — page under construction." />
+  <meta name="description" content="FD2P project areas: marine & subsea, civil / architectural, industrial & process.">
 
-  <!-- Global site styles -->
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/swiper.min.css" />
+
   <link rel="preload" as="image" href="assets/logo2.jpg" />
+  <link rel="preload" as="image" href="assets/marine1.jpg" />
+  <link rel="preload" as="image" href="assets/civil1.jpg" />
+  <link rel="preload" as="image" href="assets/industrial1.jpg" />
 
-  <!-- Page-local styles -->
+<link rel="preload" as="image" href="assets/marine1-860.jpg" media="(max-width: 860px)" fetchpriority="high">
+<link rel="preload" as="image" href="assets/civil1-860.jpg" media="(max-width: 860px)" fetchpriority="high">
+<link rel="preload" as="image" href="assets/industrial1-860.jpg" media="(max-width: 860px)" fetchpriority="high">
+
+
   <style>
-    /* Anti-flash: hide nav until JS applies the correct state */
-    .projects-page:not(.js-ready-projects) .site-header .main-nav{
-      position:absolute; right:0; top:0; height:var(--header-h);
-      opacity:0; visibility:hidden; pointer-events:none;
-    }
-    .projects-page:not(.js-ready-projects) .menu-toggle{
-      opacity:0; visibility:hidden; pointer-events:none;
-    }
-
-    /* Desktop defaults (switched by .is-mobile-projects) */
-    .projects-page .menu-toggle { display: none; }
-    .projects-page .main-nav { display: flex; }
-
-    /* Mobile state toggled by JS based on data-burger-bp */
-    .projects-page.is-mobile-projects .menu-toggle { display: block; }
-    .projects-page.is-mobile-projects .main-nav { display: none; }
-
-    /* Base page spacing (unused here but kept for consistency) */
-    .section{ padding:50px 0; }
-
-    /* --- Reliable layout: header | centered content | footer (mobile-safe) --- */
-    html, body{
-      min-height: 100vh;  /* fallback */
-      min-height: 100svh; /* stable on mobile */
-      min-height: 100dvh; /* dynamic on modern browsers */
+    :root{
+      --line: #e5e7eb;
+      --ink: #111827;
+      --muted: #606973;
+      --accent: #E30613;
+      --link-blue: #2f6aa8;
+      --proj-pager-height: 54px;
+      --proj-fade-width-desktop: 80px;
+      --proj-fade-width-mobile: 20px;
     }
 
-body.projects-page{
-  display: grid;
-  grid-template-rows: 1fr auto; /* header | content | footer */
-}
+    body.projects-page{
+      color: var(--ink);
+      background: #fff;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      min-height: 100vh;
+    }
 
-.projects-page .site-footer{
-  margin-top: auto;
-}
+    /* Header */
+    .site-header{
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+    }
 
-    /* Center the hero block exactly between header and footer with equal gaps */
-.page-hero {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 0;
-  border-bottom: 0;
-}
-.page-hero .container {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+    .header-inner{
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-    /* Image above the heading */
-    .page-hero img{
-      display: inline-block;
-      max-width: 1000px;
-      width: 100%;
+    .brand img{
+      max-height: 40px;
       height: auto;
-      margin: 0 0 40px 0; /* gap between image and text */
     }
 
-    .page-hero h1{
+    .page-offset{
+      margin-top: 48px;
+    }
+
+    .projects-page:not(.js-ready-projects) .site-header .main-nav{
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: var(--header-h, 64px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .projects-page:not(.js-ready-projects) .menu-toggle{
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .projects-page .menu-toggle{
+      display: none;
+    }
+
+    .projects-page .main-nav{
+      display: flex;
+    }
+
+    .projects-page.is-mobile-projects .menu-toggle{
+      display: block;
+    }
+
+    .projects-page.is-mobile-projects .main-nav{
+      display: none;
+    }
+
+    .offcanvas{
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+    }
+
+    .offcanvas-backdrop{
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .offcanvas-panel{
+      position: absolute;
+      z-index: 1;
+    }
+
+    /* Intro */
+    .intro-block{
+      padding: 8px 0 18px;
+      background: #fff;
+    }
+
+    .intro-inner p{
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .inline-link{
+      font-weight: 600;
+      font-size: 1.08em;
+      color: var(--link-blue);
+      text-decoration: none;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 1px;
+      cursor: pointer;
+      transition: border-bottom-width .18s ease;
+    }
+
+    .inline-link:hover,
+    .inline-link:focus-visible{
+      border-bottom-width: 3px;
+      outline: none;
+    }
+
+    .full-divider{
+      position: relative;
+      left: 50%;
+      right: 50%;
+      width: 100vw;
+      margin-left: -50vw;
+      margin-right: -50vw;
+      border-top: 1px solid var(--line);
+    }
+
+    /* Project sections and cards */
+    .proj-section{
+      padding: 42px 0;
+      background: #fff;
+    }
+
+    .proj-card{
+      width: 100%;
       margin: 0;
-      font-size: clamp(32px, 5vw, 48px);
-      text-transform: uppercase;
+      padding: clamp(16px, 2.2vw, 22px);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: none;
     }
 
-    /* Footer always visible and safe on mobile */
+    .proj-card.is-right,
+    .proj-card.is-left{
+      margin: 0;
+    }
+
+    .proj-head h2{
+      margin: 2px 0 10px;
+      font-size: clamp(20px, 2.2vw, 24px);
+      line-height: 1.25;
+    }
+
+    .proj-head p{
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: clamp(.96rem, 1.1vw, 1.05rem);
+      line-height: 1.55;
+    }
+
+    .proj-body{
+      display: grid;
+      grid-template-columns: 60% 40%;
+      gap: 18px;
+      align-items: stretch;
+      margin-top: 10px;
+    }
+
+    .proj-media-wrap{
+      position: relative;
+      min-width: 0;
+      padding: 0;
+    }
+
+    .proj-media{
+      position: relative;
+      height: 100%;
+      min-height: 380px;
+      overflow: hidden;
+      padding-bottom: var(--proj-pager-height);
+      box-sizing: border-box;
+    }
+
+    .proj-media .swiper-container{
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: var(--proj-pager-height);
+      overflow: hidden;
+      margin: 0 !important;
+      touch-action: pan-y;
+    }
+
+    .proj-media .swiper-wrapper{
+      display: flex;
+      width: 100% !important;
+      height: 100%;
+      margin: 0 !important;
+      box-sizing: border-box;
+      align-items: stretch;
+    }
+
+    .proj-media .swiper-slide{
+      display: flex;
+      width: 100% !important;
+      max-width: 100% !important;
+      height: 100%;
+      flex: 0 0 100% !important;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .proj-media .swiper-slide img{
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      margin: 0 auto;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    .proj-media .swiper-pagination{
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 16px;
+      z-index: 10;
+      text-align: center;
+    }
+
+    .proj-media .swiper-pagination-bullet{
+      width: 16px;
+      height: 16px;
+      margin: 0 6px;
+      box-sizing: border-box;
+      border: 2px solid #000;
+      border-radius: 999px;
+      background: transparent;
+      opacity: 0.4;
+      transform: none;
+      transition: opacity 0.2s ease, background-color 0.2s ease;
+    }
+
+    .proj-media .swiper-pagination-bullet-active{
+      background: #000;
+      border-color: #000;
+      opacity: 0.8;
+    }
+
+    .proj-media::before,
+    .proj-media::after{
+      content: "";
+      position: absolute;
+      top: 0;
+      width: var(--proj-fade-width-desktop);
+      height: 100%;
+      pointer-events: none;
+      z-index: 6;
+    }
+
+    .proj-media::before{
+      left: 0;
+      background: linear-gradient(to right, #fff 0%, rgba(255,255,255,0) 100%);
+    }
+
+    .proj-media::after{
+      right: 0;
+      background: linear-gradient(to left, #fff 0%, rgba(255,255,255,0) 100%);
+    }
+
+    .proj-media .swiper-container,
+    .proj-media .swiper-wrapper,
+    .proj-media .swiper-slide{
+      cursor: -webkit-grab;
+      cursor: grab;
+    }
+
+    .proj-media .swiper-pagination,
+    .proj-media .swiper-pagination *{
+      cursor: pointer;
+    }
+
+    html.is-holding,
+    html.is-holding *{
+      cursor: -webkit-grabbing !important;
+      cursor: grabbing !important;
+    }
+
+    html.is-holding{
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    .proj-text p{
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: clamp(.96rem, 1.1vw, 1.05rem);
+      line-height: 1.55;
+    }
+
+    .proj-text ul{
+      margin: 10px 0 16px;
+      padding-left: 18px;
+    }
+
+    .proj-text li{
+      margin: 6px 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .proj-actions{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .proj-actions .btn{
+      height: 42px;
+      padding: 0 18px;
+      border-radius: 12px;
+    }
+
+    .proj-actions .btn.btn-accent{
+      border: 1px solid #9b0f15;
+    }
+
+    /* Reversed card layout for Civil section only */
+    .proj-card.is-reversed .proj-body{
+      grid-template-columns: 40% 60%;
+    }
+
+    .proj-card.is-reversed .proj-media-wrap{
+      order: 2;
+    }
+
+    .proj-card.is-reversed .proj-text{
+      order: 1;
+    }
+
+    /* Final contact */
+    .final-contact{
+      padding: 44px 0 54px;
+      background: #fff;
+    }
+
+    .final-contact p{
+      margin: 0;
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 1.35;
+      text-align: center;
+    }
+
+    .final-contact a.hero-link{
+      font-weight: 500;
+      font-size: 1.08em;
+      color: var(--link-blue);
+      text-decoration: none;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 1px;
+      transition: color .18s ease, border-bottom-width .18s ease;
+    }
+
+    .final-contact a.hero-link:hover,
+    .final-contact a.hero-link:focus-visible{
+      color: var(--link-blue);
+      border-bottom-width: 3px;
+      outline: none;
+    }
+
     .site-footer{
-      margin-top: 0; /* grid places it at the bottom already */
-      padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px));
+      margin-top: auto;
+    }
+
+    /* Desktop-only alignment */
+    @media (min-width: 860px){
+      .proj-text{
+        margin-right: 18px;
+      }
+    }
+
+    /* Mobile layout */
+    @media (max-width: 860px){
+      .proj-section{
+        padding: 28px 0;
+      }
+
+      .proj-body{
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .proj-media-wrap{
+        align-self: stretch;
+        width: 100vw;
+        margin-left: calc(50% - 50vw);
+        margin-right: calc(50% - 50vw);
+        background: #fff;
+        padding-top: 20px;
+        box-shadow:
+          0 5px 10px rgba(0,0,0,0.2),
+          0 -5px 10px rgba(0,0,0,0.2);
+      }
+
+      .proj-media{
+        height: auto;
+        min-height: 0;
+        padding-bottom: var(--proj-pager-height);
+      }
+
+      .proj-media .swiper-container{
+        position: relative;
+        inset: auto;
+        width: 100%;
+        height: auto;
+      }
+
+      .proj-media .swiper-slide{
+        display: flex;
+        width: 100% !important;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .proj-media img{
+        display: block;
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+        object-fit: contain;
+      }
+
+      .proj-media::before,
+      .proj-media::after{
+        width: var(--proj-fade-width-mobile);
+      }
+
+      .proj-card.is-reversed .proj-body{
+        grid-template-columns: 1fr;
+      }
+
+      .proj-card.is-reversed .proj-media-wrap,
+      .proj-card.is-reversed .proj-text{
+        order: initial;
+      }
+
+      .proj-actions .btn-accent{
+        width: 100%;
+      }
     }
   </style>
 </head>
 
 <body class="projects-page is-collapsed" data-burger-bp="500">
-  <!-- HEADER (exact copy used across internal pages) -->
+  <!-- HEADER -->
   <header class="site-header" role="banner">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="FD2P — Home">
@@ -124,17 +523,306 @@ body.projects-page{
     </aside>
   </div>
 
-  <!-- HERO -->
-  <section class="page-hero">
-    <div class="container">
-      <img
-        src="assets/construction.jpg"
-        alt="Robot under construction">
-      <h1>This page is under construction</h1>
-    </div>
-  </section>
+  <!-- MAIN -->
+  <main class="page-offset">
 
-  <!-- FOOTER (exact copy used across internal pages) -->
+    <!-- INTRO -->
+    <section class="intro-block">
+      <div class="container intro-inner">
+        <p>
+          We design and develop working solutions for places where failure is expensive — offshore structures, subsea systems, lifting operations, façade maintenance equipment and industrial pipe-repair solutions.
+        </p>
+        <p>
+          We support the full path from first idea to installation: concept development, engineering calculations, operational and fabrication documentation, quotation support, production follow-up in Estonia and on-site supervision when required.
+        </p>
+        <p>
+          More information of what we do on our
+          <a href="services.html" class="inline-link">Services</a>
+          page.
+        </p>
+        <p>
+          We are based in Tallinn, Estonia, and work with clients across Norway, Sweden, Finland and Germany.
+        </p>
+        <p>
+          All design work follows DNV, NORSOK and Eurocode standards.
+        </p>
+      </div>
+    </section>
+
+    <div class="full-divider" aria-hidden="true"></div>
+
+    <!-- CARD 1 -->
+    <section class="proj-section" id="marine">
+      <div class="container">
+        <article class="proj-card">
+          <header class="proj-head">
+            <h2>Marine &amp; Subsea Engineering</h2>
+            <p>
+              We develop equipment for offshore cable-installation campaigns, perform marine and subsea design work to DNV and NORSOK standards, and prepare procedures for lifting and installation operations.
+            </p>
+          </header>
+
+          <div class="proj-body">
+            <!-- Left (60%) -->
+            <div class="proj-media-wrap">
+              <div class="proj-media">
+                <div class="swiper-container js-proj-swiper" data-swiper="marine">
+                  <div class="swiper-wrapper">
+<div class="swiper-slide">
+  <img
+    src="assets/marine1.avif"
+    data-desktop="assets/marine1.avif"
+    data-mobile="assets/marine1.avif"
+    alt=""
+    loading="lazy"
+  >
+</div>
+<div class="swiper-slide">
+  <img
+    src="assets/marine2.avif"
+    data-desktop="assets/marine2.avif"
+    data-mobile="assets/marine2.avif"
+    alt=""
+    loading="lazy"
+  >
+</div>
+<div class="swiper-slide">
+  <img
+    src="assets/marine3.avif"
+    data-desktop="assets/marine3.avif"
+    data-mobile="assets/marine3.avif"
+    alt=""
+    loading="lazy"
+  >
+</div>
+<div class="swiper-slide">
+  <img
+    src="assets/marine4.avif"
+    data-desktop="assets/marine4.avif"
+    data-mobile="assets/marine4.avif"
+    alt=""
+    loading="lazy"
+  >
+</div>
+<div class="swiper-slide">
+  <img
+    src="assets/marine5.avif"
+    data-desktop="assets/marine5.avif"
+    data-mobile="assets/marine5.avif"
+    alt=""
+    loading="lazy"
+  >
+</div>
+                  </div>
+                </div>
+                <div class="swiper-pagination"></div>
+              </div>
+            </div>
+
+            <!-- Right (40%) -->
+            <div class="proj-text">
+              <p><strong>Selected examples of work for our clients in this field:</strong></p>
+              <ul>
+                <li><strong>Nexans (Norway)</strong> — cable-laying systems such as chutes, quadrants, roller tracks, trolleys and tensioner frames; vessel deck modification, design reports, production drawings, fabrication and follow-up in Estonia.</li>
+                <li><strong>Fred. Olsen Windcarrier (Norway)</strong> — vessel modifications for wind-turbine installation, collision checks, lifting procedures, 3D visualisation and animation.</li>
+                <li><strong>NKT (Sweden)</strong> — cable-storage and handling systems including roller tracks, trolleys and tensioner frames; design documentation and fabrication supervision.</li>
+                <li><strong>Flocean (Norway)</strong> — subsea frames and mud mats, design reports, subsea operation documentation and installation procedures.</li>
+                <li><strong>Layback (Norway)</strong> — tensioner and cable-drum design, analysis, fabrication drawings and production follow-up.</li>
+              </ul>
+
+              <div class="proj-actions">
+                <a class="btn btn-accent" href="details.html">See project details</a>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <div class="full-divider" aria-hidden="true"></div>
+
+    <!-- CARD 2 -->
+    <section class="proj-section" id="civil">
+      <div class="container">
+<article class="proj-card is-reversed">
+          <header class="proj-head">
+            <h2>Civil Engineering</h2>
+            <p>
+In civil engineering projects, our expertise covers service platforms, façade access and maintenance systems. We also develop custom exhibition and stage-decoration structures. All designs are developed in accordance with Eurocode requirements.
+            </p>
+          </header>
+
+          <div class="proj-body">
+            <div class="proj-media-wrap">
+              <div class="proj-media">
+                <div class="swiper-container js-proj-swiper" data-swiper="civil">
+                  <div class="swiper-wrapper">
+<div class="swiper-slide">
+  <img
+    src="assets/civil1.avif"
+    data-desktop="assets/civil1.avif"
+    data-mobile="assets/civil1.avif"
+    alt=""
+    loading="lazy"
+  >
+</div>
+<div class="swiper-slide">
+  <img
+    src="assets/civil2.avif"
+    data-desktop="assets/civil2.avif"
+    data-mobile="assets/civil2.avif"
+    alt=""
+    loading="lazy"
+  >
+</div>
+<div class="swiper-slide">
+  <img
+    src="assets/civil3.avif"
+    data-desktop="assets/civil3.avif"
+    data-mobile="assets/civil3.avif"
+    alt=""
+    loading="lazy"
+  >
+</div>
+
+                  </div>
+                </div>
+                <div class="swiper-pagination"></div>
+              </div>
+            </div>
+
+            <div class="proj-text">
+              <p><strong>Selected examples of work for our clients in this field:</strong></p>
+              <ul>
+                <li><strong>Rostek (Finland)</strong> — façade access solutions design, lifting gantries, track lines, davit cranes, production drawings.</li>
+                <li><strong>Oslo Nationalmuseet (Norway)</strong> — exhibition equipment and decoration design, wooden and steel structures, analysis, production drawings.</li>
+                <li><strong>Oslo Nationalteatre (Norway)</strong> — stage equipment and decoration design, wooden and steel  structures, analysis, production drawings.</li>
+              </ul>
+
+              <div class="proj-actions">
+                <a class="btn btn-accent" href="details.html">See project detail</a>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <div class="full-divider" aria-hidden="true"></div>
+
+    <!-- CARD 3 -->
+    <section class="proj-section" id="industrial">
+      <div class="container">
+        <article class="proj-card">
+          <header class="proj-head">
+            <h2>Industrial Engineering</h2>
+            <p>
+We provide structural and mechanical engineering support for industrial sites during upgrades, repairs and new installations. We design steel platforms and stairways for production workshops, and GRP-profiles structures for facilities operating in harsh environments.
+            </p>
+          </header>
+
+          <div class="proj-body">
+            <div class="proj-media-wrap">
+              <div class="proj-media">
+                <div class="swiper-container js-proj-swiper" data-swiper="industrial">
+                  <div class="swiper-wrapper">
+<div class="swiper-slide">
+  <img
+    src="assets/industrial1.avif"
+    data-desktop="assets/industrial1.avif"
+    data-mobile="assets/industrial1.avif"
+    alt=""
+    loading="lazy"
+  >
+</div>
+<div class="swiper-slide">
+  <img
+    src="assets/industrial2.avif"
+    data-desktop="assets/industrial2.avif"
+    data-mobile="assets/industrial2.avif"
+    alt=""
+    loading="lazy"
+  >
+</div>
+<div class="swiper-slide">
+  <img
+    src="assets/industrial3.avif"
+    data-desktop="assets/industrial3.avif"
+    data-mobile="assets/industrial3.avif"
+    alt=""
+    loading="lazy"
+  >
+</div>
+<div class="swiper-slide">
+  <img
+    src="assets/industrial4.avif"
+    data-desktop="assets/industrial4.avif"
+    data-mobile="assets/industrial4.avif"
+    alt=""
+    loading="lazy"
+  >
+</div>
+                  </div>
+                </div>
+                <div class="swiper-pagination"></div>
+              </div>
+            </div>
+
+            <div class="proj-text">
+              <p><strong>Selected examples of work for our clients in this field:</strong></p>
+              <ul>
+                <li><strong>BKK Enotek (Norway)</strong> — Installation procedure, analyse and calculate the cable runs and design both permanent installation bends and temporary installation aids.</li>
+                <li><strong>Glassfiber Produkter (Norway)</strong> — GRP structures design, production drawings.</li>
+                <li><strong>Lango (Sweden)</strong> — electrical platforms for buss maintenance, retractable bridges, gangways, 
+staircases, analysis, design reports, production drawings.</li>
+                <li><strong>Fralex (Germany)</strong> — steam pipeline repair solutions, clamps design, design reports, 
+production drawings.</li>
+              </ul>
+
+              <div class="proj-actions">
+                <a class="btn btn-accent" href="details.html">See project detail</a>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <div class="full-divider" aria-hidden="true"></div>
+
+    <!-- OUR SERVICES -->
+    <section class="section section--no-border" id="what-we-do">
+      <div class="container">
+        <h2 class="section-title">OUR SERVICES</h2>
+
+        <div class="cards">
+          <a class="card" href="design.html">
+            <h3>Design Development</h3>
+            <p>Structural & mechanical design, FEA, animation & rendering.</p>
+          </a>
+          <a class="card" href="technical.html">
+            <h3>Technical Documentation</h3>
+            <p>Fabrication drawings, reports, procedures.</p>
+          </a>
+          <a class="card" href="manufacturing.html">
+            <h3>Manufacturing & Delivery</h3>
+            <p>Quotations, local fabrication (EE), on-site supervising.</p>
+          </a>
+        </div>
+
+    <!-- FINAL CONTACT -->
+    <section class="final-contact">
+      <div class="container">
+        <p>
+          If you need qualified support in design engineering,
+          <a href="contact.html" class="hero-link">contact us</a>
+          — we will be happy to discuss details with you.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-content">
@@ -144,29 +832,236 @@ body.projects-page{
         <div class="footer-contacts">
           <p>Email: <a href="mailto:info@fd2p.com">info@fd2p.com</a></p>
           <p>Phone: <a href="tel:+37256279949">+372 56 279 949</a></p>
-        <p>Address: <a href="https://www.google.com/maps?q=Kivimurru+34,+Tallinn,+Estonia"
-   target="_blank" rel="noopener noreferrer">
-  Kivimurru 34, Tallinn, Estonia
-</a></p>
+          <p>
+            Address:
+            <a href="https://www.google.com/maps?q=Kivimurru+34,+Tallinn,+Estonia"
+               target="_blank" rel="noopener noreferrer">
+              Kivimurru 34, Tallinn, Estonia
+            </a>
+          </p>
         </div>
       </div>
     </div>
   </footer>
 
-  <!-- Global scripts -->
   <script src="js/main.js"></script>
+  <script src="js/swiper.min.js"></script>
 
-  <!-- Burger breakpoint + page-ready flag -->
+  <!-- Menu breakpoint and page-ready state -->
   <script>
     (function(){
-      var bp = parseInt(document.body.getAttribute('data-burger-bp') || '500', 10);
-      function apply(){ document.body.classList.toggle('is-mobile-projects', window.innerWidth <= bp); }
-      function init(){ apply(); document.body.classList.add('js-ready-projects'); }
-      window.addEventListener('resize', apply, {passive:true});
-      window.addEventListener('orientationchange', apply, {passive:true});
-      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-      else init();
+      var breakpoint = parseInt(document.body.getAttribute("data-burger-bp") || "1024", 10);
+
+      function applyBreakpoint(){
+        var isMobile = window.innerWidth <= breakpoint;
+        document.body.classList.toggle("is-mobile-projects", isMobile);
+      }
+
+      function init(){
+        applyBreakpoint();
+        document.body.classList.add("js-ready-projects");
+      }
+
+      window.addEventListener("resize", applyBreakpoint, { passive: true });
+      window.addEventListener("orientationchange", applyBreakpoint, { passive: true });
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+      } else {
+        init();
+      }
     })();
   </script>
+
+  <!-- Swiper initialization and desktop drag cursor -->
+  <script>
+    (function(){
+      function createProjectSwiper(element){
+        var media = element.closest(".proj-media");
+        var pagination = media ? media.querySelector(".swiper-pagination") : null;
+
+        return new Swiper(element, {
+          loop: true,
+          speed: 450,
+          slidesPerView: 1,
+          spaceBetween: 0,
+          watchOverflow: true,
+          observer: true,
+          observeParents: true,
+          initialSlide: 0,
+          threshold: 8,
+          longSwipes: true,
+          longSwipesRatio: 0.18,
+          longSwipesMs: 180,
+          shortSwipes: true,
+          followFinger: true,
+          resistance: true,
+          resistanceRatio: 0.6,
+          pagination: {
+            el: pagination,
+            clickable: true
+          }
+        });
+      }
+
+      window.__projSwipers = window.__projSwipers || [];
+
+      document.querySelectorAll(".js-proj-swiper").forEach(function(element){
+        window.__projSwipers.push(createProjectSwiper(element));
+      });
+
+      (function(){
+        var canUseMouseUX = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+        if (!canUseMouseUX) return;
+
+        var root = document.documentElement;
+        var mediaScopes = document.querySelectorAll(".proj-media");
+
+        function wireDesktopDragState(scope){
+          var container = scope.querySelector(".swiper-container");
+          if (!container) return;
+
+          var activePointerId = null;
+
+          function release(){
+            if (activePointerId !== null) {
+              try {
+                container.releasePointerCapture(activePointerId);
+              } catch (error) {}
+              activePointerId = null;
+            }
+            root.classList.remove("is-holding");
+          }
+
+          scope.addEventListener("pointerdown", function(event){
+            if (event.button !== 0) return;
+            if (!event.target.closest(".swiper-container")) return;
+            if (event.target.closest(".swiper-pagination")) return;
+
+            root.classList.add("is-holding");
+
+            try {
+              container.setPointerCapture(event.pointerId);
+              activePointerId = event.pointerId;
+            } catch (error) {
+              activePointerId = null;
+            }
+          }, true);
+
+          window.addEventListener("pointerup", release, { passive: true });
+          window.addEventListener("pointercancel", release, { passive: true });
+          window.addEventListener("blur", release, { passive: true });
+          document.addEventListener("visibilitychange", function(){
+            if (document.visibilityState !== "visible") {
+              release();
+            }
+          });
+        }
+
+        mediaScopes.forEach(wireDesktopDragState);
+      })();
+    })();
+  </script>
+
+<script>
+(function(){
+  var mobileQuery = window.matchMedia("(max-width: 860px)");
+
+  function getPreferredSource(image, isMobile){
+    return isMobile ? image.getAttribute("data-mobile") : image.getAttribute("data-desktop");
+  }
+
+  function applyImageSources(isMobile){
+    var images = document.querySelectorAll(".js-proj-swiper .swiper-slide img");
+
+    images.forEach(function(image){
+      var nextSource = getPreferredSource(image, isMobile);
+      if (!nextSource) return;
+      if (image.getAttribute("src") !== nextSource) {
+        image.setAttribute("src", nextSource);
+      }
+    });
+  }
+
+  function preloadImage(url){
+    if (!url) return;
+    var image = new Image();
+    image.decoding = "async";
+    image.src = url;
+  }
+
+  function findImageByRealIndex(swiper, realIndex){
+    var selector = '.swiper-slide[data-swiper-slide-index="' + realIndex + '"] img';
+    return swiper.el.querySelector(selector) || null;
+  }
+
+  function warmAdjacentImages(swiper, isMobile){
+    var realIndex = typeof swiper.realIndex === "number" ? swiper.realIndex : 0;
+    var realCount = swiper.slides && swiper.params && swiper.params.loop
+      ? (swiper.slides.length - (swiper.loopedSlides * 2 || 0))
+      : (swiper.slides ? swiper.slides.length : 0);
+
+    var nextRealIndex = realCount > 0 ? (realIndex + 1) % realCount : realIndex;
+
+    var nextImage = findImageByRealIndex(swiper, nextRealIndex);
+    if (nextImage) {
+      preloadImage(getPreferredSource(nextImage, isMobile));
+    }
+
+    var currentImage = findImageByRealIndex(swiper, realIndex);
+    if (currentImage) {
+      preloadImage(getPreferredSource(currentImage, !isMobile));
+    }
+  }
+
+  function applyResponsiveSources(){
+    var isMobile = mobileQuery.matches;
+    var states = [];
+
+    if (window.__projSwipers && window.__projSwipers.length) {
+      window.__projSwipers.forEach(function(swiper){
+        if (!swiper) return;
+        states.push({
+          swiper: swiper,
+          realIndex: typeof swiper.realIndex === "number" ? swiper.realIndex : 0
+        });
+      });
+    }
+
+    applyImageSources(isMobile);
+
+    states.forEach(function(state){
+      var swiper = state.swiper;
+      if (!swiper) return;
+
+      if (typeof swiper.update === "function") {
+        swiper.update();
+      }
+
+      if (typeof swiper.slideToLoop === "function") {
+        swiper.slideToLoop(state.realIndex, 0, false);
+      }
+
+      warmAdjacentImages(swiper, isMobile);
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", applyResponsiveSources);
+  } else {
+    applyResponsiveSources();
+  }
+
+  if (typeof mobileQuery.addEventListener === "function") {
+    mobileQuery.addEventListener("change", applyResponsiveSources);
+  } else if (typeof mobileQuery.addListener === "function") {
+    mobileQuery.addListener(applyResponsiveSources);
+  }
+
+  window.addEventListener("orientationchange", applyResponsiveSources, { passive: true });
+})();
+</script>
+
+
 </body>
 </html>
