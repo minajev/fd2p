@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <title>FD2P — Projects</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="FD2P engineering projects — page under construction." />
+
+  <!-- Global site styles -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preload" as="image" href="assets/logo2.jpg" />
+
+  <!-- Page-local styles -->
+  <style>
+    /* Anti-flash: hide nav until JS applies the correct state */
+    .projects-page:not(.js-ready-projects) .site-header .main-nav{
+      position:absolute; right:0; top:0; height:var(--header-h);
+      opacity:0; visibility:hidden; pointer-events:none;
+    }
+    .projects-page:not(.js-ready-projects) .menu-toggle{
+      opacity:0; visibility:hidden; pointer-events:none;
+    }
+
+    /* Desktop defaults (switched by .is-mobile-projects) */
+    .projects-page .menu-toggle { display: none; }
+    .projects-page .main-nav { display: flex; }
+
+    /* Mobile state toggled by JS based on data-burger-bp */
+    .projects-page.is-mobile-projects .menu-toggle { display: block; }
+    .projects-page.is-mobile-projects .main-nav { display: none; }
+
+    /* Base page spacing (unused here but kept for consistency) */
+    .section{ padding:50px 0; }
+
+    /* --- Reliable layout: header | centered content | footer (mobile-safe) --- */
+    html, body{
+      min-height: 100vh;  /* fallback */
+      min-height: 100svh; /* stable on mobile */
+      min-height: 100dvh; /* dynamic on modern browsers */
+    }
+
+body.projects-page{
+  display: grid;
+  grid-template-rows: 1fr auto; /* header | content | footer */
+}
+
+.projects-page .site-footer{
+  margin-top: auto;
+}
+
+    /* Center the hero block exactly between header and footer with equal gaps */
+.page-hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0;
+  border-bottom: 0;
+}
+.page-hero .container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+    /* Image above the heading */
+    .page-hero img{
+      display: inline-block;
+      max-width: 1000px;
+      width: 100%;
+      height: auto;
+      margin: 0 0 40px 0; /* gap between image and text */
+    }
+
+    .page-hero h1{
+      margin: 0;
+      font-size: clamp(32px, 5vw, 48px);
+      text-transform: uppercase;
+    }
+
+    /* Footer always visible and safe on mobile */
+    .site-footer{
+      margin-top: 0; /* grid places it at the bottom already */
+      padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px));
+    }
+  </style>
+</head>
+
+<body class="projects-page is-collapsed" data-burger-bp="500">
+  <!-- HEADER (exact copy used across internal pages) -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="FD2P — Home">
+        <img src="assets/logo2.jpg" alt="FD2P small logo"
+             onerror="this.onerror=null;this.src='assets/logo1.jpg'"/>
+      </a>
+
+      <nav class="main-nav" aria-label="Primary" hidden>
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="projects.html" aria-current="page">Projects</a>
+        <a href="about.html">About</a>
+        <a class="btn btn-outline btn-outline-dark" href="contact.html">Contact</a>
+      </nav>
+
+      <button class="menu-toggle btn btn-outline-dark" type="button"
+              aria-label="Open menu" aria-expanded="false">☰ Menu</button>
+    </div>
+  </header>
+
+  <!-- OFFCANVAS -->
+  <div class="offcanvas" aria-hidden="true">
+    <div class="offcanvas-backdrop"></div>
+    <aside class="offcanvas-panel" role="dialog" aria-modal="true" aria-label="Site menu">
+      <div class="offcanvas-head">
+        <a class="offcanvas-brand" href="index.html" aria-label="FD2P — Home">
+          <img src="assets/logo2.jpg" alt="FD2P small logo" />
+        </a>
+        <button class="offcanvas-close" type="button" aria-label="Close menu">✕</button>
+      </div>
+      <nav class="offcanvas-nav" aria-label="Mobile"></nav>
+    </aside>
+  </div>
+
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <img
+        src="assets/construction.jpg"
+        alt="Robot under construction">
+      <h1>This page is under construction</h1>
+    </div>
+  </section>
+
+  <!-- FOOTER (exact copy used across internal pages) -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>FD<span style="color:#E30613;">2</span>P Technologies</h3>
+        </div>
+        <div class="footer-contacts">
+          <p>Email: <a href="mailto:info@fd2p.com">info@fd2p.com</a></p>
+          <p>Phone: <a href="tel:+37256279949">+372 56 279 949</a></p>
+        <p>Address: <a href="https://www.google.com/maps?q=Kivimurru+34,+Tallinn,+Estonia"
+   target="_blank" rel="noopener noreferrer">
+  Kivimurru 34, Tallinn, Estonia
+</a></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Global scripts -->
+  <script src="js/main.js"></script>
+
+  <!-- Burger breakpoint + page-ready flag -->
+  <script>
+    (function(){
+      var bp = parseInt(document.body.getAttribute('data-burger-bp') || '500', 10);
+      function apply(){ document.body.classList.toggle('is-mobile-projects', window.innerWidth <= bp); }
+      function init(){ apply(); document.body.classList.add('js-ready-projects'); }
+      window.addEventListener('resize', apply, {passive:true});
+      window.addEventListener('orientationchange', apply, {passive:true});
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+      else init();
+    })();
+  </script>
+</body>
+</html>
