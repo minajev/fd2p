@@ -103,6 +103,8 @@ const PRELOADER_MIN_MS = 1000; // minimum preloader display time
     });
   }
 
+window.navigateWithFade = navigateWithFade;
+
   // Intercept internal link clicks
   document.addEventListener('click', (e) => {
     const a = e.target.closest?.('a');
@@ -660,10 +662,18 @@ if (PARALLAX_DISABLED){
     }
     if (captionEl) captionEl.textContent = s.dataset.caption || '';
 
-    if (learnBtn) {
-      learnBtn.textContent = 'LEARN MORE';
-      learnBtn.onclick = () => { window.location.href = s.dataset.link || 'projects.html'; };
+if (learnBtn) {
+  learnBtn.textContent = 'LEARN MORE';
+  learnBtn.onclick = () => {
+    const url = s.dataset.link || 'projects.html';
+
+    if (typeof window.navigateWithFade === 'function') {
+      window.navigateWithFade(url);
+    } else {
+      window.location.href = url;
     }
+  };
+}
 
     // Reset parallax for the new and previous slides
     const bgPrev = slides[realIndex(idx)]?.querySelector('.bg');

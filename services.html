@@ -169,6 +169,17 @@
   }
 }
 
+/* --- Keep footer at bottom on Services page --- */
+body.services-page {
+  display: grid;
+  grid-template-rows: 1fr auto; /* content | footer */
+  min-height: 100vh;
+}
+
+.services-page .site-footer {
+  margin-top: auto;
+}
+
   </style>
 </head>
 
