@@ -60,14 +60,11 @@
 /* Hand on hover over the slider (slides + bullets) */
 #fabrication-drawings .swiper-container,
 #fabrication-drawings .swiper-wrapper,
-#fabrication-drawings .swiper-slide{
-  cursor: -webkit-grab;
-  cursor: grab;
-}
-
+#fabrication-drawings .swiper-slide,
 #fabrication-drawings .swiper-pagination,
 #fabrication-drawings .swiper-pagination *{
-  cursor: pointer;
+  cursor: -webkit-grab;
+  cursor: grab;
 }
 
 /* While holding: force fist across page content */
@@ -169,23 +166,6 @@ html.is-holding{
   object-fit: cover;
 }
 
-@media (max-width: 860px){
-
-  #fabrication-drawings .swiper-wrapper{
-    width: 100% !important;
-  }
-}
-
-#fabrication-drawings .swiper-pagination,
-#fabrication-drawings .swiper-pagination *,
-#fabrication-drawings .swiper-pagination-bullet{
-  -webkit-tap-highlight-color: transparent;
-  tap-highlight-color: transparent;
-  -webkit-user-select: none;
-  user-select: none;
-  outline: none;
-}
-
   </style>
 </head>
 
@@ -244,6 +224,7 @@ html.is-holding{
         <article class="card" id="fabrication-drawings">
           <h2>Fabrication Drawings</h2>
           <p>Good drawings are the backbone of a build. They translate 3D models into workshop reality with clear dimensions, tolerances, materials, welding, coatings and assembly references. Strong drawing practice removes ambiguity, prevents delays, and enables the supplier to quote and fabricate with confidence.</p>
+              <p><strong>To support production, we provide:</strong></p>
           <ul>
             <li>Workshop‑ready details: BOM, sections, weld symbols, preparation and fit‑up notes.</li>
             <li>Issued with revision control and manufacturing specifications for traceability.</li>
@@ -302,8 +283,8 @@ pagination: {
 
 // Match index UX: grab → grabbing on press, holds everywhere until release
 (function(){
-  var root = document.documentElement;
-  var scope = document.querySelector('#fabrication-drawings');
+  var root      = document.documentElement;                         // <html>
+  var scope     = document.querySelector('#fabrication-drawings');   // slides + bullets
   var container = scope && scope.querySelector('.swiper-container');
   if (!scope || !container) return;
 
@@ -311,37 +292,29 @@ pagination: {
 
   function release(){
     if (activeId !== null) {
-      try { container.releasePointerCapture(activeId); } catch (e) {}
+      try { container.releasePointerCapture(activeId); } catch(e){}
       activeId = null;
     }
     root.classList.remove('is-holding');
   }
 
+  // Start when pressing on slides OR on bullets (capture phase to be first)
   scope.addEventListener('pointerdown', function(e){
-    if (e.button !== 0) return;
-
-    /* bullets must stay pure clickable */
-    if (e.target.closest('.swiper-pagination, .swiper-pagination-bullet')) {
-      return;
-    }
-
-    /* start hold/grab only from the real slide area */
-    if (!e.target.closest('.swiper-container')) return;
+    if (e.button !== 0) return; // left button only
+    if (!e.target.closest('.swiper-container, .swiper-pagination')) return;
 
     root.classList.add('is-holding');
 
+    // Pointer capture keeps the "grabbing" state consistent while moving off the slider
     try {
       container.setPointerCapture(e.pointerId);
       activeId = e.pointerId;
-    } catch (e) {
+    } catch(e) {
       activeId = null;
     }
   }, true);
 
   window.addEventListener('pointerup', release, { passive:true });
-  window.addEventListener('pointercancel', release, { passive:true });
-  window.addEventListener('blur', release, { passive:true });
-
   document.addEventListener('visibilitychange', function(){
     if (document.visibilityState !== 'visible') release();
   });
@@ -357,6 +330,7 @@ pagination: {
         <article class="card" id="reports-procedures">
           <h2>Reports &amp; Procedures</h2>
           <p>Calculation reports and operating procedures document that a solution works as intended before you build or operate it. They provide the evidence for strength, stability and safety, and they describe <em>how</em> to execute a task on site—clearly and safely.</p>
+              <p><strong>Our reports and procedures typically include:</strong></p>
           <ul>
             <li>Structural and lifting calculations with acceptance criteria and results summary.</li>
             <li>Lashing, seafastening and documentation for packing and transit.</li>
@@ -365,7 +339,7 @@ pagination: {
           </ul>
           <p>Our reports are based on validated inputs (sketches, drawings, models) and demonstrate that equipment does not break, collapse or degrade prematurely under expected loads, while procedures ensure repeatable, safe operations.</p>
 
-<img src="img/Chute report.png" alt="Reports and Procedures illustration" class="card-image" loading="lazy">
+<img src="assets/mosaic-04.jpg" alt="Reports and Procedures illustration" class="card-image" loading="lazy">
 
           </article>
 
