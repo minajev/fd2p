@@ -287,7 +287,13 @@ body.is-nav-hidden .site-header .brand{ opacity:1; visibility:visible }
 /* =========================
    Hero slider
    ========================= */
-.hero{ position:relative; height:78vh; min-height:520px; overflow:hidden }
+.hero{
+  position: relative;
+  height: 78vh;
+  height: 78svh;
+  min-height: 520px;
+  overflow: hidden;
+}
 .slider{ position:relative; height:100% }
 .slides{ position:relative; height:100%; display:flex; transition:transform .6s ease-in-out; will-change:transform }
 .slide{ position:relative; flex:0 0 100%; height:100%; overflow:hidden }
@@ -353,36 +359,52 @@ body.is-nav-hidden .site-header .brand{ opacity:1; visibility:visible }
   cursor: grabbing;
 }
 
-/* Pre-collapsed look on small screens BEFORE JS runs (prevents flash on reload) */
-@media (max-width: 1024px){
-  body:not(.js-ready) .brand-dock{        /* big logo on the panel */
-    opacity: 0; pointer-events: none;
-  }
-  body:not(.js-ready) .logo-panel{        /* lift panel by 1px to reveal header line */
-    height: calc(var(--header-h) - 1px);
-  }
-  body:not(.js-ready) .header-geo{        /* hide red line layer until JS positions it */
-    display: none;
-  }
-  body:not(.js-ready) .slider .arrow{     /* hide arrows like in collapsed state */
-    opacity: 0; display: none !important; pointer-events: none;
-  }
-  body:not(.js-ready) .site-header{       /* show the 1px bottom line */
-    border-bottom: 1px solid var(--line);
-  }
-  /* HIDE the full nav before JS runs (no flash of links/buttons) */
-  body:not(.js-ready) .main-nav{
-    position: absolute;
-    right: 0; top: 0; height: var(--header-h);
-    opacity: 0; visibility: hidden;
+/* Pre-collapsed look only for real phones BEFORE JS runs */
+@media (max-width: 860px){
+  body:not(.js-ready) .brand-dock{
+    opacity: 0;
+    visibility: hidden;
     pointer-events: none;
   }
-  /* SHOW the burger button before JS sets is-nav-hidden */
-body:not(.js-ready) .menu-toggle{ visibility: visible; opacity:1; }
-  /* Make the small brand visible in pre-collapsed look */
-  body:not(.js-ready) .site-header .brand{ opacity: 1; visibility: visible; pointer-events: auto; }
-  /* Fully hide the big docked logo (not only opacity) */
-  body:not(.js-ready) .brand-dock{ visibility: hidden; }
+
+  body:not(.js-ready) .logo-panel{
+    height: calc(var(--header-h) - 1px);
+  }
+
+  body:not(.js-ready) .header-geo{
+    display: none;
+  }
+
+  body:not(.js-ready) .slider .arrow{
+    opacity: 0;
+    display: none !important;
+    pointer-events: none;
+  }
+
+  body:not(.js-ready) .site-header{
+    border-bottom: 1px solid var(--line);
+  }
+
+  body:not(.js-ready) .main-nav{
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: var(--header-h);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  body:not(.js-ready) .menu-toggle{
+    visibility: visible;
+    opacity: 1;
+  }
+
+  body:not(.js-ready) .site-header .brand{
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
 }
 
 /* Tags and caption scale too */
@@ -712,44 +734,57 @@ html, body{ overflow-x: clip; }
 }
 /* Touch devices only: make slider 2× shorter → more left/right visible */
 @media (pointer: coarse), (hover: none){
-  .slider{
-    /* half of viewport height; provide a basic vh fallback, then stable svh */
-    height: 50vh;
-    height: 50svh;          /* iOS/Android: stable vs. URL bar show/hide */
-    aspect-ratio: auto;     /* disable legacy aspect lock on mobile */
-    max-height: 50svh;      /* safety: don't exceed screen */
+  .hero{
+    height: 78svh;
+    min-height: 520px;
+    overflow: hidden;
   }
-  /* make internals fill the box height */
+
+  .slider{
+    height: 100%;
+    max-height: none;
+    aspect-ratio: auto;
+  }
+
   .slider .slides,
   .slider .slide,
-  .slider .bg{ height: 100%; }
-  /* maximize visible width — remove overscan if it was set */
-  :root{ --overscan: 0%; }
+  .slider .bg{
+    height: 100%;
+  }
+
+  :root{
+    --overscan: 0%;
+  }
 }
 /* Fix big gap under the slider on touch devices */
 @media (pointer: coarse), (hover: none){
-  /* 1) Kill the legacy aspect-ratio spacer that adds extra height */
-  .slider::before{ content: none !important; display: none !important; }
-  /* 2) Don't reserve the header's dock tail on mobile */
-  :root{ --dock-h: 0px; }
-  /* 3) Ensure the hero doesn't enforce extra height/spacing */
-  .hero{ height: auto !important; min-height: 0 !important; padding-bottom: 0 !important; margin-bottom: 0 !important; overflow: visible !important; }
-  /* (optional safety) If any top margin on the first section after hero — remove it */
-  .hero + section{ margin-top: 0 !important; }
+  .slider::before{
+    content: none !important;
+    display: none !important;
+  }
+
+  .hero + section{
+    margin-top: 0 !important;
+  }
 }
 /* Touch landscape: force full‑height slider (override the 50svh rule) */
 @media (pointer: coarse) and (orientation: landscape){
-  .slider{
-    /* fallbacks: old → stable → dynamic; last wins if supported */
-    height: 110vh !important;
-    height: 110svh !important;
-    height: 110dvh !important;
-    max-height: none !important;
-    aspect-ratio: auto !important; /* ignore earlier aspect locks */
+  .hero{
+    height: 78svh;
+    min-height: 520px;
   }
+
+  .slider{
+    height: 100% !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+  }
+
   .slider .slides,
   .slider .slide,
-  .slider .bg{ height: 100%; }
+  .slider .bg{
+    height: 100%;
+  }
 }
 
 /* =========================
@@ -1028,6 +1063,21 @@ body.is-fade-leave        .page-fade{ opacity: 1; pointer-events: auto; }
   color: #E30613;
   border-bottom-color: #E30613;
   outline: none;
+}
+
+.index-page main {
+  flex: 1 0 auto;
+}
+
+.index-page .site-footer{
+  margin-top: 0;
+}
+
+.hero{
+  position: relative;
+  height: 78vh;
+  min-height: 520px;
+  overflow: hidden;
 }
 
 /* Footer mobile layout */

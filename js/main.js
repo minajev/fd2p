@@ -29,6 +29,8 @@ document.documentElement.classList.remove('no-js');
   const ocNav     = document.querySelector('.offcanvas-nav');
 
   const IS_MOBILE = window.matchMedia('(pointer: coarse), (hover: none)').matches;
+const IS_TABLET_WIDTH = window.matchMedia('(min-width: 861px) and (max-width: 1200px)').matches;
+const IS_TABLET_TOUCH = IS_MOBILE && IS_TABLET_WIDTH;
   let LOCKED_BG_SIZE = null;   // while not null — use a fixed background size
   let FIRST_STEP_DONE = false; // lift the size lock after the first completed transition
 const PRELOADER_MIN_MS = 1000; // minimum preloader display time
@@ -905,25 +907,42 @@ timer = setInterval(() => {
     menuBtn?.setAttribute('aria-expanded', menuOpen ? 'true' : 'false');
   }
 
-  function proximityCollapseByDock(){
-    if (!atTop()) return;
-    const headerRow = document.querySelector('.header-inner');
-    const nav       = document.querySelector('.main-nav');
-    if (!headerRow || !nav || !dockPanel) return;
+function proximityCollapseByDock(){
+  if (!atTop()) return;
 
-    const dockRight = dockPanel.getBoundingClientRect().right;
-    const rHeader   = headerRow.getBoundingClientRect();
-    const navWidth  = Math.ceil(nav.scrollWidth);
-    const linkLeft  = rHeader.right - navWidth;
-    const gap       = linkLeft - dockRight;
+  const headerRow = document.querySelector('.header-inner');
+  const nav       = document.querySelector('.main-nav');
+  if (!headerRow || !nav || !dockPanel) return;
 
-    const COLLAPSE_GAP = 50;
-    const EXPAND_GAP   = 50;
+  const dockRight = dockPanel.getBoundingClientRect().right;
+  const rHeader   = headerRow.getBoundingClientRect();
+  const navWidth  = Math.ceil(nav.scrollWidth);
+  const linkLeft  = rHeader.right - navWidth;
+  const gap       = linkLeft - dockRight;
 
-    const collapsed = isCollapsed();
-    if (!collapsed && gap <= COLLAPSE_GAP)      applyCollapsedState(true);
-    else if (collapsed && gap > EXPAND_GAP)     applyCollapsedState(false);
+  const collapsed = isCollapsed();
+
+  if (IS_TABLET_TOUCH){
+    const COLLAPSE_GAP = -40;
+    const EXPAND_GAP   = 20;
+
+    if (!collapsed && gap <= COLLAPSE_GAP) {
+      applyCollapsedState(true);
+    } else if (collapsed && gap > EXPAND_GAP) {
+      applyCollapsedState(false);
+    }
+    return;
   }
+
+  const COLLAPSE_GAP = 50;
+  const EXPAND_GAP   = 50;
+
+  if (!collapsed && gap <= COLLAPSE_GAP) {
+    applyCollapsedState(true);
+  } else if (collapsed && gap > EXPAND_GAP) {
+    applyCollapsedState(false);
+  }
+}
 
   function proximityHideNavOnSmall(){
     const collapsed = isCollapsed();
@@ -976,19 +995,29 @@ timer = setInterval(() => {
     else { stop(); stopProgress(); }
   }
 
-  function onScroll(){
-    if (!atTop()){
+function onScroll(){
+  const y = window.scrollY || window.pageYOffset || 0;
+
+  if (!atTop()){
+    if (IS_TABLET_TOUCH && y < 80){
+      applyCollapsedState(false);
+      proximityHideNavOnSmall();
+      rebuildHeaderGeometry();
+      stop();
+    } else {
       applyCollapsedState(true);
       proximityHideNavOnSmall();
       stop();
-    } else {
-      proximityCollapseByDock();
-      proximityHideNavOnSmall();
-      rebuildHeaderGeometry();
-      play();
     }
-    scheduleUpdateArrows();
+  } else {
+    proximityCollapseByDock();
+    proximityHideNavOnSmall();
+    rebuildHeaderGeometry();
+    play();
   }
+
+  scheduleUpdateArrows();
+}
 
   /* ----------------------------------- Boot -------------------------------- */
 
@@ -1118,32 +1147,60 @@ timer = setInterval(() => {
   // Listeners
   window.addEventListener('scroll', onScroll, { passive:true });
 
-  let resizeRaf = null;
-  let resizeTimer = 0;
-  window.addEventListener('resize', () => {
-    stop();
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-      if (!isHovering) play(); // resume only if cursor is not over the slider
-    }, 300);
-    if (resizeRaf) return;
-    resizeRaf = requestAnimationFrame(() => {
-      rebuildHeaderGeometry();
-      if (atTop()){
-        proximityCollapseByDock();
-        proximityHideNavOnSmall();
+let resizeRaf = null;
+let resizeTimer = 0;
+let lastResizeW = window.innerWidth;
+let lastResizeH = window.innerHeight;
+
+window.addEventListener('resize', () => {
+  const newW = window.innerWidth;
+  const newH = window.innerHeight;
+
+  const widthChanged  = Math.abs(newW - lastResizeW) > 2;
+  const heightChanged = Math.abs(newH - lastResizeH) > 2;
+
+  lastResizeW = newW;
+  lastResizeH = newH;
+
+  stop();
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    if (!isHovering) play();
+  }, 300);
+
+  if (resizeRaf) return;
+  resizeRaf = requestAnimationFrame(() => {
+    const browserChromeResizeOnly = IS_TABLET_TOUCH && !widthChanged && heightChanged;
+
+    if (browserChromeResizeOnly){
+      scheduleUpdateArrows();
+      resizeRaf = null;
+      return;
+    }
+
+    rebuildHeaderGeometry();
+
+    if (atTop()){
+      proximityCollapseByDock();
+      proximityHideNavOnSmall();
+    } else {
+      if (IS_TABLET_TOUCH && (window.scrollY || window.pageYOffset || 0) < 80){
+        applyCollapsedState(false);
       } else {
         applyCollapsedState(true);
-        proximityHideNavOnSmall();
       }
-      initParallaxBase();
-      applyParallax();
-      FrameSizer.resize();
-      scheduleUpdateArrows();
-      setResponsiveBackgrounds(); // will account for LOCKED_BG_SIZE internally
-      resizeRaf = null;
-    });
-  }, { passive:true });
+      proximityHideNavOnSmall();
+    }
+
+    initParallaxBase();
+    applyParallax();
+    FrameSizer.resize();
+    scheduleUpdateArrows();
+    setResponsiveBackgrounds();
+
+    resizeRaf = null;
+  });
+}, { passive:true });
 
   // Pause autoplay & red line on device rotation (mobile/tablet)
   let orientTimer = 0;
