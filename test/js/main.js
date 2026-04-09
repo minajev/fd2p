@@ -604,7 +604,7 @@ buildDots();
 
 
 // Lock initial background size so preload and actual backgrounds match
-LOCKED_BG_SIZE = IS_MOBILE ? 478 : pickSize();
+LOCKED_BG_SIZE = pickSize();
 
 runPreloader().then(() => {
   if (!isHovering) play();
