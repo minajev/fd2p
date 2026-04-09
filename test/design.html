@@ -322,6 +322,162 @@
   display: none;
   -webkit-appearance: none;
 }
+
+.design-media{
+  position: relative;
+}
+
+.media-expand-btn{
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(17, 24, 39, 0.18);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.92);
+  color: #111827;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition:
+    opacity .18s ease,
+    background-color .18s ease,
+    border-color .18s ease,
+    transform .12s ease,
+    box-shadow .18s ease;
+}
+
+.media-expand-btn:hover,
+.media-expand-btn:focus-visible{
+  transform: translateY(-1px);
+  background: #f9fafb;
+  border-color: #e5e7eb;
+  box-shadow: 0 8px 18px rgba(0,0,0,.10);
+  outline: none;
+}
+
+.media-expand-btn:active{
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(0,0,0,.08) inset;
+}
+
+.media-expand-btn svg{
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.media-lightbox{
+  position: fixed;
+  inset: 0;
+  z-index: 4000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background: rgba(17, 24, 39, 0.92);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .22s ease, visibility .22s ease;
+}
+
+.media-lightbox.is-open{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.media-lightbox-backdrop{
+  position: absolute;
+  inset: 0;
+}
+
+.media-lightbox-content{
+  position: relative;
+  z-index: 1;
+  width: min(96vw, 1800px);
+  height: min(92vh, 1200px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.media-lightbox-image{
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  box-shadow: 0 18px 50px rgba(0,0,0,.28);
+}
+
+.media-lightbox-close{
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 2;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color .18s ease,
+    border-color .18s ease,
+    transform .12s ease,
+    box-shadow .18s ease;
+}
+
+.media-lightbox-close:hover,
+.media-lightbox-close:focus-visible{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.34);
+  box-shadow: 0 8px 18px rgba(0,0,0,.18);
+  outline: none;
+}
+
+.media-lightbox-close:active{
+  transform: translateY(0);
+}
+
+body.is-lightbox-open{
+  overflow: hidden;
+}
+
+@media (max-width: 860px){
+  .media-lightbox{
+    padding: 18px;
+  }
+
+  .media-expand-btn{
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .media-lightbox-close{
+    top: 10px;
+    right: 10px;
+    width: 42px;
+    height: 42px;
+  }
+}
+
   </style>
 </head>
 
@@ -392,9 +548,24 @@
               <li>Tools we use: <strong>SolidWorks</strong> and <strong>AutoCAD</strong>.</li>
             </ul>
           </div>
-          <aside class="design-media" aria-label="Structural and mechanical design example image">
-            <img src="assets/design1.avif" alt="Structural and mechanical design project example" loading="lazy" />
-          </aside>
+<aside class="design-media" aria-label="Structural and mechanical design example image">
+  <button
+    class="media-expand-btn"
+    type="button"
+    aria-label="Open structural and mechanical design image in full screen"
+    data-full-image="assets/design1.avif"
+    data-full-alt="Structural and mechanical design project example"
+  >
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 3 21 3 21 9"></polyline>
+      <polyline points="9 21 3 21 3 15"></polyline>
+      <line x1="21" y1="3" x2="14" y2="10"></line>
+      <line x1="3" y1="21" x2="10" y2="14"></line>
+    </svg>
+  </button>
+
+  <img src="assets/design1.avif" alt="Structural and mechanical design project example" loading="lazy" />
+</aside>
           <div class="design-actions">
             <a class="btn btn-accent" href="projects.html#structural-design">View projects design</a>
           </div>
@@ -413,9 +584,24 @@
               <li>Tools we use: <strong>SolidWorks</strong>, <strong>STAAD.Pro</strong>, <strong>ColBeam</strong>, <strong>Mathcad</strong>.</li>
             </ul>
           </div>
-          <aside class="design-media" aria-label="FEM and BEAM analysis example image">
-            <img src="assets/design2.avif" alt="FEM and BEAM analysis project example" loading="lazy" />
-          </aside>
+<aside class="design-media" aria-label="FEM and BEAM analysis example image">
+  <button
+    class="media-expand-btn"
+    type="button"
+    aria-label="Open FEM and BEAM analysis image in full screen"
+    data-full-image="assets/design2.avif"
+    data-full-alt="FEM and BEAM analysis project example"
+  >
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 3 21 3 21 9"></polyline>
+      <polyline points="9 21 3 21 3 15"></polyline>
+      <line x1="21" y1="3" x2="14" y2="10"></line>
+      <line x1="3" y1="21" x2="10" y2="14"></line>
+    </svg>
+  </button>
+
+  <img src="assets/design2.avif" alt="FEM and BEAM analysis project example" loading="lazy" />
+</aside>
           <div class="design-actions">
             <a class="btn btn-accent" href="projects.html#analysis-examples">See analysis example</a>
           </div>
@@ -510,6 +696,18 @@
     </div>
   </footer>
 
+<div class="media-lightbox" id="media-lightbox" aria-hidden="true">
+  <div class="media-lightbox-backdrop"></div>
+
+  <button class="media-lightbox-close" type="button" aria-label="Close full screen image">
+    ✕
+  </button>
+
+  <div class="media-lightbox-content">
+    <img class="media-lightbox-image" src="" alt="" />
+  </div>
+</div>
+
   <script src="js/main.js"></script>
 
   <script>
@@ -570,6 +768,65 @@
     if (video.readyState >= 3) {
       hideLoader();
     }
+  })();
+</script>
+
+<script>
+  (function(){
+    var lightbox = document.getElementById('media-lightbox');
+    if (!lightbox) return;
+
+    var lightboxImage = lightbox.querySelector('.media-lightbox-image');
+    var closeBtn = lightbox.querySelector('.media-lightbox-close');
+    var backdrop = lightbox.querySelector('.media-lightbox-backdrop');
+    var openButtons = document.querySelectorAll('.media-expand-btn');
+
+    function openLightbox(src, alt){
+      if (!src || !lightboxImage) return;
+
+      lightboxImage.src = src;
+      lightboxImage.alt = alt || '';
+      lightbox.classList.add('is-open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('is-lightbox-open');
+      closeBtn && closeBtn.focus({ preventScroll: true });
+    }
+
+    function closeLightbox(){
+      lightbox.classList.remove('is-open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('is-lightbox-open');
+
+      setTimeout(function(){
+        if (!lightbox.classList.contains('is-open') && lightboxImage){
+          lightboxImage.src = '';
+          lightboxImage.alt = '';
+        }
+      }, 220);
+    }
+
+    openButtons.forEach(function(button){
+      button.addEventListener('click', function(){
+        openLightbox(
+          button.getAttribute('data-full-image'),
+          button.getAttribute('data-full-alt')
+        );
+      });
+    });
+
+    if (closeBtn){
+      closeBtn.addEventListener('click', closeLightbox);
+    }
+
+    if (backdrop){
+      backdrop.addEventListener('click', closeLightbox);
+    }
+
+    document.addEventListener('keydown', function(event){
+      if (event.key === 'Escape' && lightbox.classList.contains('is-open')){
+        closeLightbox();
+      }
+    });
   })();
 </script>
 </body>
