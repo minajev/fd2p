@@ -375,7 +375,7 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: rgba(17, 24, 39, 0.20);
+  background: rgba(17, 24, 39, 0.40);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -834,7 +834,6 @@ background: transparent;
     }
   })();
 </script>
-
 <script>
   (function(){
     var lightbox = document.getElementById('media-lightbox');
@@ -844,11 +843,40 @@ background: transparent;
     var closeBtn = lightbox.querySelector('.media-lightbox-close');
     var backdrop = lightbox.querySelector('.media-lightbox-backdrop');
     var openButtons = document.querySelectorAll('.media-expand-btn');
+
     var savedScrollX = 0;
     var savedScrollY = 0;
 
-    function restoreScrollPosition(){
+    function restoreScroll(){
       window.scrollTo(savedScrollX, savedScrollY);
+    }
+
+    function preventScroll(event){
+      if (!lightbox.classList.contains('is-open')) return;
+      event.preventDefault();
+      restoreScroll();
+    }
+
+    function preventScrollKeys(event){
+      if (!lightbox.classList.contains('is-open')) return;
+
+      var keys = [
+        'ArrowUp',
+        'ArrowDown',
+        'ArrowLeft',
+        'ArrowRight',
+        'PageUp',
+        'PageDown',
+        'Home',
+        'End',
+        ' ',
+        'Spacebar'
+      ];
+
+      if (keys.indexOf(event.key) !== -1) {
+        event.preventDefault();
+        restoreScroll();
+      }
     }
 
     function openLightbox(src, alt){
@@ -863,15 +891,8 @@ background: transparent;
       lightbox.setAttribute('aria-hidden', 'false');
       document.body.classList.add('is-lightbox-open');
 
-      /* На некоторых браузерах страница прыгает вверх в момент открытия overlay.
-         Возвращаем scroll сразу и ещё раз на следующем кадре. */
-      restoreScrollPosition();
-      requestAnimationFrame(restoreScrollPosition);
-      setTimeout(restoreScrollPosition, 0);
-
-      if (document.activeElement && typeof document.activeElement.blur === 'function') {
-        document.activeElement.blur();
-      }
+      restoreScroll();
+      requestAnimationFrame(restoreScroll);
     }
 
     function closeLightbox(){
@@ -879,7 +900,7 @@ background: transparent;
       lightbox.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('is-lightbox-open');
 
-      restoreScrollPosition();
+      restoreScroll();
 
       setTimeout(function(){
         if (!lightbox.classList.contains('is-open') && lightboxImage){
@@ -907,14 +928,28 @@ background: transparent;
     }
 
     if (backdrop){
-      backdrop.addEventListener('click', closeLightbox);
+      backdrop.addEventListener('click', function(event){
+        event.preventDefault();
+        closeLightbox();
+      });
     }
 
     document.addEventListener('keydown', function(event){
       if (event.key === 'Escape' && lightbox.classList.contains('is-open')){
         closeLightbox();
+        return;
       }
-    });
+
+      preventScrollKeys(event);
+    }, { passive: false });
+
+    window.addEventListener('wheel', preventScroll, { passive: false });
+    window.addEventListener('touchmove', preventScroll, { passive: false });
+    window.addEventListener('scroll', function(){
+      if (lightbox.classList.contains('is-open')) {
+        restoreScroll();
+      }
+    }, { passive: false });
   })();
 </script>
 </body>
