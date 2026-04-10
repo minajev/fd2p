@@ -1,25 +1,21 @@
-<!doctype html>
-<html lang="en" class="no-js">
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>FD2P — Projects</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="FD2P project areas: marine & subsea, civil / architectural, industrial & process.">
-
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/swiper.min.css" />
-
-  <link rel="preload" as="image" href="assets/logo2.jpg" />
-  <link rel="preload" as="image" href="assets/marine1.jpg" />
-  <link rel="preload" as="image" href="assets/civil1.jpg" />
-  <link rel="preload" as="image" href="assets/industrial1.jpg" />
-
-<link rel="preload" as="image" href="assets/marine1-860.jpg" media="(max-width: 860px)" fetchpriority="high">
-<link rel="preload" as="image" href="assets/civil1-860.jpg" media="(max-width: 860px)" fetchpriority="high">
-<link rel="preload" as="image" href="assets/industrial1-860.jpg" media="(max-width: 860px)" fetchpriority="high">
-
-
-  <style>
+<meta charset="utf-8"/>
+<title>FD2P — Projects</title>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="FD2P project areas: marine &amp; subsea, civil / architectural, industrial &amp; process." name="description"/>
+<link href="css/style.css" rel="stylesheet"/>
+<link href="css/swiper.min.css" rel="stylesheet"/>
+<link as="image" href="assets/logo2.jpg" rel="preload"/>
+<link as="image" href="assets/marine1.jpg" rel="preload"/>
+<link as="image" href="assets/civil1.jpg" rel="preload"/>
+<link as="image" href="assets/industrial1.jpg" rel="preload"/>
+<link as="image" fetchpriority="high" href="assets/marine1-860.jpg" media="(max-width: 860px)" rel="preload"/>
+<link as="image" fetchpriority="high" href="assets/civil1-860.jpg" media="(max-width: 860px)" rel="preload"/>
+<link as="image" fetchpriority="high" href="assets/industrial1-860.jpg" media="(max-width: 860px)" rel="preload"/>
+<style>
     :root{
       --line: #e5e7eb;
       --ink: #111827;
@@ -499,371 +495,565 @@
         width: 100%;
       }
     }
-  </style>
+  
+
+    /* Projects image expand */
+    .projects-page .proj-media .swiper-slide{
+      position: relative;
+      overflow: hidden;
+    }
+
+    .projects-page .media-expand-btn{
+      position: absolute;
+      top: 12px;
+      right: 62px;
+      z-index: 8;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: rgba(17, 24, 39, 0.78);
+      cursor: pointer;
+      box-shadow: none;
+      transition: color .18s ease, opacity .18s ease, transform .12s ease;
+    }
+
+    .projects-page .media-expand-btn:hover,
+    .projects-page .media-expand-btn:focus-visible{
+      color: rgba(17, 24, 39, 1);
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .projects-page .media-expand-btn:active{
+      transform: translateY(0);
+    }
+
+    .projects-page .media-expand-btn svg{
+      width: 22px;
+      height: 22px;
+      display: block;
+    }
+
+    body.is-lightbox-open{
+      overflow: hidden;
+    }
+
+    .projects-page .media-lightbox{
+      position: fixed;
+      inset: 0;
+      z-index: 4000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(17, 24, 39, 0.40);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity .22s ease, visibility .22s ease;
+    }
+
+    .projects-page .media-lightbox.is-open{
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .projects-page .media-lightbox-backdrop{
+      position: absolute;
+      inset: 0;
+    }
+
+    .projects-page .media-lightbox-content{
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .projects-page .media-lightbox-figure{
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: calc(100vw - 50px);
+      max-height: calc(100vh - 50px);
+      background: transparent;
+    }
+
+    .projects-page .media-lightbox-image-wrap{
+      position: relative;
+      display: inline-block;
+      line-height: 0;
+      background: transparent;
+      cursor: grab;
+    }
+
+    .projects-page .media-lightbox-image{
+      display: block;
+      max-width: calc(100vw - 50px);
+      max-height: calc(100vh - 50px);
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      box-shadow: none;
+      background: transparent;
+      border: 0;
+      transform-origin: center center;
+      will-change: transform;
+    }
+
+    .projects-page .media-lightbox-close{
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 3;
+      width: 54px;
+      height: 54px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: rgba(227, 6, 19, 0.98);
+      color: #fff;
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 24px rgba(0,0,0,.20);
+      transition: background-color .18s ease, transform .12s ease, box-shadow .18s ease;
+    }
+
+    .projects-page .media-lightbox-close:hover,
+    .projects-page .media-lightbox-close:focus-visible{
+      background: rgba(227, 6, 19, 1);
+      transform: translateY(-1px);
+      box-shadow: 0 12px 26px rgba(0,0,0,.24);
+      outline: none;
+    }
+
+    .projects-page .media-lightbox-close:active{
+      transform: translateY(0);
+    }
+
+    @media (max-width: 860px){
+      .projects-page .media-lightbox{
+        padding: 0px;
+      }
+
+      .projects-page .media-lightbox-content{
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .projects-page .media-lightbox-figure{
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        transform-origin: center center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: auto;
+        height: auto;
+        max-width: none;
+        max-height: none;
+        overflow: visible;
+        background: transparent;
+      }
+
+      .projects-page .media-lightbox-image-wrap{
+        position: relative;
+        display: inline-block;
+        line-height: 0;
+        background: transparent;
+        transform: rotate(90deg);
+        transform-origin: center center;
+        cursor: grab;
+      }
+
+      .projects-page .media-lightbox-image{
+        display: block;
+        width: auto;
+        height: auto;
+        max-width: calc(100vh - 50px);
+        max-height: calc(100vw - 50px);
+        object-fit: contain;
+        transform: none;
+        box-shadow: none;
+        background: transparent;
+        border: 0;
+        transform-origin: center center;
+        will-change: transform;
+      }
+
+      .projects-page .media-lightbox-close{
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 52px;
+        height: 52px;
+        font-size: 28px;
+        transform: rotate(-90deg);
+        transform-origin: center center;
+      }
+
+      .projects-page .media-lightbox-close:hover,
+      .projects-page .media-lightbox-close:focus-visible{
+        transform: rotate(-90deg) translateY(-1px);
+      }
+
+      .projects-page .media-lightbox-close:active{
+        transform: rotate(-90deg) translateY(0);
+      }
+    }
+</style>
 </head>
-
 <body class="projects-page is-collapsed" data-burger-bp="500">
-  <!-- HEADER -->
-  <header class="site-header" role="banner">
-    <div class="container header-inner">
-      <a class="brand" href="index.html" aria-label="FD2P — Home">
-        <img src="assets/logo2.jpg" alt="FD2P small logo"
-             onerror="this.onerror=null;this.src='assets/logo1.jpg'"/>
-      </a>
-
-      <nav class="main-nav" aria-label="Primary" hidden>
-        <a href="index.html">Home</a>
-        <a href="services.html">Services</a>
-        <a href="projects.html" aria-current="page">Projects</a>
-        <a href="about.html">About</a>
-        <a class="btn btn-outline btn-outline-dark" href="contact.html">Contact</a>
-      </nav>
-
-      <button class="menu-toggle btn btn-outline-dark" type="button"
-              aria-label="Open menu" aria-expanded="false">☰ Menu</button>
-    </div>
-  </header>
-
-  <!-- OFFCANVAS -->
-  <div class="offcanvas" aria-hidden="true">
-    <div class="offcanvas-backdrop"></div>
-    <aside class="offcanvas-panel" role="dialog" aria-modal="true" aria-label="Site menu">
-      <div class="offcanvas-head">
-        <a class="offcanvas-brand" href="index.html" aria-label="FD2P — Home">
-          <img src="assets/logo2.jpg" alt="FD2P small logo" />
-        </a>
-        <button class="offcanvas-close" type="button" aria-label="Close menu">✕</button>
-      </div>
-      <nav class="offcanvas-nav" aria-label="Mobile"></nav>
-    </aside>
-  </div>
-
-  <!-- MAIN -->
-  <main class="page-offset">
-
-    <!-- INTRO -->
-    <section class="intro-block">
-      <div class="container intro-inner">
-        <p>
+<!-- HEADER -->
+<header class="site-header" role="banner">
+<div class="container header-inner">
+<a aria-label="FD2P — Home" class="brand" href="index.html">
+<img alt="FD2P small logo" onerror="this.onerror=null;this.src='assets/logo1.jpg'" src="assets/logo2.jpg"/>
+</a>
+<nav aria-label="Primary" class="main-nav" hidden="">
+<a href="index.html">Home</a>
+<a href="services.html">Services</a>
+<a aria-current="page" href="projects.html">Projects</a>
+<a href="about.html">About</a>
+<a class="btn btn-outline btn-outline-dark" href="contact.html">Contact</a>
+</nav>
+<button aria-expanded="false" aria-label="Open menu" class="menu-toggle btn btn-outline-dark" type="button">☰ Menu</button>
+</div>
+</header>
+<!-- OFFCANVAS -->
+<div aria-hidden="true" class="offcanvas">
+<div class="offcanvas-backdrop"></div>
+<aside aria-label="Site menu" aria-modal="true" class="offcanvas-panel" role="dialog">
+<div class="offcanvas-head">
+<a aria-label="FD2P — Home" class="offcanvas-brand" href="index.html">
+<img alt="FD2P small logo" src="assets/logo2.jpg"/>
+</a>
+<button aria-label="Close menu" class="offcanvas-close" type="button">✕</button>
+</div>
+<nav aria-label="Mobile" class="offcanvas-nav"></nav>
+</aside>
+</div>
+<!-- MAIN -->
+<main class="page-offset">
+<!-- INTRO -->
+<section class="intro-block">
+<div class="container intro-inner">
+<p>
           We design and develop working solutions for places where failure is expensive — offshore structures, subsea systems, lifting operations, façade maintenance equipment and industrial pipe-repair solutions.
         </p>
-        <p>
+<p>
           We support the full path from first idea to installation: concept development, engineering calculations, operational and fabrication documentation, quotation support, production follow-up in Estonia and on-site supervision when required.
         </p>
-        <p>
+<p>
           More information of what we do on our
-          <a href="services.html" class="inline-link">Services</a>
+          <a class="inline-link" href="services.html">Services</a>
           page.
         </p>
-        <p>
+<p>
           We are based in Tallinn, Estonia, and work with clients across Norway, Sweden, Finland and Germany.
         </p>
-        <p>
+<p>
           All design work follows DNV, NORSOK and Eurocode standards.
         </p>
-      </div>
-    </section>
-
-    <div class="full-divider" aria-hidden="true"></div>
-
-    <!-- CARD 1 -->
-    <section class="proj-section" id="marine">
-      <div class="container">
-        <article class="proj-card">
-          <header class="proj-head">
-            <h2>Marine &amp; Subsea Engineering</h2>
-            <p>
+</div>
+</section>
+<div aria-hidden="true" class="full-divider"></div>
+<!-- CARD 1 -->
+<section class="proj-section" id="marine">
+<div class="container">
+<article class="proj-card">
+<header class="proj-head">
+<h2>Marine &amp; Subsea Engineering</h2>
+<p>
               We develop equipment for offshore cable-installation campaigns, perform marine and subsea design work to DNV and NORSOK standards, and prepare procedures for lifting and installation operations.
             </p>
-          </header>
-
-          <div class="proj-body">
-            <!-- Left (60%) -->
-            <div class="proj-media-wrap">
-              <div class="proj-media">
-                <div class="swiper-container js-proj-swiper" data-swiper="marine">
-                  <div class="swiper-wrapper">
+</header>
+<div class="proj-body">
+<!-- Left (60%) -->
+<div class="proj-media-wrap">
+<div class="proj-media">
+<div class="swiper-container js-proj-swiper" data-swiper="marine">
+<div class="swiper-wrapper">
 <div class="swiper-slide">
-  <img
-    src="assets/marine1.avif"
-    data-desktop="assets/marine1.avif"
-    data-mobile="assets/marine1.avif"
-    alt=""
-    loading="lazy"
-  >
+<img alt="" data-desktop="assets/marine1.avif" data-mobile="assets/marine1.avif" loading="lazy" src="assets/marine1.avif"/><button aria-label="Open image full screen" class="media-expand-btn swiper-no-swiping" data-full-alt="" data-full-image="assets/marine1.avif" type="button"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<polyline points="15 3 21 3 21 9"></polyline>
+<polyline points="9 21 3 21 3 15"></polyline>
+<line x1="21" x2="14" y1="3" y2="10"></line>
+<line x1="3" x2="10" y1="21" y2="14"></line>
+</svg></button>
 </div>
 <div class="swiper-slide">
-  <img
-    src="assets/marine2.avif"
-    data-desktop="assets/marine2.avif"
-    data-mobile="assets/marine2.avif"
-    alt=""
-    loading="lazy"
-  >
+<img alt="" data-desktop="assets/marine2.avif" data-mobile="assets/marine2.avif" loading="lazy" src="assets/marine2.avif"/><button aria-label="Open image full screen" class="media-expand-btn swiper-no-swiping" data-full-alt="" data-full-image="assets/marine2.avif" type="button"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<polyline points="15 3 21 3 21 9"></polyline>
+<polyline points="9 21 3 21 3 15"></polyline>
+<line x1="21" x2="14" y1="3" y2="10"></line>
+<line x1="3" x2="10" y1="21" y2="14"></line>
+</svg></button>
 </div>
 <div class="swiper-slide">
-  <img
-    src="assets/marine3.avif"
-    data-desktop="assets/marine3.avif"
-    data-mobile="assets/marine3.avif"
-    alt=""
-    loading="lazy"
-  >
+<img alt="" data-desktop="assets/marine3.avif" data-mobile="assets/marine3.avif" loading="lazy" src="assets/marine3.avif"/><button aria-label="Open image full screen" class="media-expand-btn swiper-no-swiping" data-full-alt="" data-full-image="assets/marine3.avif" type="button"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<polyline points="15 3 21 3 21 9"></polyline>
+<polyline points="9 21 3 21 3 15"></polyline>
+<line x1="21" x2="14" y1="3" y2="10"></line>
+<line x1="3" x2="10" y1="21" y2="14"></line>
+</svg></button>
 </div>
 <div class="swiper-slide">
-  <img
-    src="assets/marine4.avif"
-    data-desktop="assets/marine4.avif"
-    data-mobile="assets/marine4.avif"
-    alt=""
-    loading="lazy"
-  >
+<img alt="" data-desktop="assets/marine4.avif" data-mobile="assets/marine4.avif" loading="lazy" src="assets/marine4.avif"/><button aria-label="Open image full screen" class="media-expand-btn swiper-no-swiping" data-full-alt="" data-full-image="assets/marine4.avif" type="button"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<polyline points="15 3 21 3 21 9"></polyline>
+<polyline points="9 21 3 21 3 15"></polyline>
+<line x1="21" x2="14" y1="3" y2="10"></line>
+<line x1="3" x2="10" y1="21" y2="14"></line>
+</svg></button>
 </div>
 <div class="swiper-slide">
-  <img
-    src="assets/marine5.avif"
-    data-desktop="assets/marine5.avif"
-    data-mobile="assets/marine5.avif"
-    alt=""
-    loading="lazy"
-  >
+<img alt="" data-desktop="assets/marine5.avif" data-mobile="assets/marine5.avif" loading="lazy" src="assets/marine5.avif"/><button aria-label="Open image full screen" class="media-expand-btn swiper-no-swiping" data-full-alt="" data-full-image="assets/marine5.avif" type="button"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<polyline points="15 3 21 3 21 9"></polyline>
+<polyline points="9 21 3 21 3 15"></polyline>
+<line x1="21" x2="14" y1="3" y2="10"></line>
+<line x1="3" x2="10" y1="21" y2="14"></line>
+</svg></button>
 </div>
-                  </div>
-                </div>
-                <div class="swiper-pagination"></div>
-              </div>
-            </div>
-
-            <!-- Right (40%) -->
-            <div class="proj-text">
-              <p><strong>Selected examples of work for our clients in this field:</strong></p>
-              <ul>
-                <li><strong>Nexans (Norway)</strong> — cable-laying systems such as chutes, quadrants, roller tracks, trolleys and tensioner frames; vessel deck modification, design reports, production drawings, fabrication and follow-up in Estonia.</li>
-                <li><strong>Fred. Olsen Windcarrier (Norway)</strong> — vessel modifications for wind-turbine installation, collision checks, lifting procedures, 3D visualisation and animation.</li>
-                <li><strong>NKT (Sweden)</strong> — cable-storage and handling systems including roller tracks, trolleys and tensioner frames; design documentation and fabrication supervision.</li>
-                <li><strong>Flocean (Norway)</strong> — subsea frames and mud mats, design reports, subsea operation documentation and installation procedures.</li>
-                <li><strong>Layback (Norway)</strong> — tensioner and cable-drum design, analysis, fabrication drawings and production follow-up.</li>
-              </ul>
-
-              <div class="proj-actions">
-                <a class="btn btn-accent" href="details.html">See project details</a>
-              </div>
-            </div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <div class="full-divider" aria-hidden="true"></div>
-
-    <!-- CARD 2 -->
-    <section class="proj-section" id="civil">
-      <div class="container">
+</div>
+</div>
+<div class="swiper-pagination"></div>
+</div>
+</div>
+<!-- Right (40%) -->
+<div class="proj-text">
+<p><strong>Selected examples of work for our clients in this field:</strong></p>
+<ul>
+<li><strong>Nexans (Norway)</strong> — cable-laying systems such as chutes, quadrants, roller tracks, trolleys and tensioner frames; vessel deck modification, design reports, production drawings, fabrication and follow-up in Estonia.</li>
+<li><strong>Fred. Olsen Windcarrier (Norway)</strong> — vessel modifications for wind-turbine installation, collision checks, lifting procedures, 3D visualisation and animation.</li>
+<li><strong>NKT (Sweden)</strong> — cable-storage and handling systems including roller tracks, trolleys and tensioner frames; design documentation and fabrication supervision.</li>
+<li><strong>Flocean (Norway)</strong> — subsea frames and mud mats, design reports, subsea operation documentation and installation procedures.</li>
+<li><strong>Layback (Norway)</strong> — tensioner and cable-drum design, analysis, fabrication drawings and production follow-up.</li>
+</ul>
+<div class="proj-actions">
+<a class="btn btn-accent" href="details.html">See project details</a>
+</div>
+</div>
+</div>
+</article>
+</div>
+</section>
+<div aria-hidden="true" class="full-divider"></div>
+<!-- CARD 2 -->
+<section class="proj-section" id="civil">
+<div class="container">
 <article class="proj-card is-reversed">
-          <header class="proj-head">
-            <h2>Civil Engineering</h2>
-            <p>
+<header class="proj-head">
+<h2>Civil Engineering</h2>
+<p>
 In civil engineering projects, our expertise covers service platforms, façade access and maintenance systems. We also develop custom exhibition and stage-decoration structures. All designs are developed in accordance with Eurocode requirements.
             </p>
-          </header>
-
-          <div class="proj-body">
-            <div class="proj-media-wrap">
-              <div class="proj-media">
-                <div class="swiper-container js-proj-swiper" data-swiper="civil">
-                  <div class="swiper-wrapper">
+</header>
+<div class="proj-body">
+<div class="proj-media-wrap">
+<div class="proj-media">
+<div class="swiper-container js-proj-swiper" data-swiper="civil">
+<div class="swiper-wrapper">
 <div class="swiper-slide">
-  <img
-    src="assets/civil1.avif"
-    data-desktop="assets/civil1.avif"
-    data-mobile="assets/civil1.avif"
-    alt=""
-    loading="lazy"
-  >
+<img alt="" data-desktop="assets/civil1.avif" data-mobile="assets/civil1.avif" loading="lazy" src="assets/civil1.avif"/><button aria-label="Open image full screen" class="media-expand-btn swiper-no-swiping" data-full-alt="" data-full-image="assets/civil1.avif" type="button"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<polyline points="15 3 21 3 21 9"></polyline>
+<polyline points="9 21 3 21 3 15"></polyline>
+<line x1="21" x2="14" y1="3" y2="10"></line>
+<line x1="3" x2="10" y1="21" y2="14"></line>
+</svg></button>
 </div>
 <div class="swiper-slide">
-  <img
-    src="assets/civil2.avif"
-    data-desktop="assets/civil2.avif"
-    data-mobile="assets/civil2.avif"
-    alt=""
-    loading="lazy"
-  >
+<img alt="" data-desktop="assets/civil2.avif" data-mobile="assets/civil2.avif" loading="lazy" src="assets/civil2.avif"/><button aria-label="Open image full screen" class="media-expand-btn swiper-no-swiping" data-full-alt="" data-full-image="assets/civil2.avif" type="button"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<polyline points="15 3 21 3 21 9"></polyline>
+<polyline points="9 21 3 21 3 15"></polyline>
+<line x1="21" x2="14" y1="3" y2="10"></line>
+<line x1="3" x2="10" y1="21" y2="14"></line>
+</svg></button>
 </div>
 <div class="swiper-slide">
-  <img
-    src="assets/civil3.avif"
-    data-desktop="assets/civil3.avif"
-    data-mobile="assets/civil3.avif"
-    alt=""
-    loading="lazy"
-  >
+<img alt="" data-desktop="assets/civil3.avif" data-mobile="assets/civil3.avif" loading="lazy" src="assets/civil3.avif"/><button aria-label="Open image full screen" class="media-expand-btn swiper-no-swiping" data-full-alt="" data-full-image="assets/civil3.avif" type="button"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<polyline points="15 3 21 3 21 9"></polyline>
+<polyline points="9 21 3 21 3 15"></polyline>
+<line x1="21" x2="14" y1="3" y2="10"></line>
+<line x1="3" x2="10" y1="21" y2="14"></line>
+</svg></button>
 </div>
-
-                  </div>
-                </div>
-                <div class="swiper-pagination"></div>
-              </div>
-            </div>
-
-            <div class="proj-text">
-              <p><strong>Selected examples of work for our clients in this field:</strong></p>
-              <ul>
-                <li><strong>Rostek (Finland)</strong> — façade access solutions design, lifting gantries, track lines, davit cranes, production drawings.</li>
-                <li><strong>Oslo Nationalmuseet (Norway)</strong> — exhibition equipment and decoration design, wooden and steel structures, analysis, production drawings.</li>
-                <li><strong>Oslo Nationalteatre (Norway)</strong> — stage equipment and decoration design, wooden and steel  structures, analysis, production drawings.</li>
-              </ul>
-
-              <div class="proj-actions">
-                <a class="btn btn-accent" href="details.html">See project detail</a>
-              </div>
-            </div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <div class="full-divider" aria-hidden="true"></div>
-
-    <!-- CARD 3 -->
-    <section class="proj-section" id="industrial">
-      <div class="container">
-        <article class="proj-card">
-          <header class="proj-head">
-            <h2>Industrial Engineering</h2>
-            <p>
+</div>
+</div>
+<div class="swiper-pagination"></div>
+</div>
+</div>
+<div class="proj-text">
+<p><strong>Selected examples of work for our clients in this field:</strong></p>
+<ul>
+<li><strong>Rostek (Finland)</strong> — façade access solutions design, lifting gantries, track lines, davit cranes, production drawings.</li>
+<li><strong>Oslo Nationalmuseet (Norway)</strong> — exhibition equipment and decoration design, wooden and steel structures, analysis, production drawings.</li>
+<li><strong>Oslo Nationalteatre (Norway)</strong> — stage equipment and decoration design, wooden and steel  structures, analysis, production drawings.</li>
+</ul>
+<div class="proj-actions">
+<a class="btn btn-accent" href="details.html">See project detail</a>
+</div>
+</div>
+</div>
+</article>
+</div>
+</section>
+<div aria-hidden="true" class="full-divider"></div>
+<!-- CARD 3 -->
+<section class="proj-section" id="industrial">
+<div class="container">
+<article class="proj-card">
+<header class="proj-head">
+<h2>Industrial Engineering</h2>
+<p>
 We provide structural and mechanical engineering support for industrial sites during upgrades, repairs and new installations. We design steel platforms and stairways for production workshops, and GRP-profiles structures for facilities operating in harsh environments.
             </p>
-          </header>
-
-          <div class="proj-body">
-            <div class="proj-media-wrap">
-              <div class="proj-media">
-                <div class="swiper-container js-proj-swiper" data-swiper="industrial">
-                  <div class="swiper-wrapper">
+</header>
+<div class="proj-body">
+<div class="proj-media-wrap">
+<div class="proj-media">
+<div class="swiper-container js-proj-swiper" data-swiper="industrial">
+<div class="swiper-wrapper">
 <div class="swiper-slide">
-  <img
-    src="assets/industrial1.avif"
-    data-desktop="assets/industrial1.avif"
-    data-mobile="assets/industrial1.avif"
-    alt=""
-    loading="lazy"
-  >
+<img alt="" data-desktop="assets/industrial1.avif" data-mobile="assets/industrial1.avif" loading="lazy" src="assets/industrial1.avif"/><button aria-label="Open image full screen" class="media-expand-btn swiper-no-swiping" data-full-alt="" data-full-image="assets/industrial1.avif" type="button"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<polyline points="15 3 21 3 21 9"></polyline>
+<polyline points="9 21 3 21 3 15"></polyline>
+<line x1="21" x2="14" y1="3" y2="10"></line>
+<line x1="3" x2="10" y1="21" y2="14"></line>
+</svg></button>
 </div>
 <div class="swiper-slide">
-  <img
-    src="assets/industrial2.avif"
-    data-desktop="assets/industrial2.avif"
-    data-mobile="assets/industrial2.avif"
-    alt=""
-    loading="lazy"
-  >
+<img alt="" data-desktop="assets/industrial2.avif" data-mobile="assets/industrial2.avif" loading="lazy" src="assets/industrial2.avif"/><button aria-label="Open image full screen" class="media-expand-btn swiper-no-swiping" data-full-alt="" data-full-image="assets/industrial2.avif" type="button"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<polyline points="15 3 21 3 21 9"></polyline>
+<polyline points="9 21 3 21 3 15"></polyline>
+<line x1="21" x2="14" y1="3" y2="10"></line>
+<line x1="3" x2="10" y1="21" y2="14"></line>
+</svg></button>
 </div>
 <div class="swiper-slide">
-  <img
-    src="assets/industrial3.avif"
-    data-desktop="assets/industrial3.avif"
-    data-mobile="assets/industrial3.avif"
-    alt=""
-    loading="lazy"
-  >
+<img alt="" data-desktop="assets/industrial3.avif" data-mobile="assets/industrial3.avif" loading="lazy" src="assets/industrial3.avif"/><button aria-label="Open image full screen" class="media-expand-btn swiper-no-swiping" data-full-alt="" data-full-image="assets/industrial3.avif" type="button"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<polyline points="15 3 21 3 21 9"></polyline>
+<polyline points="9 21 3 21 3 15"></polyline>
+<line x1="21" x2="14" y1="3" y2="10"></line>
+<line x1="3" x2="10" y1="21" y2="14"></line>
+</svg></button>
 </div>
 <div class="swiper-slide">
-  <img
-    src="assets/industrial4.avif"
-    data-desktop="assets/industrial4.avif"
-    data-mobile="assets/industrial4.avif"
-    alt=""
-    loading="lazy"
-  >
+<img alt="" data-desktop="assets/industrial4.avif" data-mobile="assets/industrial4.avif" loading="lazy" src="assets/industrial4.avif"/><button aria-label="Open image full screen" class="media-expand-btn swiper-no-swiping" data-full-alt="" data-full-image="assets/industrial4.avif" type="button"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<polyline points="15 3 21 3 21 9"></polyline>
+<polyline points="9 21 3 21 3 15"></polyline>
+<line x1="21" x2="14" y1="3" y2="10"></line>
+<line x1="3" x2="10" y1="21" y2="14"></line>
+</svg></button>
 </div>
-                  </div>
-                </div>
-                <div class="swiper-pagination"></div>
-              </div>
-            </div>
-
-            <div class="proj-text">
-              <p><strong>Selected examples of work for our clients in this field:</strong></p>
-              <ul>
-                <li><strong>BKK Enotek (Norway)</strong> — Installation procedure, analyse and calculate the cable runs and design both permanent installation bends and temporary installation aids.</li>
-                <li><strong>Glassfiber Produkter (Norway)</strong> — GRP structures design, production drawings.</li>
-                <li><strong>Lango (Sweden)</strong> — electrical platforms for buss maintenance, retractable bridges, gangways, 
+</div>
+</div>
+<div class="swiper-pagination"></div>
+</div>
+</div>
+<div class="proj-text">
+<p><strong>Selected examples of work for our clients in this field:</strong></p>
+<ul>
+<li><strong>BKK Enotek (Norway)</strong> — Installation procedure, analyse and calculate the cable runs and design both permanent installation bends and temporary installation aids.</li>
+<li><strong>Glassfiber Produkter (Norway)</strong> — GRP structures design, production drawings.</li>
+<li><strong>Lango (Sweden)</strong> — electrical platforms for buss maintenance, retractable bridges, gangways, 
 staircases, analysis, design reports, production drawings.</li>
-                <li><strong>Fralex (Germany)</strong> — steam pipeline repair solutions, clamps design, design reports, 
+<li><strong>Fralex (Germany)</strong> — steam pipeline repair solutions, clamps design, design reports, 
 production drawings.</li>
-              </ul>
-
-              <div class="proj-actions">
-                <a class="btn btn-accent" href="details.html">See project detail</a>
-              </div>
-            </div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <div class="full-divider" aria-hidden="true"></div>
-
-    <!-- OUR SERVICES -->
-    <section class="section section--no-border" id="what-we-do">
-      <div class="container">
-        <h2 class="section-title">OUR SERVICES</h2>
-
-        <div class="cards">
-          <a class="card" href="design.html">
-            <h3>Design Development</h3>
-            <p>Structural & mechanical design, FEA, animation & rendering.</p>
-          </a>
-          <a class="card" href="technical.html">
-            <h3>Technical Documentation</h3>
-            <p>Fabrication drawings, reports, procedures.</p>
-          </a>
-          <a class="card" href="manufacturing.html">
-            <h3>Manufacturing & Delivery</h3>
-            <p>Quotations, local fabrication (EE), on-site supervising.</p>
-          </a>
-        </div>
-
-    <!-- FINAL CONTACT -->
-    <section class="final-contact">
-      <div class="container">
-        <p>
+</ul>
+<div class="proj-actions">
+<a class="btn btn-accent" href="details.html">See project detail</a>
+</div>
+</div>
+</div>
+</article>
+</div>
+</section>
+<div aria-hidden="true" class="full-divider"></div>
+<!-- OUR SERVICES -->
+<section class="section section--no-border" id="what-we-do">
+<div class="container">
+<h2 class="section-title">OUR SERVICES</h2>
+<div class="cards">
+<a class="card" href="design.html">
+<h3>Design Development</h3>
+<p>Structural &amp; mechanical design, FEA, animation &amp; rendering.</p>
+</a>
+<a class="card" href="technical.html">
+<h3>Technical Documentation</h3>
+<p>Fabrication drawings, reports, procedures.</p>
+</a>
+<a class="card" href="manufacturing.html">
+<h3>Manufacturing &amp; Delivery</h3>
+<p>Quotations, local fabrication (EE), on-site supervising.</p>
+</a>
+</div>
+<!-- FINAL CONTACT -->
+<section class="final-contact">
+<div class="container">
+<p>
           If you need qualified support in design engineering,
-          <a href="contact.html" class="hero-link">contact us</a>
+          <a class="hero-link" href="contact.html">contact us</a>
           — we will be happy to discuss details with you.
         </p>
-      </div>
-    </section>
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-brand">
-          <h3>FD<span style="color:#E30613;">2</span>P Technologies</h3>
-        </div>
-        <div class="footer-contacts">
-          <p>Email: <a href="mailto:info@fd2p.com">info@fd2p.com</a></p>
-          <p>Phone: <a href="tel:+37256279949">+372 56 279 949</a></p>
-          <p>
+</div>
+</section>
+</div></section></main>
+<!-- FOOTER -->
+<footer class="site-footer">
+<div class="container">
+<div class="footer-content">
+<div class="footer-brand">
+<h3>FD<span style="color:#E30613;">2</span>P Technologies</h3>
+</div>
+<div class="footer-contacts">
+<p>Email: <a href="mailto:info@fd2p.com">info@fd2p.com</a></p>
+<p>Phone: <a href="tel:+37256279949">+372 56 279 949</a></p>
+<p>
             Address:
-            <a href="https://www.google.com/maps?q=Kivimurru+34,+Tallinn,+Estonia"
-               target="_blank" rel="noopener noreferrer">
+            <a href="https://www.google.com/maps?q=Kivimurru+34,+Tallinn,+Estonia" rel="noopener noreferrer" target="_blank">
               Kivimurru 34, Tallinn, Estonia
             </a>
-          </p>
-        </div>
-      </div>
-    </div>
-  </footer>
+</p>
+</div>
+</div>
+</div>
+</footer>
 
-  <script src="js/main.js"></script>
-  <script src="js/swiper.min.js"></script>
-
-  <!-- Menu breakpoint and page-ready state -->
-  <script>
+<div aria-hidden="true" class="media-lightbox" id="media-lightbox">
+<div class="media-lightbox-backdrop"></div>
+<div class="media-lightbox-content">
+<div class="media-lightbox-figure">
+<div class="media-lightbox-image-wrap">
+<img alt="" class="media-lightbox-image" src=""/>
+<button aria-label="Close full screen image" class="media-lightbox-close" type="button">✕</button>
+</div>
+</div>
+</div>
+</div>
+<script src="js/main.js"></script>
+<script src="js/swiper.min.js"></script>
+<!-- Menu breakpoint and page-ready state -->
+<script>
     (function(){
       var breakpoint = parseInt(document.body.getAttribute("data-burger-bp") || "1024", 10);
 
@@ -887,9 +1077,8 @@ production drawings.</li>
       }
     })();
   </script>
-
-  <!-- Swiper initialization and desktop drag cursor -->
-  <script>
+<!-- Swiper initialization and desktop drag cursor -->
+<script>
     (function(){
       function createProjectSwiper(element){
         var media = element.closest(".proj-media");
@@ -977,7 +1166,6 @@ production drawings.</li>
       })();
     })();
   </script>
-
 <script>
 (function(){
   var mobileQuery = window.matchMedia("(max-width: 860px)");
@@ -1077,6 +1265,381 @@ production drawings.</li>
 })();
 </script>
 
+<script>
+  (function(){
+    var lightbox = document.getElementById('media-lightbox');
+    if (!lightbox) return;
 
+    var lightboxImage = lightbox.querySelector('.media-lightbox-image');
+    var imageWrap = lightbox.querySelector('.media-lightbox-image-wrap');
+    var closeBtn = lightbox.querySelector('.media-lightbox-close');
+    var backdrop = lightbox.querySelector('.media-lightbox-backdrop');
+
+    var savedScrollX = 0;
+    var savedScrollY = 0;
+
+    var scale = 1;
+    var minScale = 1;
+    var maxScale = 4;
+
+    var translateX = 0;
+    var translateY = 0;
+
+    var isDragging = false;
+    var dragStartX = 0;
+    var dragStartY = 0;
+    var dragOriginX = 0;
+    var dragOriginY = 0;
+
+    var pinchStartDistance = 0;
+    var pinchStartScale = 1;
+
+    function restoreScroll(){
+      window.scrollTo(savedScrollX, savedScrollY);
+    }
+
+    function clamp(value, min, max){
+      return Math.min(max, Math.max(min, value));
+    }
+
+    function getBounds(){
+      if (!lightboxImage) {
+        return { maxX: 0, maxY: 0 };
+      }
+
+      var rect = lightboxImage.getBoundingClientRect();
+      var viewportW = window.innerWidth;
+      var viewportH = window.innerHeight;
+
+      var scaledW = rect.width * scale;
+      var scaledH = rect.height * scale;
+
+      var maxX = Math.max(0, (scaledW - rect.width) / 2);
+      var maxY = Math.max(0, (scaledH - rect.height) / 2);
+
+      if (scaledW > viewportW) {
+        maxX = Math.max(maxX, (scaledW - viewportW) / 2);
+      }
+      if (scaledH > viewportH) {
+        maxY = Math.max(maxY, (scaledH - viewportH) / 2);
+      }
+
+      return { maxX: maxX, maxY: maxY };
+    }
+
+    function clampTranslate(){
+      var bounds = getBounds();
+      translateX = clamp(translateX, -bounds.maxX, bounds.maxX);
+      translateY = clamp(translateY, -bounds.maxY, bounds.maxY);
+    }
+
+    function applyTransform(){
+      if (!lightboxImage) return;
+
+      if (scale <= 1) {
+        translateX = 0;
+        translateY = 0;
+      } else {
+        clampTranslate();
+      }
+
+      lightboxImage.style.transform = 'translate(' + translateX + 'px, ' + translateY + 'px) scale(' + scale + ')';
+    }
+
+    function resetZoom(){
+      scale = 1;
+      translateX = 0;
+      translateY = 0;
+      pinchStartDistance = 0;
+      pinchStartScale = 1;
+      isDragging = false;
+      applyTransform();
+    }
+
+    function getTouchDistance(touch1, touch2){
+      var dx = touch2.clientX - touch1.clientX;
+      var dy = touch2.clientY - touch1.clientY;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function preventPageScroll(event){
+      if (!lightbox.classList.contains('is-open')) return;
+      event.preventDefault();
+      restoreScroll();
+    }
+
+    function preventScrollKeys(event){
+      if (!lightbox.classList.contains('is-open')) return;
+
+      var keys = ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','PageUp','PageDown','Home','End',' ','Spacebar'];
+
+      if (keys.indexOf(event.key) !== -1) {
+        event.preventDefault();
+        restoreScroll();
+      }
+    }
+
+    function openLightbox(src, alt){
+      if (!src || !lightboxImage) return;
+
+      savedScrollX = window.pageXOffset || window.scrollX || 0;
+      savedScrollY = window.pageYOffset || window.scrollY || 0;
+
+      lightboxImage.src = src;
+      lightboxImage.alt = alt || '';
+      resetZoom();
+
+      lightbox.classList.add('is-open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('is-lightbox-open');
+
+      restoreScroll();
+      requestAnimationFrame(restoreScroll);
+    }
+
+    function closeLightbox(){
+      lightbox.classList.remove('is-open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('is-lightbox-open');
+
+      restoreScroll();
+
+      setTimeout(function(){
+        if (!lightbox.classList.contains('is-open') && lightboxImage){
+          lightboxImage.src = '';
+          lightboxImage.alt = '';
+          resetZoom();
+        }
+      }, 220);
+    }
+
+    function startDrag(clientX, clientY){
+      if (scale <= 1) return;
+      isDragging = true;
+      dragStartX = clientX;
+      dragStartY = clientY;
+      dragOriginX = translateX;
+      dragOriginY = translateY;
+      if (imageWrap) {
+        imageWrap.style.cursor = 'grabbing';
+      }
+    }
+
+    function moveDrag(clientX, clientY){
+      if (!isDragging || scale <= 1) return;
+
+      var dx = clientX - dragStartX;
+      var dy = clientY - dragStartY;
+      var isMobileRotated = window.innerWidth <= 860;
+
+      if (isMobileRotated) {
+        translateX = dragOriginX + dy;
+        translateY = dragOriginY - dx;
+      } else {
+        translateX = dragOriginX + dx;
+        translateY = dragOriginY + dy;
+      }
+
+      applyTransform();
+    }
+
+    function endDrag(){
+      isDragging = false;
+      if (imageWrap) {
+        imageWrap.style.cursor = scale > 1 ? 'grab' : '';
+      }
+    }
+
+    ['pointerdown','mousedown','touchstart'].forEach(function(type){
+      document.addEventListener(type, function(event){
+        var button = event.target.closest('.media-expand-btn');
+        if (!button) return;
+        event.stopPropagation();
+      }, { passive: false, capture: true });
+    });
+
+    document.addEventListener('click', function(event){
+      var button = event.target.closest('.media-expand-btn');
+      if (!button) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+      if (typeof event.stopImmediatePropagation === 'function') {
+        event.stopImmediatePropagation();
+      }
+
+      openLightbox(
+        button.getAttribute('data-full-image'),
+        button.getAttribute('data-full-alt')
+      );
+    }, true);
+
+    if (closeBtn){
+      closeBtn.addEventListener('click', function(event){
+        event.preventDefault();
+        event.stopPropagation();
+        closeLightbox();
+      });
+    }
+
+    if (backdrop){
+      backdrop.addEventListener('click', function(event){
+        event.preventDefault();
+        closeLightbox();
+      });
+    }
+
+    document.addEventListener('keydown', function(event){
+      if (event.key === 'Escape' && lightbox.classList.contains('is-open')){
+        closeLightbox();
+        return;
+      }
+
+      preventScrollKeys(event);
+    }, { passive: false });
+
+    window.addEventListener('scroll', function(){
+      if (lightbox.classList.contains('is-open')) {
+        restoreScroll();
+      }
+    }, { passive: false });
+
+    window.addEventListener('wheel', function(event){
+      if (!lightbox.classList.contains('is-open')) return;
+
+      if (event.ctrlKey) {
+        event.preventDefault();
+
+        var oldScale = scale;
+        var delta = event.deltaY < 0 ? 0.15 : -0.15;
+        scale = clamp(scale + delta, minScale, maxScale);
+
+        if (scale <= 1) {
+          translateX = 0;
+          translateY = 0;
+        } else if (oldScale <= 1 && scale > 1) {
+          translateX = 0;
+          translateY = 0;
+        }
+
+        applyTransform();
+        return;
+      }
+
+      preventPageScroll(event);
+    }, { passive: false });
+
+    window.addEventListener('touchstart', function(event){
+      if (!lightbox.classList.contains('is-open')) return;
+
+      if (event.touches.length === 2) {
+        pinchStartDistance = getTouchDistance(event.touches[0], event.touches[1]);
+        pinchStartScale = scale;
+        isDragging = false;
+        return;
+      }
+
+      if (event.touches.length === 1 && scale > 1) {
+        startDrag(event.touches[0].clientX, event.touches[0].clientY);
+      }
+    }, { passive: false });
+
+    window.addEventListener('touchmove', function(event){
+      if (!lightbox.classList.contains('is-open')) return;
+
+      if (event.touches.length === 2) {
+        event.preventDefault();
+
+        var distance = getTouchDistance(event.touches[0], event.touches[1]);
+
+        if (!pinchStartDistance) {
+          pinchStartDistance = distance;
+          pinchStartScale = scale;
+          return;
+        }
+
+        var nextScale = pinchStartScale * (distance / pinchStartDistance);
+        scale = clamp(nextScale, minScale, maxScale);
+
+        if (scale <= 1) {
+          translateX = 0;
+          translateY = 0;
+        }
+
+        applyTransform();
+        return;
+      }
+
+      if (event.touches.length === 1 && isDragging) {
+        event.preventDefault();
+        moveDrag(event.touches[0].clientX, event.touches[0].clientY);
+        return;
+      }
+
+      preventPageScroll(event);
+    }, { passive: false });
+
+    window.addEventListener('touchend', function(){
+      pinchStartDistance = 0;
+      pinchStartScale = scale;
+      endDrag();
+    }, { passive: true });
+
+    window.addEventListener('touchcancel', function(){
+      pinchStartDistance = 0;
+      pinchStartScale = scale;
+      endDrag();
+    }, { passive: true });
+
+    if (imageWrap) {
+      imageWrap.addEventListener('mousedown', function(event){
+        if (!lightbox.classList.contains('is-open')) return;
+        if (event.button !== 0) return;
+        if (scale <= 1) return;
+
+        event.preventDefault();
+        startDrag(event.clientX, event.clientY);
+      });
+
+      imageWrap.addEventListener('dblclick', function(event){
+        event.preventDefault();
+
+        if (scale > 1) {
+          resetZoom();
+        } else {
+          scale = 2;
+          translateX = 0;
+          translateY = 0;
+          applyTransform();
+          if (imageWrap) {
+            imageWrap.style.cursor = 'grab';
+          }
+        }
+      });
+    }
+
+    window.addEventListener('mousemove', function(event){
+      if (!lightbox.classList.contains('is-open')) return;
+      if (!isDragging) return;
+
+      event.preventDefault();
+      moveDrag(event.clientX, event.clientY);
+    });
+
+    window.addEventListener('mouseup', function(){
+      endDrag();
+    });
+
+    window.addEventListener('mouseleave', function(){
+      endDrag();
+    });
+
+    window.addEventListener('resize', function(){
+      if (lightbox.classList.contains('is-open')) {
+        applyTransform();
+      }
+    });
+  })();
+</script>
 </body>
 </html>

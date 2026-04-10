@@ -156,14 +156,268 @@ html.is-holding{
   user-select: none;
 }
 
+.technical-page .technical-media{
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.technical-page .technical-media-frame{
+  position: relative;
+  display: inline-block;
+  width: min(82%, 600px);
+  line-height: 0;
+}
+
 .card-image {
   display: block;
-  margin: 12px auto 0;  /* centers horizontally */
-  width: 82%;           /* image takes 80% of the card width */
-  max-width: 600px;     /* optional limit for large screens */
+  margin: 0;
+  width: 100%;
+  max-width: none;
   height: auto;
   border-radius: 8px;
   object-fit: cover;
+}
+
+
+/* Technical image expand */
+.technical-page .slide-card,
+.technical-page .technical-media{
+  position: relative;
+}
+
+.technical-page .slide-card{
+  overflow: hidden;
+}
+
+.technical-page .slide-card img,
+.technical-page .technical-media img{
+  display: block;
+}
+
+.technical-page .media-expand-btn{
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: rgba(17, 24, 39, 0.78);
+  cursor: pointer;
+  box-shadow: none;
+  transition:
+    color .18s ease,
+    opacity .18s ease,
+    transform .12s ease;
+}
+
+.technical-page .media-expand-btn:hover,
+.technical-page .media-expand-btn:focus-visible{
+  color: rgba(17, 24, 39, 1);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.technical-page .media-expand-btn:active{
+  transform: translateY(0);
+}
+
+.technical-page .media-expand-btn svg{
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+body.is-lightbox-open{
+  overflow: hidden;
+}
+
+.technical-page .media-lightbox{
+  position: fixed;
+  inset: 0;
+  z-index: 4000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(17, 24, 39, 0.40);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .22s ease, visibility .22s ease;
+}
+
+.technical-page .media-lightbox.is-open{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.technical-page .media-lightbox-backdrop{
+  position: absolute;
+  inset: 0;
+}
+
+.technical-page .media-lightbox-content{
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.technical-page .media-lightbox-figure{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: calc(100vw - 50px);
+  max-height: calc(100vh - 50px);
+  background: transparent;
+}
+
+.technical-page .media-lightbox-image-wrap{
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+  background: transparent;
+  cursor: grab;
+}
+
+.technical-page .media-lightbox-image{
+  display: block;
+  max-width: calc(100vw - 50px);
+  max-height: calc(100vh - 50px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  box-shadow: none;
+  background: transparent;
+  border: 0;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.technical-page .media-lightbox-close{
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 3;
+  width: 54px;
+  height: 54px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: rgba(227, 6, 19, 0.98);
+  color: #fff;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 24px rgba(0,0,0,.20);
+  transition:
+    background-color .18s ease,
+    transform .12s ease,
+    box-shadow .18s ease;
+}
+
+.technical-page .media-lightbox-close:hover,
+.technical-page .media-lightbox-close:focus-visible{
+  background: rgba(227, 6, 19, 1);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px rgba(0,0,0,.24);
+  outline: none;
+}
+
+.technical-page .media-lightbox-close:active{
+  transform: translateY(0);
+}
+
+@media (max-width: 860px){
+  .technical-page .media-lightbox{
+    padding: 0px;
+  }
+
+  .technical-page .media-lightbox-content{
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .technical-page .media-lightbox-figure{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transform-origin: center center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: auto;
+    max-width: none;
+    max-height: none;
+    overflow: visible;
+    background: transparent;
+  }
+
+  .technical-page .media-lightbox-image-wrap{
+    position: relative;
+    display: inline-block;
+    line-height: 0;
+    background: transparent;
+    transform: rotate(90deg);
+    transform-origin: center center;
+    cursor: grab;
+  }
+
+  .technical-page .media-lightbox-image{
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: calc(100vh - 50px);
+    max-height: calc(100vw - 50px);
+    object-fit: contain;
+    transform: none;
+    box-shadow: none;
+    background: transparent;
+    border: 0;
+    transform-origin: center center;
+    will-change: transform;
+  }
+
+  .technical-page .media-lightbox-close{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 52px;
+    height: 52px;
+    font-size: 28px;
+    transform: rotate(-90deg);
+    transform-origin: center center;
+  }
+
+  .technical-page .media-lightbox-close:hover,
+  .technical-page .media-lightbox-close:focus-visible{
+    transform: rotate(-90deg) translateY(-1px);
+  }
+
+  .technical-page .media-lightbox-close:active{
+    transform: rotate(-90deg) translateY(0);
+  }
 }
 
   </style>
@@ -236,19 +490,46 @@ html.is-holding{
     <div class="swiper-wrapper">
       <div class="swiper-slide">
         <div class="slide-card">
-          <img src="./img/Chute model drawings.png" style="object-fit: contain; width:100%; height:100%;">
+          <img src="./img/Chute model drawings.png" alt="Chute model drawings" style="object-fit: contain; width:100%; height:100%;">
+        
+          <button class="media-expand-btn swiper-no-swiping" type="button" aria-label="Open image full screen" data-full-image="./img/Chute model drawings.png" data-full-alt="Chute model drawings">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <polyline points="9 21 3 21 3 15"></polyline>
+              <line x1="21" y1="3" x2="14" y2="10"></line>
+              <line x1="3" y1="21" x2="10" y2="14"></line>
+            </svg>
+          </button>
         </div>
       </div>
 
       <div class="swiper-slide">
         <div class="slide-card">
-          <img src="./img/Platform drawings.png" style="object-fit: contain; width:100%; height:100%;">
+          <img src="./img/Platform drawings.png" alt="Platform drawings" style="object-fit: contain; width:100%; height:100%;">
+        
+          <button class="media-expand-btn swiper-no-swiping" type="button" aria-label="Open image full screen" data-full-image="./img/Platform drawings.png" data-full-alt="Platform drawings">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <polyline points="9 21 3 21 3 15"></polyline>
+              <line x1="21" y1="3" x2="14" y2="10"></line>
+              <line x1="3" y1="21" x2="10" y2="14"></line>
+            </svg>
+          </button>
         </div>
       </div>
 
       <div class="swiper-slide">
         <div class="slide-card">
-          <img src="./img/Chute model drawings2.png" style="object-fit: contain; width:100%; height:100%;">
+          <img src="./img/Chute model drawings2.png" alt="Chute model drawings 2" style="object-fit: contain; width:100%; height:100%;">
+        
+          <button class="media-expand-btn swiper-no-swiping" type="button" aria-label="Open image full screen" data-full-image="./img/Chute model drawings2.png" data-full-alt="Chute model drawings 2">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <polyline points="9 21 3 21 3 15"></polyline>
+              <line x1="21" y1="3" x2="14" y2="10"></line>
+              <line x1="3" y1="21" x2="10" y2="14"></line>
+            </svg>
+          </button>
         </div>
       </div>
     </div>
@@ -339,7 +620,19 @@ pagination: {
           </ul>
           <p>Our reports are based on validated inputs (sketches, drawings, models) and demonstrate that equipment does not break, collapse or degrade prematurely under expected loads, while procedures ensure repeatable, safe operations.</p>
 
-<img src="assets/mosaic-04.jpg" alt="Reports and Procedures illustration" class="card-image" loading="lazy">
+<div class="technical-media">
+  <div class="technical-media-frame">
+    <img src="assets/mosaic-04.jpg" alt="Reports and Procedures illustration" class="card-image" loading="lazy">
+    <button class="media-expand-btn swiper-no-swiping" type="button" aria-label="Open image full screen" data-full-image="assets/mosaic-04.jpg" data-full-alt="Reports and Procedures illustration">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <polyline points="9 21 3 21 3 15"></polyline>
+        <line x1="21" y1="3" x2="14" y2="10"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+      </svg>
+    </button>
+  </div>
+</div>
 
           </article>
 
@@ -390,6 +683,20 @@ pagination: {
     </div>
   </footer>
 
+
+  <div class="media-lightbox" id="media-lightbox" aria-hidden="true">
+    <div class="media-lightbox-backdrop"></div>
+
+    <div class="media-lightbox-content">
+      <div class="media-lightbox-figure">
+        <div class="media-lightbox-image-wrap">
+          <img class="media-lightbox-image" src="" alt="" />
+          <button class="media-lightbox-close" type="button" aria-label="Close full screen image">✕</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="js/main.js"></script>
   <script>
     (function(){
@@ -401,6 +708,384 @@ pagination: {
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
       else init();
     })();
+  </script>
+
+  <script>
+    (function(){
+      var lightbox = document.getElementById('media-lightbox');
+      if (!lightbox) return;
+
+      var lightboxImage = lightbox.querySelector('.media-lightbox-image');
+      var imageWrap = lightbox.querySelector('.media-lightbox-image-wrap');
+      var closeBtn = lightbox.querySelector('.media-lightbox-close');
+      var backdrop = lightbox.querySelector('.media-lightbox-backdrop');
+
+      var savedScrollX = 0;
+      var savedScrollY = 0;
+
+      var scale = 1;
+      var minScale = 1;
+      var maxScale = 4;
+
+      var translateX = 0;
+      var translateY = 0;
+
+      var isDragging = false;
+      var dragStartX = 0;
+      var dragStartY = 0;
+      var dragOriginX = 0;
+      var dragOriginY = 0;
+
+      var pinchStartDistance = 0;
+      var pinchStartScale = 1;
+
+      function restoreScroll(){
+        window.scrollTo(savedScrollX, savedScrollY);
+      }
+
+      function clamp(value, min, max){
+        return Math.min(max, Math.max(min, value));
+      }
+
+      function getBounds(){
+        if (!lightboxImage) {
+          return { maxX: 0, maxY: 0 };
+        }
+
+        var rect = lightboxImage.getBoundingClientRect();
+        var viewportW = window.innerWidth;
+        var viewportH = window.innerHeight;
+
+        var scaledW = rect.width * scale;
+        var scaledH = rect.height * scale;
+
+        var maxX = Math.max(0, (scaledW - rect.width) / 2);
+        var maxY = Math.max(0, (scaledH - rect.height) / 2);
+
+        if (scaledW > viewportW) {
+          maxX = Math.max(maxX, (scaledW - viewportW) / 2);
+        }
+        if (scaledH > viewportH) {
+          maxY = Math.max(maxY, (scaledH - viewportH) / 2);
+        }
+
+        return { maxX: maxX, maxY: maxY };
+      }
+
+      function clampTranslate(){
+        var bounds = getBounds();
+        translateX = clamp(translateX, -bounds.maxX, bounds.maxX);
+        translateY = clamp(translateY, -bounds.maxY, bounds.maxY);
+      }
+
+      function applyTransform(){
+        if (!lightboxImage) return;
+
+        if (scale <= 1) {
+          translateX = 0;
+          translateY = 0;
+        } else {
+          clampTranslate();
+        }
+
+        lightboxImage.style.transform = 'translate(' + translateX + 'px, ' + translateY + 'px) scale(' + scale + ')';
+      }
+
+      function resetZoom(){
+        scale = 1;
+        translateX = 0;
+        translateY = 0;
+        pinchStartDistance = 0;
+        pinchStartScale = 1;
+        isDragging = false;
+        applyTransform();
+      }
+
+      function getTouchDistance(touch1, touch2){
+        var dx = touch2.clientX - touch1.clientX;
+        var dy = touch2.clientY - touch1.clientY;
+        return Math.sqrt(dx * dx + dy * dy);
+      }
+
+      function preventPageScroll(event){
+        if (!lightbox.classList.contains('is-open')) return;
+        event.preventDefault();
+        restoreScroll();
+      }
+
+      function preventScrollKeys(event){
+        if (!lightbox.classList.contains('is-open')) return;
+
+        var keys = ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','PageUp','PageDown','Home','End',' ','Spacebar'];
+
+        if (keys.indexOf(event.key) !== -1) {
+          event.preventDefault();
+          restoreScroll();
+        }
+      }
+
+      function openLightbox(src, alt){
+        if (!src || !lightboxImage) return;
+
+        savedScrollX = window.pageXOffset || window.scrollX || 0;
+        savedScrollY = window.pageYOffset || window.scrollY || 0;
+
+        lightboxImage.src = src;
+        lightboxImage.alt = alt || '';
+        resetZoom();
+
+        lightbox.classList.add('is-open');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('is-lightbox-open');
+
+        restoreScroll();
+        requestAnimationFrame(restoreScroll);
+      }
+
+      function closeLightbox(){
+        lightbox.classList.remove('is-open');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('is-lightbox-open');
+
+        restoreScroll();
+
+        setTimeout(function(){
+          if (!lightbox.classList.contains('is-open') && lightboxImage){
+            lightboxImage.src = '';
+            lightboxImage.alt = '';
+            resetZoom();
+          }
+        }, 220);
+      }
+
+      function startDrag(clientX, clientY){
+        if (scale <= 1) return;
+        isDragging = true;
+        dragStartX = clientX;
+        dragStartY = clientY;
+        dragOriginX = translateX;
+        dragOriginY = translateY;
+        if (imageWrap) {
+          imageWrap.style.cursor = 'grabbing';
+        }
+      }
+
+      function moveDrag(clientX, clientY){
+        if (!isDragging || scale <= 1) return;
+
+        var dx = clientX - dragStartX;
+        var dy = clientY - dragStartY;
+        var isMobileRotated = window.innerWidth <= 860;
+
+        if (isMobileRotated) {
+          translateX = dragOriginX + dy;
+          translateY = dragOriginY - dx;
+        } else {
+          translateX = dragOriginX + dx;
+          translateY = dragOriginY + dy;
+        }
+
+        applyTransform();
+      }
+
+      function endDrag(){
+        isDragging = false;
+        if (imageWrap) {
+          imageWrap.style.cursor = scale > 1 ? 'grab' : '';
+        }
+      }
+
+      ['pointerdown','mousedown','touchstart'].forEach(function(type){
+        document.addEventListener(type, function(event){
+          var button = event.target.closest('.media-expand-btn');
+          if (!button) return;
+          event.stopPropagation();
+        }, { passive: false, capture: true });
+      });
+
+      document.addEventListener('click', function(event){
+        var button = event.target.closest('.media-expand-btn');
+        if (!button) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+        if (typeof event.stopImmediatePropagation === 'function') {
+          event.stopImmediatePropagation();
+        }
+
+        openLightbox(
+          button.getAttribute('data-full-image'),
+          button.getAttribute('data-full-alt')
+        );
+      }, true);
+
+      if (closeBtn){
+        closeBtn.addEventListener('click', function(event){
+          event.preventDefault();
+          event.stopPropagation();
+          closeLightbox();
+        });
+      }
+
+      if (backdrop){
+        backdrop.addEventListener('click', function(event){
+          event.preventDefault();
+          closeLightbox();
+        });
+      }
+
+      document.addEventListener('keydown', function(event){
+        if (event.key === 'Escape' && lightbox.classList.contains('is-open')){
+          closeLightbox();
+          return;
+        }
+
+        preventScrollKeys(event);
+      }, { passive: false });
+
+      window.addEventListener('scroll', function(){
+        if (lightbox.classList.contains('is-open')) {
+          restoreScroll();
+        }
+      }, { passive: false });
+
+      window.addEventListener('wheel', function(event){
+        if (!lightbox.classList.contains('is-open')) return;
+
+        if (event.ctrlKey) {
+          event.preventDefault();
+
+          var oldScale = scale;
+          var delta = event.deltaY < 0 ? 0.15 : -0.15;
+          scale = clamp(scale + delta, minScale, maxScale);
+
+          if (scale <= 1) {
+            translateX = 0;
+            translateY = 0;
+          } else if (oldScale <= 1 && scale > 1) {
+            translateX = 0;
+            translateY = 0;
+          }
+
+          applyTransform();
+          return;
+        }
+
+        preventPageScroll(event);
+      }, { passive: false });
+
+      window.addEventListener('touchstart', function(event){
+        if (!lightbox.classList.contains('is-open')) return;
+
+        if (event.touches.length === 2) {
+          pinchStartDistance = getTouchDistance(event.touches[0], event.touches[1]);
+          pinchStartScale = scale;
+          isDragging = false;
+          return;
+        }
+
+        if (event.touches.length === 1 && scale > 1) {
+          startDrag(event.touches[0].clientX, event.touches[0].clientY);
+        }
+      }, { passive: false });
+
+      window.addEventListener('touchmove', function(event){
+        if (!lightbox.classList.contains('is-open')) return;
+
+        if (event.touches.length === 2) {
+          event.preventDefault();
+
+          var distance = getTouchDistance(event.touches[0], event.touches[1]);
+
+          if (!pinchStartDistance) {
+            pinchStartDistance = distance;
+            pinchStartScale = scale;
+            return;
+          }
+
+          var nextScale = pinchStartScale * (distance / pinchStartDistance);
+          scale = clamp(nextScale, minScale, maxScale);
+
+          if (scale <= 1) {
+            translateX = 0;
+            translateY = 0;
+          }
+
+          applyTransform();
+          return;
+        }
+
+        if (event.touches.length === 1 && isDragging) {
+          event.preventDefault();
+          moveDrag(event.touches[0].clientX, event.touches[0].clientY);
+          return;
+        }
+
+        preventPageScroll(event);
+      }, { passive: false });
+
+      window.addEventListener('touchend', function(){
+        pinchStartDistance = 0;
+        pinchStartScale = scale;
+        endDrag();
+      }, { passive: true });
+
+      window.addEventListener('touchcancel', function(){
+        pinchStartDistance = 0;
+        pinchStartScale = scale;
+        endDrag();
+      }, { passive: true });
+
+      if (imageWrap) {
+        imageWrap.addEventListener('mousedown', function(event){
+          if (!lightbox.classList.contains('is-open')) return;
+          if (event.button !== 0) return;
+          if (scale <= 1) return;
+
+          event.preventDefault();
+          startDrag(event.clientX, event.clientY);
+        });
+
+        imageWrap.addEventListener('dblclick', function(event){
+          event.preventDefault();
+
+          if (scale > 1) {
+            resetZoom();
+          } else {
+            scale = 2;
+            translateX = 0;
+            translateY = 0;
+            applyTransform();
+            if (imageWrap) {
+              imageWrap.style.cursor = 'grab';
+            }
+          }
+        });
+      }
+
+      window.addEventListener('mousemove', function(event){
+        if (!lightbox.classList.contains('is-open')) return;
+        if (!isDragging) return;
+
+        event.preventDefault();
+        moveDrag(event.clientX, event.clientY);
+      });
+
+      window.addEventListener('mouseup', function(){
+        endDrag();
+      });
+
+      window.addEventListener('mouseleave', function(){
+        endDrag();
+      });
+
+      window.addEventListener('resize', function(){
+        if (lightbox.classList.contains('is-open')) {
+          applyTransform();
+        }
+      });
+    })();
+  </script>
   </script>
 </body>
 </html>
