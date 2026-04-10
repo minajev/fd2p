@@ -408,22 +408,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: calc(100vw - 100px);
-  max-height: calc(100vh - 100px);
-  background: #fff;
+  max-width: calc(100vw - 50px);
+  max-height: calc(100vh - 50px);
+  background: transparent;
 }
 
 .media-lightbox-image-wrap{
   position: relative;
   display: inline-block;
   line-height: 0;
-  background: #fff;
+  background: transparent;
 }
 
 .media-lightbox-image{
   display: block;
-  max-width: calc(100vw - 100px);
-  max-height: calc(100vh - 100px);
+  max-width: calc(100vw - 50px);
+  max-height: calc(100vh - 50px);
   width: auto;
   height: auto;
   object-fit: contain;
@@ -469,10 +469,6 @@ background: transparent;
   transform: translateY(0);
 }
 
-body.is-lightbox-open{
-  overflow: hidden;
-}
-
 @media (max-width: 860px){
   .media-lightbox{
     padding: 10px;
@@ -499,14 +495,14 @@ body.is-lightbox-open{
     max-width: none;
     max-height: none;
     overflow: visible;
-  background: #fff;
+  background: transparent;
   }
 
 .media-lightbox-image-wrap{
   position: relative;
   display: inline-block;
   line-height: 0;
-  background: #fff;
+  background: transparent;
   transform: rotate(90deg);
   transform-origin: center center;
 }
@@ -848,40 +844,42 @@ background: transparent;
     var closeBtn = lightbox.querySelector('.media-lightbox-close');
     var backdrop = lightbox.querySelector('.media-lightbox-backdrop');
     var openButtons = document.querySelectorAll('.media-expand-btn');
+    var savedScrollX = 0;
     var savedScrollY = 0;
+
+    function restoreScrollPosition(){
+      window.scrollTo(savedScrollX, savedScrollY);
+    }
 
     function openLightbox(src, alt){
       if (!src || !lightboxImage) return;
 
+      savedScrollX = window.pageXOffset || window.scrollX || 0;
       savedScrollY = window.pageYOffset || window.scrollY || 0;
 
       lightboxImage.src = src;
       lightboxImage.alt = alt || '';
       lightbox.classList.add('is-open');
       lightbox.setAttribute('aria-hidden', 'false');
-
       document.body.classList.add('is-lightbox-open');
-      document.body.style.position = 'fixed';
-      document.body.style.top = '-' + savedScrollY + 'px';
-      document.body.style.left = '0';
-      document.body.style.right = '0';
-      document.body.style.width = '100%';
 
-      closeBtn && closeBtn.focus({ preventScroll: true });
+      /* На некоторых браузерах страница прыгает вверх в момент открытия overlay.
+         Возвращаем scroll сразу и ещё раз на следующем кадре. */
+      restoreScrollPosition();
+      requestAnimationFrame(restoreScrollPosition);
+      setTimeout(restoreScrollPosition, 0);
+
+      if (document.activeElement && typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
+      }
     }
 
     function closeLightbox(){
       lightbox.classList.remove('is-open');
       lightbox.setAttribute('aria-hidden', 'true');
-
       document.body.classList.remove('is-lightbox-open');
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.left = '';
-      document.body.style.right = '';
-      document.body.style.width = '';
 
-      window.scrollTo(0, savedScrollY);
+      restoreScrollPosition();
 
       setTimeout(function(){
         if (!lightbox.classList.contains('is-open') && lightboxImage){
@@ -892,7 +890,8 @@ background: transparent;
     }
 
     openButtons.forEach(function(button){
-      button.addEventListener('click', function(){
+      button.addEventListener('click', function(event){
+        event.preventDefault();
         openLightbox(
           button.getAttribute('data-full-image'),
           button.getAttribute('data-full-alt')
@@ -901,7 +900,10 @@ background: transparent;
     });
 
     if (closeBtn){
-      closeBtn.addEventListener('click', closeLightbox);
+      closeBtn.addEventListener('click', function(event){
+        event.preventDefault();
+        closeLightbox();
+      });
     }
 
     if (backdrop){
@@ -915,6 +917,5 @@ background: transparent;
     });
   })();
 </script>
-
 </body>
 </html>
