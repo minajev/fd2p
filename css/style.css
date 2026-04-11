@@ -640,8 +640,7 @@ z-index: 1;
 body.is-menu-open .offcanvas{ pointer-events:auto; opacity:1 }
 body.is-menu-open .offcanvas-backdrop{ opacity:1 }
 body.is-menu-open .offcanvas-panel{ transform:none }
-/* Lock scroll when menu open */
-body.is-menu-open{ overflow:hidden }
+
 
 /* Offcanvas: compact red lines for active page */
 .offcanvas-nav a{

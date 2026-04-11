@@ -28,6 +28,59 @@ document.documentElement.classList.remove('no-js');
   const ocClose   = document.querySelector('.offcanvas-close');
   const ocNav     = document.querySelector('.offcanvas-nav');
 
+let menuSavedScrollX = 0;
+let menuSavedScrollY = 0;
+
+function restoreMenuScroll(){
+  window.scrollTo(menuSavedScrollX, menuSavedScrollY);
+}
+
+function preventMenuPageScroll(event){
+  if (!body.classList.contains('is-menu-open')) return;
+  event.preventDefault();
+  restoreMenuScroll();
+}
+
+function preventMenuScrollKeys(event){
+  if (!body.classList.contains('is-menu-open')) return;
+
+  const keys = [
+    'ArrowUp',
+    'ArrowDown',
+    'ArrowLeft',
+    'ArrowRight',
+    'PageUp',
+    'PageDown',
+    'Home',
+    'End',
+    ' ',
+    'Spacebar'
+  ];
+
+  if (keys.includes(event.key)) {
+    event.preventDefault();
+    restoreMenuScroll();
+  }
+}
+
+window.addEventListener('scroll', function(){
+  if (body.classList.contains('is-menu-open')) {
+    restoreMenuScroll();
+  }
+}, { passive: false });
+
+window.addEventListener('wheel', function(event){
+  if (!body.classList.contains('is-menu-open')) return;
+  preventMenuPageScroll(event);
+}, { passive: false });
+
+window.addEventListener('touchmove', function(event){
+  if (!body.classList.contains('is-menu-open')) return;
+  preventMenuPageScroll(event);
+}, { passive: false });
+
+document.addEventListener('keydown', preventMenuScrollKeys, { passive: false });
+
   const IS_MOBILE = window.matchMedia('(pointer: coarse), (hover: none)').matches;
 const IS_TABLET_WIDTH = window.matchMedia('(min-width: 861px) and (max-width: 1200px)').matches;
 const IS_TABLET_TOUCH = IS_MOBILE && IS_TABLET_WIDTH;
@@ -214,28 +267,35 @@ const small = window.innerWidth <= CONTACT_BURGER_BP;
 
 function openMenu(){
   if (!offcanvas || !menuBtn) return;
+
+  menuSavedScrollX = window.pageXOffset || window.scrollX || 0;
+  menuSavedScrollY = window.pageYOffset || window.scrollY || 0;
+
   clonePrimaryNavIntoOffcanvas();
   body.classList.add('is-menu-open');
   offcanvas.setAttribute('aria-hidden', 'false');
   menuBtn.setAttribute('aria-expanded', 'true');
 
-  stop(); // NEW: pause autoplay immediately when menu opens
+  stop();
 
-  const firstLink = ocNav?.querySelector('a');
-  (firstLink || ocClose || menuBtn).focus?.({ preventScroll:true });
+  restoreMenuScroll();
+  requestAnimationFrame(restoreMenuScroll);
 }
+
 function closeMenu(){
   if (!offcanvas || !menuBtn) return;
+
   body.classList.remove('is-menu-open');
   offcanvas.setAttribute('aria-hidden', 'true');
   menuBtn.setAttribute('aria-expanded', 'false');
-  menuBtn.focus?.({ preventScroll:true });
 
-  // NEW: resume autoplay only when it makes sense
+  restoreMenuScroll();
+
   if (atTop() && !isHovering && !reduceMotion && document.visibilityState === 'visible'){
     play();
   }
 }
+
   function wireOffcanvas(){
     menuBtn?.addEventListener('click', () => {
       const open = body.classList.contains('is-menu-open');

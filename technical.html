@@ -235,8 +235,9 @@ html.is-holding{
   display: block;
 }
 
+html.is-lightbox-open,
 body.is-lightbox-open{
-  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 .technical-page .media-lightbox{
@@ -830,13 +831,18 @@ pagination: {
         savedScrollX = window.pageXOffset || window.scrollX || 0;
         savedScrollY = window.pageYOffset || window.scrollY || 0;
 
+        if (document.activeElement && typeof document.activeElement.blur === 'function') {
+          document.activeElement.blur();
+        }
+
         lightboxImage.src = src;
         lightboxImage.alt = alt || '';
         resetZoom();
 
+        document.documentElement.classList.add('is-lightbox-open');
+        document.body.classList.add('is-lightbox-open');
         lightbox.classList.add('is-open');
         lightbox.setAttribute('aria-hidden', 'false');
-        document.body.classList.add('is-lightbox-open');
 
         restoreScroll();
         requestAnimationFrame(restoreScroll);
@@ -845,6 +851,7 @@ pagination: {
       function closeLightbox(){
         lightbox.classList.remove('is-open');
         lightbox.setAttribute('aria-hidden', 'true');
+        document.documentElement.classList.remove('is-lightbox-open');
         document.body.classList.remove('is-lightbox-open');
 
         restoreScroll();
