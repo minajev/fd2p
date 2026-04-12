@@ -165,8 +165,14 @@ html.is-holding{
 .technical-page .technical-media-frame{
   position: relative;
   display: inline-block;
-width: min(90%, 720px);
+width: min(90%, 780px);
   line-height: 0;
+}
+
+@media (max-width: 860px){
+  .technical-page .technical-media-frame{
+    width: 100%;
+  }
 }
 
 .card-image {
